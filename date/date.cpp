@@ -7,11 +7,11 @@
 
 Date::Date()
 {
-        // Get the current time
+        // Get the current Time
         auto now = std::chrono::system_clock::now();
         std::time_t t = std::chrono::system_clock::to_time_t(now);
 
-        // Convert the system time to a std::tm struct
+        // Convert the system Time to a std::tm struct
         std::tm *now_tm = std::localtime(&t);
 
         // Set the year, month, and day member variables
