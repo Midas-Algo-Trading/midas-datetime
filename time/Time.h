@@ -7,8 +7,9 @@
 #include "components/Second.h"
 #include "components/Microsecond.h"
 #include "components/Nanosecond.h"
+#include "../Horologe.h"
 
-class Time
+class Time : public Horologe
 {
 public:
         Hour hours{};
@@ -17,16 +18,10 @@ public:
         Microsecond microseconds{};
         Nanosecond nanoseconds{};
 
-private:
-        TimeComponent component_hierarchy[5] = {nanoseconds, microseconds, seconds, minutes, hours};
-
 public:
         //////////////////////////////////////////////////
         // Constructors
         //////////////////////////////////////////////////
-
-        // Default's to the current time
-        Time();
 
         explicit Time(int hour=0, int minute=0, int second=0, int microsecond=0, int nanosecond=0) :
                 hours(Hour(hour, this)),
@@ -35,11 +30,7 @@ public:
                 microseconds(Microsecond(microsecond, this)),
                 nanoseconds(Nanosecond(nanosecond, this)) {}
 
-        //////////////////////////////////////////////////
-        // Methods
-        //////////////////////////////////////////////////
-
-        TimeComponent get_component_by_idx(int idx);
+        static Time now();
 };
 
 

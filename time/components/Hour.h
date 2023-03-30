@@ -3,7 +3,7 @@
 
 #include "../TimeComponent.h"
 
-class Hour : TimeComponent
+class Hour : public TimeComponent
 {
 public:
         friend class Time;
@@ -12,7 +12,7 @@ public:
         // Constructors
         //////////////////////////////////////////////////
 
-        Hour(int hours, Time* owner) : TimeComponent(hours, 1, owner) {}
+        Hour(int hours, Horologe* owner) : TimeComponent(hours, 1, owner) {}
 
         Hour() = default;
 
@@ -22,7 +22,7 @@ public:
 
         int max_value() override;
 
-private:
+protected:
         //////////////////////////////////////////////////
         // Methods
         //////////////////////////////////////////////////

@@ -4,26 +4,17 @@
 
 #include "../DatetimeComponent.h"
 
-class TimeComponent : protected DatetimeComponent
+class Time;
+
+class TimeComponent : public DatetimeComponent
 {
 public:
-        friend class Time;
-
-private:
-        Time* owner{};
-
-public:
-        TimeComponent(int value, int component_idx, Time* owner) :
-                DatetimeComponent(value, component_idx), owner(owner) {}
+        TimeComponent(int time, int component_idx, Horologe* owner) :
+                DatetimeComponent(time, component_idx, owner) {}
 
         TimeComponent() = default;
 
         int min_value() override;
-
-private:
-        void inc(int inc_amount) override;
-
-        void dec(int dec_amount) override;
 };
 
 

@@ -2,8 +2,14 @@
 #define DATETIME_DATETIMECOMPONENT_H
 
 
+#include <variant>
+#include "Horologe.h"
+
 class DatetimeComponent
 {
+private:
+        friend class Horologe;
+
 protected:
         //////////////////////////////////////////////////
         // Fields
@@ -12,6 +18,8 @@ protected:
         int value{};
 
         int component_idx{};
+
+        Horologe* owner{};
 
 public:
         //////////////////////////////////////////////////
@@ -30,7 +38,8 @@ protected:
         // Constructors
         //////////////////////////////////////////////////
 
-        DatetimeComponent(int value, int component_idx) : value(value), component_idx(component_idx) {}
+        DatetimeComponent(int value, int component_idx, Horologe* owner) :
+                value(value), component_idx(component_idx), owner(owner) {}
 
         DatetimeComponent() = default;
 
@@ -42,21 +51,16 @@ protected:
 
         virtual int min_value() { return 0;}
 
+        virtual void inc(int inc_amount);
+
+        virtual void dec(int dec_amount);
+
 private:
         //////////////////////////////////////////////////
         // Methods
         //////////////////////////////////////////////////
 
         void change_value(int change_amount);
-
-private:
-        //////////////////////////////////////////////////
-        // Virtual Methods
-        //////////////////////////////////////////////////
-
-        virtual void inc(int inc_amount) {}
-
-        virtual void dec(int dec_amount) {}
 };
 
 

@@ -1,11 +1,12 @@
 #include "Time.h"
 #include <chrono>
 
+
 //////////////////////////////////////////////////
-// Public Constructors
+// Public Methods
 //////////////////////////////////////////////////
 
-Time::Time()
+Time Time::now()
 {
         // Get the current time
         auto now = std::chrono::system_clock::now();
@@ -23,25 +24,6 @@ Time::Time()
         int microseconds_value = (seconds_value * 1000000) - (nanos_since_midnight % 1000000000) / 1000;
         int nanoseconds_value = (microseconds_value * 10000) - nanos_since_midnight;
 
-        // Create components
-        hours = Hour(hours_value, this);
-        minutes = Minute(minutes_value, this);
-        seconds = Second(seconds_value, this);
-        microseconds = Microsecond(microseconds_value, this);
-        nanoseconds = Nanosecond(nanoseconds_value, this);
-}
-
-//////////////////////////////////////////////////
-// Public Methods
-//////////////////////////////////////////////////
-
-TimeComponent Time::get_component_by_idx(int idx)
-{
-        // Check if idx is in range of Time's components
-        if (idx < 0 || idx > 4)
-        {
-                throw std::invalid_argument("idx must be between 0 and 4");
-        }
-
-        return component_hierarchy[idx];
+        // Create Time object
+        return Time(hours_value, minutes_value, seconds_value, microseconds_value, nanoseconds_value);
 }

@@ -13,7 +13,7 @@ public:
         // Constructors
         //////////////////////////////////////////////////
 
-        Second(int hours, Time* owner) : TimeComponent(hours, 1, owner) {}
+        Second(int hours, Horologe* owner) : TimeComponent(hours, 1, owner) {}
 
         Second() = default;
 
