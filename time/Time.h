@@ -9,9 +9,11 @@
 #include "components/Nanosecond.h"
 #include "../Horologe.h"
 
-class Time : public Horologe
+class Time : private Horologe
 {
 public:
+        friend std::ostream &operator<<(std::ostream &os, const Time &time);
+
         Hour hours{};
         Minute minutes{};
         Second seconds{};
@@ -28,7 +30,10 @@ public:
                 minutes(Minute(minute, this)),
                 seconds(Second(second, this)),
                 microseconds(Microsecond(microsecond, this)),
-                nanoseconds(Nanosecond(nanosecond, this)) {}
+                nanoseconds(Nanosecond(nanosecond, this)),
+                Horologe({&nanoseconds, &microseconds, &seconds, &minutes, &hours}) {}
+
+        explicit Time(long long nanoseconds_);
 
         static Time now();
 };

@@ -7,7 +7,9 @@ int main()
 //    today++;
 //    std::cout << today << std::endl;
 
-        Time now = Time::now();
-        now.nanoseconds++;
-        std::cout << now.nanoseconds << std::endl;
+        Time now = Time();
+        for (int i = 990; i < 2000; i++) {
+                now.nanoseconds++;
+        }
+        std::cout << now << std::endl;
 }

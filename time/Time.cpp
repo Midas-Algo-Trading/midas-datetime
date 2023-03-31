@@ -1,6 +1,32 @@
 #include "Time.h"
+#include "../util/string_util.h"
 #include <chrono>
+#include <iostream>
 
+//////////////////////////////////////////////////
+// Public Constructors
+//////////////////////////////////////////////////
+
+Time::Time(long long nanoseconds_)
+{
+        long long used_nanoseconds = 0;
+
+        hours = Hour(nanoseconds_, this);
+        used_nanoseconds += hours.to_nanoseconds();
+
+        minutes = Minute(nanoseconds_ - used_nanoseconds, this);
+        used_nanoseconds += minutes.to_nanoseconds();
+
+        seconds = Second(nanoseconds_ - used_nanoseconds, this);
+        used_nanoseconds += seconds.to_nanoseconds();
+
+        microseconds = Microsecond(nanoseconds_ - used_nanoseconds, this);
+        used_nanoseconds += microseconds.to_nanoseconds();
+
+        nanoseconds -= Nanosecond(nanoseconds_ - used_nanoseconds, this);
+
+        component_hierarchy = {&nanoseconds, &microseconds, &seconds, &minutes, &hours};
+}
 
 //////////////////////////////////////////////////
 // Public Methods
@@ -8,22 +34,27 @@
 
 Time Time::now()
 {
-        // Get the current time
         auto now = std::chrono::system_clock::now();
+        auto now_ns = std::chrono::time_point_cast<std::chrono::nanoseconds>(now);
+        auto epoch = now_ns.time_since_epoch();
+        auto today_nanoseconds = (std::chrono::duration_cast<std::chrono::nanoseconds>(epoch) % std::chrono::seconds(1)).count();
+        return Time(today_nanoseconds);
+}
 
-        // Extract the current time in nanoseconds
-        auto nanoseconds_since_epoch = std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
+//////////////////////////////////////////////////
+// Public Friend Methods
+//////////////////////////////////////////////////
 
-        // Calculate the number of nanoseconds since midnight
-        auto nanos_since_midnight = nanoseconds_since_epoch % (24 * 60LL * 60 * 1000000000);
-
-        // Calculate component values
-        int hours_value = (nanos_since_midnight / (60LL * 60 * 1000000000));
-        int minutes_value = (hours_value * 60) - (nanos_since_midnight % (60LL * 60 * 1000000000) / (60LL * 1000000000));
-        int seconds_value = (minutes_value * 60) - (nanos_since_midnight % (60LL * 1000000000)) / 1000000000;
-        int microseconds_value = (seconds_value * 1000000) - (nanos_since_midnight % 1000000000) / 1000;
-        int nanoseconds_value = (microseconds_value * 10000) - nanos_since_midnight;
-
-        // Create Time object
-        return Time(hours_value, minutes_value, seconds_value, microseconds_value, nanoseconds_value);
+std::ostream &operator<<(std::ostream &os, const Time &time)
+{
+        return os
+        << time.hours
+        << ':'
+        << lpad(std::to_string(time.minutes), 2, '0')
+        << ':'
+        << lpad(std::to_string(time.seconds), 2, '0')
+        << '.'
+        << time.microseconds
+        << '.'
+        << time.nanoseconds;
 }
