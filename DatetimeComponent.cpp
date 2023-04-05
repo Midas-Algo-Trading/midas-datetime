@@ -51,7 +51,7 @@ void DatetimeComponent::change_value(int change_by)
 
 void DatetimeComponent::inc(int inc_amount)
 {
-        for (int i = 0; i < inc_amount; i++)
+        while (inc_amount > 0)
         {
                 value++;
 
@@ -59,16 +59,18 @@ void DatetimeComponent::inc(int inc_amount)
                 if (value > max_value())
                 {
                         // Increment the next component
-                        DatetimeComponent next_component = owner->get_component_by_idx(component_idx+1);
-                        next_component++;
-                        value -= next_component.max_value();
+                        DatetimeComponent* next_component = owner->get_component_by_idx(component_idx+1);
+                        (*next_component)++;
+                        value -= max_value();
                 }
+
+                inc_amount--;
         }
 }
 
 void DatetimeComponent::dec(int dec_amount)
 {
-        for (int i = 0; i < dec_amount*-1; i++)
+        while (dec_amount < 0)
         {
                 value--;
 
@@ -76,9 +78,11 @@ void DatetimeComponent::dec(int dec_amount)
                 if (value < min_value())
                 {
                         // Decrement the previous component
-                        DatetimeComponent previous_component = owner->get_component_by_idx(component_idx-1);
-                        previous_component--;
-                        value += previous_component.max_value();
+                        DatetimeComponent* previous_component = owner->get_component_by_idx(component_idx-1);
+                        (*previous_component)--;
+                        value -= max_value();
                 }
+
+                dec_amount++;
         }
 }

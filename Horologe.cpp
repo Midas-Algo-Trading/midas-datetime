@@ -6,7 +6,7 @@
 // Public Methods
 //////////////////////////////////////////////////
 
-DatetimeComponent Horologe::get_component_by_idx(int idx) const
+DatetimeComponent* Horologe::get_component_by_idx(int idx) const
 {
         // Check if idx is in range of Time's n_components
         std::cout << idx << " " << component_hierarchy.size() << std::endl;
@@ -14,7 +14,6 @@ DatetimeComponent Horologe::get_component_by_idx(int idx) const
         {
                 throw std::invalid_argument(&"idx must be between 0 and " [component_hierarchy.size()-1]);
         }
-
-        return *component_hierarchy[idx];
+        return component_hierarchy[idx];
 
 }

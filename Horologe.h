@@ -18,7 +18,7 @@ public:
 
         explicit Horologe(std::vector<DatetimeComponent*> component_hierarchy) : component_hierarchy(std::move(component_hierarchy)) {}
 
-        DatetimeComponent get_component_by_idx(int idx) const;
+        DatetimeComponent* get_component_by_idx(int idx) const;
 };
 
 
