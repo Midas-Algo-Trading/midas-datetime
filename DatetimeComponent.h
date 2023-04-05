@@ -4,6 +4,7 @@
 
 #include <variant>
 #include "Horologe.h"
+#include "util/exceptions/NotImplementedException.h"
 
 class DatetimeComponent
 {
@@ -47,9 +48,9 @@ protected:
         // Methods
         //////////////////////////////////////////////////
 
-        virtual int max_value() { return 0;}
+        virtual int max_value() { throw NotImplementedException(); }
 
-        virtual int min_value() { return 0;}
+        virtual int min_value() { throw NotImplementedException(); }
 
         virtual void inc(int inc_amount);
 
