@@ -14,7 +14,7 @@ public:
         // Constructors
         //////////////////////////////////////////////////
 
-        Month(int days, Date* owner) : DateComponent(days, COMPONENT_IDX, owner) {}
+        Month(int days, Horologe* owner) : DateComponent(days, COMPONENT_IDX, owner) {}
 
         //////////////////////////////////////////////////
         // Methods

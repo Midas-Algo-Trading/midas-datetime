@@ -21,10 +21,10 @@ public:
         // Constructors
         //////////////////////////////////////////////////
 
-//        explicit Date(int year=0, int month=0, int day=0) :
-//                year(Year(year, this)),
-//                month(Month(month, this)),
-//                day(Day(day, this)) {}
+        explicit Date(int year=0, int month=0, int day=0) :
+                year(Year(year, this)),
+                month(Month(month, this)),
+                day(Day(day, this)) {}
 
         //////////////////////////////////////////////////
         // Methods

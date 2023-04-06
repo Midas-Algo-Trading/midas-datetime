@@ -6,7 +6,7 @@
 class DateComponent : public DatetimeComponent
 {
 public:
-        DateComponent(int date, int component_idx, Date* owner) :
+        DateComponent(int date, int component_idx, Horologe* owner) :
                 DatetimeComponent(date, component_idx, owner) {}
 
         DateComponent() = default;

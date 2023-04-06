@@ -14,7 +14,7 @@ public:
         // Constructors
         //////////////////////////////////////////////////
 
-        explicit Year(int years, Date* owner) : DateComponent(years, COMPONENT_IDX, owner) {}
+        explicit Year(int years, Horologe* owner) : DateComponent(years, COMPONENT_IDX, owner) {}
 
         //////////////////////////////////////////////////
         // Methods
