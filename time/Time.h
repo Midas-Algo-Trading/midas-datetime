@@ -1,7 +1,6 @@
 #ifndef DATETIME_TIME_H
 #define DATETIME_TIME_H
 
-#include <stdexcept>
 #include "components/Hour.h"
 #include "components/Minute.h"
 #include "components/Second.h"

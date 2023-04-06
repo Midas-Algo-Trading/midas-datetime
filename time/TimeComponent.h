@@ -4,8 +4,6 @@
 
 #include "../DatetimeComponent.h"
 
-class Time;
-
 class TimeComponent : public DatetimeComponent
 {
 private:
@@ -18,8 +16,6 @@ public:
         TimeComponent(long long nanoseconds, int component_idx, Horologe* owner, long long nanoseconds_per);
 
         TimeComponent() = default;
-
-        int min_value() override;
 
 protected:
         long long to_nanoseconds() const;

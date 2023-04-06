@@ -50,7 +50,7 @@ protected:
 
         virtual int max_value() { throw NotImplementedException(); }
 
-        virtual int min_value() { throw NotImplementedException(); }
+        virtual int min_value() { return 1; }
 
         virtual void inc(int inc_amount);
 

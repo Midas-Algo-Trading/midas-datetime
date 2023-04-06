@@ -10,7 +10,7 @@ int main()
         Time now = Time();
         for (int i = 999; i < 10000; i++) {
                 now.nanoseconds++;
-                std::cout << i << std::endl;
+//                std::cout << i << std::endl;
         }
         std::cout << now << std::endl;
 }
