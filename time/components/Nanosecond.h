@@ -1,25 +1,15 @@
 #ifndef DATETIME_NANOSECOND_H
 #define DATETIME_NANOSECOND_H
 
-
-#include "../TimeComponent.h"
-
-class Time;
+#include "TimeComponent.h"
 
 class Nanosecond : public TimeComponent
 {
-private:
-        static long long NANOSECONDS_PER;
-        static int COMPONENT_IDX;
-
 public:
-        Nanosecond(int hours, Horologe* owner) : TimeComponent(hours, COMPONENT_IDX, owner, NANOSECONDS_PER) {}
+        static constexpr uint64_t N_NANOSECONDS = 1;
 
-        Nanosecond(long long nanoseconds, Horologe* owner) : TimeComponent(nanoseconds, COMPONENT_IDX, owner, NANOSECONDS_PER) {}
-
-        Nanosecond() = default;
-
-        int max_value() override;
+        explicit Nanosecond(int nanosecond) :
+                TimeComponent(nanosecond, N_NANOSECONDS) {}
 };
 
 #endif //DATETIME_NANOSECOND_H

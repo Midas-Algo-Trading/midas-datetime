@@ -1,35 +1,15 @@
 #ifndef DATETIME_MINUTE_H
 #define DATETIME_MINUTE_H
 
-
-#include "../TimeComponent.h"
+#include "TimeComponent.h"
 
 class Minute : public TimeComponent
 {
 public:
-        friend class Time;
+        static constexpr uint64_t N_NANOSECONDS = 60'0000'000'000;
 
-private:
-        static long long NANOSECONDS_PER;
-        static int COMPONENT_IDX;
-
-public:
-
-        //////////////////////////////////////////////////
-        // Constructors
-        //////////////////////////////////////////////////
-
-        Minute(int hours, Horologe* owner) : TimeComponent(hours, COMPONENT_IDX, owner, NANOSECONDS_PER) {}
-
-        Minute(long long nanoseconds, Horologe* owner) : TimeComponent(nanoseconds, COMPONENT_IDX, owner, NANOSECONDS_PER) {}
-
-        Minute() = default;
-
-        //////////////////////////////////////////////////
-        // Methods
-        //////////////////////////////////////////////////
-
-        int max_value() override;
+        explicit Minute(int minute) :
+                TimeComponent(minute, N_NANOSECONDS) {}
 };
 
 #endif //DATETIME_MINUTE_H

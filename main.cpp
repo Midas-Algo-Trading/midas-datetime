@@ -3,14 +3,9 @@
 
 int main()
 {
-//    Date today = Date(2022, 1, 1);
-//    today++;
-//    std::cout << today << std::endl;
-
         Time now = Time();
-        for (int i = 999; i < 10000; i++) {
-                now.nanoseconds++;
-//                std::cout << i << std::endl;
+        for (int i = 0; i < 1000; i++) {
+                now += Nanosecond(1);
         }
         std::cout << now << std::endl;
 }

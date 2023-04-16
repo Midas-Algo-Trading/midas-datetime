@@ -1,7 +1,3 @@
-//
-// Created by Erik on 3/3/2023.
-//
-
 #ifndef DATETIME_STRING_UTIL_H
 #define DATETIME_STRING_UTIL_H
 
