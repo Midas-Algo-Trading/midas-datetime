@@ -64,6 +64,8 @@ public:
 
         static void set_default_timezone(Timezone timezone);
 
+        int get_hour_at_timezone(Timezone timezone) const;
+
 protected:
         void add_hours(int hours_to_add);
         void add_minutes(int minutes_to_add);

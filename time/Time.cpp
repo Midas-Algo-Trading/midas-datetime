@@ -256,91 +256,71 @@ void Time::set_timezone(Timezone new_timezone)
 
 bool Time::operator>(const Time& other) const
 {
-        // Adjust other's hour to match this timezone
-        int other_hour = other.hour;
-        if (timezone != other.timezone)
-                other_hour += (other_hour + other.timezone.get_utc_offset_diff(timezone))
-                              % HOURS_PER_DAY;
-
-        return hour > other_hour
+        return hour > other.get_hour_at_timezone(timezone)
             || minute > other.minute
             || second > other.second
+            || millisecond > other.millisecond
             || microsecond > other.microsecond
             || nanosecond > other.nanosecond;
 }
 
 bool Time::operator>=(const Time& other) const
 {
-        // Adjust other's hour to match this timezone
-        int other_hour = other.hour;
-        if (timezone != other.timezone)
-                other_hour += (other_hour + other.timezone.get_utc_offset_diff(timezone))
-                              % HOURS_PER_DAY;
-
-        return hour >= other_hour
+        return hour >= other.get_hour_at_timezone(timezone)
             || minute >= other.minute
             || second >= other.second
+            || millisecond >= other.millisecond
             || microsecond >= other.microsecond
             || nanosecond >= other.nanosecond;
 }
 
 bool Time::operator<(const Time& other) const
 {
-        // Adjust other's hour to match this timezone
-        int other_hour = other.hour;
-        if (timezone != other.timezone)
-                other_hour += (other_hour + other.timezone.get_utc_offset_diff(timezone))
-                              % HOURS_PER_DAY;
-
-        return hour < other_hour
+        return hour < other.get_hour_at_timezone(timezone)
             || minute < other.minute
             || second < other.second
+            || millisecond < other.millisecond
             || microsecond < other.microsecond
             || nanosecond < other.nanosecond;
 }
 
 bool Time::operator<=(const Time& other) const
 {
-        // Adjust other's hour to match this timezone
-        int other_hour = other.hour;
-        if (timezone != other.timezone)
-                other_hour += (other_hour + other.timezone.get_utc_offset_diff(timezone))
-                              % HOURS_PER_DAY;
-
-        return hour <= other_hour
+        return hour <= other.get_hour_at_timezone(timezone)
             || minute <= other.minute
             || second <= other.second
+            || millisecond <= other.millisecond
             || microsecond <= other.microsecond
             || nanosecond <= other.nanosecond;
 }
 
 bool Time::operator==(const Time& other) const
 {
-        // Adjust other's hour to match this timezone
-        int other_hour = other.hour;
-        if (timezone != other.timezone)
-                other_hour += (other_hour + other.timezone.get_utc_offset_diff(timezone))
-                              % HOURS_PER_DAY;
 
-        return hour == other_hour
+        return hour == other.get_hour_at_timezone(timezone)
             && minute == other.minute
             && second == other.second
+            && millisecond == other.millisecond
             && microsecond == other.microsecond
             && nanosecond == other.nanosecond;
 }
 
 bool Time::operator!=(const Time& other) const
 {
-        // Adjust other's hour to match this timezone
-        int other_hour = other.hour;
-        if (timezone != other.timezone)
-                other_hour += (other_hour + other.timezone.get_utc_offset_diff(timezone))
-                              % HOURS_PER_DAY;
+        return hour != other.get_hour_at_timezone(timezone)
+            || minute != other.minute
+            || second != other.second
+            || millisecond != other.millisecond
+            || microsecond != other.microsecond
+            || nanosecond != other.nanosecond;
+}
 
-        return hour == other_hour
-            && minute == other.minute
-            && second == other.second
-            && microsecond == other.microsecond
-            && nanosecond == other.nanosecond;
+int Time::get_hour_at_timezone(Timezone timezone) const
+{
+        if (this->timezone == timezone)
+                return hour;
+
+        return (hour + this->timezone.get_utc_offset_diff(timezone))
+               % HOURS_PER_DAY;
 }
 
