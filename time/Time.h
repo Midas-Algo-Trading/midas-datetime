@@ -7,6 +7,8 @@
 #include "components/Second.h"
 #include "components/Microsecond.h"
 #include "components/Nanosecond.h"
+#include "Timezone.h"
+
 
 class Time
 {
@@ -19,15 +21,21 @@ public:
         int microsecond;
         int nanosecond;
 
+        Timezone timezone;
+
+        static Timezone default_timezone;
+
 public:
-        explicit Time(int hour=0, int minute=0, int second=0, int microsecond=0, int nanosecond=0) :
+        explicit Time(int hour=0, int minute=0, int second=0, int microsecond=0,
+                      int nanosecond=0, Timezone timezone=default_timezone) :
                 hour(hour),
                 minute(minute),
                 second(second),
                 microsecond(microsecond),
-                nanosecond(nanosecond) {}
+                nanosecond(nanosecond),
+                timezone(timezone) {}
 
-        static Time now();
+        static Time now(Timezone timezone=default_timezone);
 
         Time& operator+=(const Hour& hours);
         Time& operator-=(const Hour& hours);
@@ -39,13 +47,23 @@ public:
         Time& operator-=(const Microsecond& microseconds);
         Time& operator+=(const Nanosecond& nanoseconds);
         Time& operator-=(const Nanosecond& nanoseconds);
+        bool operator>(const Time& other) const;
+        bool operator>=(const Time& other) const;
+        bool operator<(const Time& other) const;
+        bool operator<=(const Time& other) const;
+        bool operator==(const Time& other) const;
+        bool operator!=(const Time& other) const;
+
+        void set_timezone(Timezone new_timezone);
+
+        static void set_default_timezone(Timezone timezone);
 
 protected:
         void add_hours(int hours_to_add);
         void add_minutes(int minutes_to_add);
         void add_seconds(int seconds_to_add);
-        void add_microseconds(int microseconds_to_add);
-        void add_nanoseconds(int nanoseconds_to_add);
+        void add_microseconds(uint64_t microseconds_to_add);
+        void add_nanoseconds(uint64_t nanoseconds_to_add);
 
 private:
         static const int MINUTES_PER_HOUR;
@@ -58,6 +76,8 @@ private:
         static const uint64_t NANOSECONDS_PER_HOUR;
         static const uint64_t NANOSECONDS_PER_MINUTE;
         static const uint64_t NANOSECONDS_PER_SECOND;
+
+        static const int HOURS_PER_DAY;
 };
 
 

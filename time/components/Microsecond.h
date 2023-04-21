@@ -1,15 +1,12 @@
 #ifndef DATETIME_MICROSECOND_H
 #define DATETIME_MICROSECOND_H
 
-#include "TimeComponent.h"
+#include "../../Component.h"
 
-class Microsecond : public TimeComponent
+class Microsecond : public Component
 {
 public:
-        static constexpr uint64_t N_NANOSECONDS = 1'000;
-
-        explicit Microsecond(int microsecond) :
-                TimeComponent(microsecond, N_NANOSECONDS) {}
+        explicit Microsecond(int microsecond) : Component(microsecond) {}
 };
 
 #endif //DATETIME_MICROSECOND_H

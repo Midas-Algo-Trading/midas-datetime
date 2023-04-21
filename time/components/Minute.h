@@ -1,15 +1,12 @@
 #ifndef DATETIME_MINUTE_H
 #define DATETIME_MINUTE_H
 
-#include "TimeComponent.h"
+#include "../../Component.h"
 
-class Minute : public TimeComponent
+class Minute : public Component
 {
 public:
-        static constexpr uint64_t N_NANOSECONDS = 60'0000'000'000;
-
-        explicit Minute(int minute) :
-                TimeComponent(minute, N_NANOSECONDS) {}
+        explicit Minute(int minute) : Component(minute) {}
 };
 
 #endif //DATETIME_MINUTE_H

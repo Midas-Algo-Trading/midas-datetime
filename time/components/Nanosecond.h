@@ -1,15 +1,12 @@
 #ifndef DATETIME_NANOSECOND_H
 #define DATETIME_NANOSECOND_H
 
-#include "TimeComponent.h"
+#include "../../Component.h"
 
-class Nanosecond : public TimeComponent
+class Nanosecond : public Component
 {
 public:
-        static constexpr uint64_t N_NANOSECONDS = 1;
-
-        explicit Nanosecond(int nanosecond) :
-                TimeComponent(nanosecond, N_NANOSECONDS) {}
+        explicit Nanosecond(int nanosecond) : Component(nanosecond) {}
 };
 
 #endif //DATETIME_NANOSECOND_H
