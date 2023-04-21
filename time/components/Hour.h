@@ -7,6 +7,6 @@ class Hour : public Component
 {
 public:
         explicit Hour(int hour) : Component(hour) {}
-
 };
+
 #endif //DATETIME_HOUR_H

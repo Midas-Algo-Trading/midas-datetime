@@ -3,38 +3,50 @@
 #include <chrono>
 #include <iostream>
 
- Timezone Time::default_timezone = UTC;
+ Timezone Time::default_timezone = get_local_timezone();
 
 Time Time::now(Timezone timezone)
 {
-        // Get the current time point
-        auto now = std::chrono::system_clock::now();
-        // Convert the time point to a time_t object
-        std::time_t now_time_t = std::chrono::system_clock::to_time_t(now);
-        // Convert the time_t object to a tm struct
-        std::tm now_tm = *std::localtime(&now_time_t);
+        // Get the current local time
+        std::time_t now = std::time(nullptr);
+        std::tm local_tm = *std::localtime(&now);
 
-        int hour = now_tm.tm_hour;
-        int minute = now_tm.tm_min;
-        int second = now_tm.tm_sec;
+        // Extract the different time components
+        int hour = local_tm.tm_hour;
+        int minute = local_tm.tm_min;
+        int second = local_tm.tm_sec;
 
         // Set hour from system timezone to timezone
         hour += get_local_timezone().get_utc_offset_diff(timezone);
 
-        std::tm tm_start_of_day = now_tm;
-        tm_start_of_day.tm_hour = 0;
-        tm_start_of_day.tm_min = 0;
-        tm_start_of_day.tm_sec = 0;
-        std::time_t time_t_start_of_day = std::mktime(&tm_start_of_day);
-        auto start_of_day = std::chrono::system_clock::from_time_t(time_t_start_of_day);
-        auto duration = now - start_of_day;
+        // Get the current system clock time
+        auto system_time = std::chrono::system_clock::now();
 
-        int microsecond = static_cast<int>(std::chrono::duration_cast<std::chrono::microseconds>(duration).count() % MICROSECONDS_PER_SECOND);
-        // TODO: I think this is incorrect
-        int nanosecond = static_cast<int>(duration.count() % NANOSECONDS_PER_SECOND);
+        // Calculate the time difference between the system clock time and the local time
+        auto system_time_today = system_time
+                               - std::chrono::system_clock::from_time_t(std::mktime(&local_tm));
 
-        return Time(hour, minute, second, microsecond, nanosecond,
-                    get_local_timezone());
+        // Extract the values of the different components
+        auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(system_time_today);
+        auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(system_time_today);
+        auto us = std::chrono::duration_cast<std::chrono::microseconds>(system_time_today);
+
+        // Extract the values of the millisecond, microsecond, and nanosecond
+
+        int millisecond = static_cast<int>(ms.count());
+
+        int microsecond = static_cast<int>(
+                us.count()
+              - (millisecond * MICROSECONDS_PER_MILLISECOND)
+        );
+
+        int nanosecond = static_cast<int>(
+                ns.count()
+              - (millisecond * NANOSECONDS_PER_MILLISECOND)
+              - (microsecond * NANOSECONDS_PER_MICROSECOND)
+        );
+
+        return Time(hour, minute, second, millisecond, microsecond, nanosecond);
 }
 
 //////////////////////////////////////////////////
@@ -49,6 +61,8 @@ std::ostream &operator<<(std::ostream &os, const Time &time)
         << lpad(std::to_string(time.minute), 2, '0')
         << ':'
         << lpad(std::to_string(time.second), 2, '0')
+        << '.'
+        << time.millisecond
         << '.'
         << time.microsecond
         << '.'
@@ -91,6 +105,18 @@ Time &Time::operator-=(const Second& seconds)
         return *this;
 }
 
+Time &Time::operator+=(const Millisecond& milliseconds)
+{
+        add_milliseconds(milliseconds);
+        return *this;
+}
+
+Time &Time::operator-=(const Millisecond& milliseconds)
+{
+        add_milliseconds(-milliseconds);
+        return *this;
+}
+
 Time &Time::operator+=(const Microsecond& microseconds)
 {
         add_microseconds(microseconds);
@@ -118,13 +144,18 @@ Time &Time::operator-=(const Nanosecond& nanoseconds)
 const int Time::MINUTES_PER_HOUR = 60;
 const int Time::SECONDS_PER_MINUTE = 60;
 const int Time::SECONDS_PER_HOUR = MINUTES_PER_HOUR * SECONDS_PER_MINUTE;
-const int Time::MICROSECONDS_PER_SECOND = 1'000'000;
-const uint64_t Time::MICROSECONDS_PER_HOUR = SECONDS_PER_HOUR * MICROSECONDS_PER_SECOND;
-const uint64_t Time::MICROSECONDS_PER_MINUTE = SECONDS_PER_MINUTE * MICROSECONDS_PER_SECOND;
+const int Time::MILLISECONDS_PER_SECOND = 1'000;
+const uint64_t Time::MILLISECONDS_PER_HOUR = SECONDS_PER_HOUR * MILLISECONDS_PER_SECOND;
+const uint64_t Time::MILLISECONDS_PER_MINUTE = SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND;
+const int Time::MICROSECONDS_PER_MILLISECOND = 1'000;
+const uint64_t Time::MICROSECONDS_PER_HOUR = MILLISECONDS_PER_HOUR * MICROSECONDS_PER_MILLISECOND;
+const uint64_t Time::MICROSECONDS_PER_MINUTE = MILLISECONDS_PER_MINUTE * MICROSECONDS_PER_MILLISECOND;
+const uint64_t Time::MICROSECONDS_PER_SECOND = MILLISECONDS_PER_SECOND * MICROSECONDS_PER_MILLISECOND;
 const int Time::NANOSECONDS_PER_MICROSECOND = 1'000;
 const uint64_t Time::NANOSECONDS_PER_HOUR = MICROSECONDS_PER_HOUR * NANOSECONDS_PER_MICROSECOND;
 const uint64_t Time::NANOSECONDS_PER_MINUTE = MICROSECONDS_PER_MINUTE * NANOSECONDS_PER_MICROSECOND;
 const uint64_t Time::NANOSECONDS_PER_SECOND = MICROSECONDS_PER_SECOND * NANOSECONDS_PER_MICROSECOND;
+const uint64_t Time::NANOSECONDS_PER_MILLISECOND = MICROSECONDS_PER_MILLISECOND * NANOSECONDS_PER_MICROSECOND;
 
 const int Time::HOURS_PER_DAY = 24;
 
@@ -147,10 +178,10 @@ void Time::add_minutes(int minutes_to_add)
 
 void Time::add_seconds(int seconds_to_add)
 {
-        int new_total_second =   hour * SECONDS_PER_HOUR
-                               + minute * SECONDS_PER_MINUTE
-                               + second
-                               + seconds_to_add;
+        int new_total_second = hour * SECONDS_PER_HOUR
+                             + minute * SECONDS_PER_MINUTE
+                             + second
+                             + seconds_to_add;
         int new_minute = static_cast<int>(new_total_second / SECONDS_PER_MINUTE);
         if (new_minute != minute)
         {
@@ -160,20 +191,37 @@ void Time::add_seconds(int seconds_to_add)
         second = static_cast<int>(new_total_second % SECONDS_PER_MINUTE);
 }
 
-void Time::add_microseconds(uint64_t microseconds_to_add)
+void Time::add_milliseconds(uint64_t milliseconds_to_add)
 {
-        uint64_t new_total_microsecond =   hour * MICROSECONDS_PER_HOUR
-                                         + minute * MICROSECONDS_PER_MINUTE
-                                         + second * MICROSECONDS_PER_SECOND
-                                         + microsecond
-                                         + microseconds_to_add;
-        int new_second = static_cast<int>(new_total_microsecond / MICROSECONDS_PER_SECOND);
+        uint64_t new_total_millisecond = hour * MILLISECONDS_PER_HOUR
+                                       + minute * MILLISECONDS_PER_MINUTE
+                                       + second * MILLISECONDS_PER_SECOND
+                                       + millisecond
+                                       + milliseconds_to_add;
+        int new_second = static_cast<int>(new_total_millisecond / MILLISECONDS_PER_SECOND);
         if (new_second != second)
         {
                 int second_change = new_second - second;
                 add_seconds(second_change);
         }
-        microsecond = static_cast<int>(new_total_microsecond % MICROSECONDS_PER_SECOND);
+        second = static_cast<int>(new_total_millisecond % MILLISECONDS_PER_SECOND);
+}
+
+void Time::add_microseconds(uint64_t microseconds_to_add)
+{
+        uint64_t new_total_microsecond =   hour * MICROSECONDS_PER_HOUR
+                                         + minute * MICROSECONDS_PER_MINUTE
+                                         + second * MICROSECONDS_PER_SECOND
+                                         + millisecond * MICROSECONDS_PER_MILLISECOND
+                                         + microsecond
+                                         + microseconds_to_add;
+        uint64_t new_millisecond = new_total_microsecond / MICROSECONDS_PER_MILLISECOND;
+        if (new_millisecond != microsecond)
+        {
+                uint64_t millisecond_change = new_millisecond - microsecond;
+                add_milliseconds(millisecond_change);
+        }
+        microsecond = static_cast<int>(new_total_microsecond % MICROSECONDS_PER_MILLISECOND);
 }
 
 void Time::add_nanoseconds(uint64_t nanoseconds_to_add)
@@ -181,6 +229,7 @@ void Time::add_nanoseconds(uint64_t nanoseconds_to_add)
         uint64_t new_total_nanoseconds =   hour * NANOSECONDS_PER_HOUR
                                          + minute * NANOSECONDS_PER_MINUTE
                                          + second * NANOSECONDS_PER_SECOND
+                                         + microsecond * NANOSECONDS_PER_MILLISECOND
                                          + microsecond * NANOSECONDS_PER_MICROSECOND
                                          + nanosecond
                                          + nanoseconds_to_add;
@@ -210,7 +259,8 @@ bool Time::operator>(const Time& other) const
         // Adjust other's hour to match this timezone
         int other_hour = other.hour;
         if (timezone != other.timezone)
-                other_hour += (other_hour + other.timezone.get_utc_offset_diff(timezone)) % HOURS_PER_DAY;
+                other_hour += (other_hour + other.timezone.get_utc_offset_diff(timezone))
+                              % HOURS_PER_DAY;
 
         return hour > other_hour
             || minute > other.minute
@@ -224,7 +274,8 @@ bool Time::operator>=(const Time& other) const
         // Adjust other's hour to match this timezone
         int other_hour = other.hour;
         if (timezone != other.timezone)
-                other_hour += (other_hour + other.timezone.get_utc_offset_diff(timezone)) % HOURS_PER_DAY;
+                other_hour += (other_hour + other.timezone.get_utc_offset_diff(timezone))
+                              % HOURS_PER_DAY;
 
         return hour >= other_hour
             || minute >= other.minute
@@ -238,7 +289,8 @@ bool Time::operator<(const Time& other) const
         // Adjust other's hour to match this timezone
         int other_hour = other.hour;
         if (timezone != other.timezone)
-                other_hour += (other_hour + other.timezone.get_utc_offset_diff(timezone)) % HOURS_PER_DAY;
+                other_hour += (other_hour + other.timezone.get_utc_offset_diff(timezone))
+                              % HOURS_PER_DAY;
 
         return hour < other_hour
             || minute < other.minute
@@ -252,7 +304,8 @@ bool Time::operator<=(const Time& other) const
         // Adjust other's hour to match this timezone
         int other_hour = other.hour;
         if (timezone != other.timezone)
-                other_hour += (other_hour + other.timezone.get_utc_offset_diff(timezone)) % HOURS_PER_DAY;
+                other_hour += (other_hour + other.timezone.get_utc_offset_diff(timezone))
+                              % HOURS_PER_DAY;
 
         return hour <= other_hour
             || minute <= other.minute
@@ -266,7 +319,8 @@ bool Time::operator==(const Time& other) const
         // Adjust other's hour to match this timezone
         int other_hour = other.hour;
         if (timezone != other.timezone)
-                other_hour += (other_hour + other.timezone.get_utc_offset_diff(timezone)) % HOURS_PER_DAY;
+                other_hour += (other_hour + other.timezone.get_utc_offset_diff(timezone))
+                              % HOURS_PER_DAY;
 
         return hour == other_hour
             && minute == other.minute
@@ -280,7 +334,8 @@ bool Time::operator!=(const Time& other) const
         // Adjust other's hour to match this timezone
         int other_hour = other.hour;
         if (timezone != other.timezone)
-                other_hour += (other_hour + other.timezone.get_utc_offset_diff(timezone)) % HOURS_PER_DAY;
+                other_hour += (other_hour + other.timezone.get_utc_offset_diff(timezone))
+                              % HOURS_PER_DAY;
 
         return hour == other_hour
             && minute == other.minute
