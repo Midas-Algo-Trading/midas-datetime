@@ -7,7 +7,7 @@
 struct TimeRange : public Range<Time>
 {
         TimeRange(Time start, Time end) :
-                Range(start, end) {}
+                Range(std::move(start), std::move(end)) {}
 };
 
 #endif //DATETIME_TIMERANGE_H
