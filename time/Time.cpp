@@ -3,7 +3,7 @@
 #include <chrono>
 #include <iostream>
 
- Timezone Time::default_timezone = get_local_timezone();
+Timezone Time::default_timezone = get_local_timezone();
 
 Time Time::now(Timezone timezone)
 {
@@ -47,6 +47,7 @@ Time Time::now(Timezone timezone)
         );
 
         return Time(hour, minute, second, millisecond, microsecond, nanosecond);
+
 }
 
 //////////////////////////////////////////////////
