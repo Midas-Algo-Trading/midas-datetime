@@ -1,9 +1,9 @@
 #include "Time.h"
-#include "../util/string_util.h"
+#include "../../util/string_util.h"
 #include <chrono>
 #include <iostream>
 
-Timezone Time::default_timezone = get_local_timezone();
+Timezone Time::default_timezone = TZ::LOCAL;
 
 Time Time::now(Timezone timezone)
 {
@@ -17,7 +17,7 @@ Time Time::now(Timezone timezone)
         int second = local_tm.tm_sec;
 
         // Set hour from system timezone to timezone
-        hour += get_local_timezone().get_utc_offset_diff(timezone);
+        hour += TZ::LOCAL.get_utc_offset_diff(timezone);
 
         // Get the current system clock time
         auto system_time = std::chrono::system_clock::now();

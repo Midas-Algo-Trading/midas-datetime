@@ -1,9 +1,8 @@
 #include "Date.h"
 #include <iostream>
 #include <chrono>
-#include <algorithm>
 
-Date Date::today()
+Date Date::today(Timezone timezone)
 {
         // Get the current time
         auto now = std::chrono::system_clock::now();
@@ -15,6 +14,14 @@ Date Date::today()
         int year = now_tm->tm_year + 1900;
         int month = now_tm->tm_mon + 1;
         int day = now_tm->tm_mday;
+
+        // Adjust date for non-local timezone
+        if (timezone != TZ::LOCAL)
+        {
+                Date today = Date(year, month, day);
+                today.set_timezone(timezone);
+                return today;
+        }
 
         return Date(year, month, day);
 }
@@ -168,3 +175,19 @@ void Date::subtract_days(int days_to_subtract)
 }
 
 const int Date::MONTHS_PER_YEAR = 12;
+
+void Date::set_timezone(Timezone new_timezone)
+{
+        int hour = Time::now().hour + timezone.get_utc_offset_diff(new_timezone);
+        if (hour > Time::HOURS_PER_DAY)
+                add_days(1);
+        else if (hour < 0)
+                subtract_days(1);
+
+        timezone = new_timezone;
+}
+
+std::ostream &operator<<(std::ostream &os, const Date &date)
+{
+        return os << date.year << '-' << date.month << '-' << date.day << std::endl;
+}

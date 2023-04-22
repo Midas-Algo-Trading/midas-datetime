@@ -5,6 +5,7 @@
 
 class Day : public Component
 {
+public:
         explicit Day(int day) : Component(day) {}
 };
 

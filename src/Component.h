@@ -8,7 +8,7 @@ private:
         int value;
 
 public:
-        Component(int value) : value(value) {}
+        explicit Component(int value) : value(value) {}
 
         operator int() const
         {

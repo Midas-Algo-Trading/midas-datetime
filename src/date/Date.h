@@ -3,20 +3,25 @@
 
 
 #include "components/Day.h"
+#include "../time/Time.h"
 
 class Date
 {
 public:
+        friend std::ostream &operator<<(std::ostream &os, const Date &time);
+
         int year;
         int month;
         int day;
+
+        Timezone timezone = TZ::LOCAL;
 
         explicit Date(int year=1900, int month=1, int day=1) :
                 year(year),
                 month(month),
                 day(day) {}
 
-        static Date today();
+        static Date today(Timezone timezone=TZ::LOCAL);
 
         Date& operator+=(const Day& days);
         Date& operator-=(const Day& days);
@@ -32,6 +37,8 @@ public:
         bool is_leap_year() const;
 
         int max_days_in_month() const;
+
+        void set_timezone(Timezone new_timezone);
 
 protected:
         void add_days(int days_to_add);

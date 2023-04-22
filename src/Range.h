@@ -1,7 +1,7 @@
 #ifndef DATETIME_RANGE_H
 #define DATETIME_RANGE_H
 
-#include "util/exceptions/NotImplementedError.h"
+#include "../util/exceptions/NotImplementedError.h"
 
 template<typename T>
 struct Range

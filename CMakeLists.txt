@@ -3,4 +3,6 @@ project(datetime)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(datetime main.cpp util/string_util.h time/Time.h time/Time.cpp time/components/Hour.h Component.h time/components/Minute.h time/components/Second.h time/components/Microsecond.h time/components/Nanosecond.h date/Date.cpp date/Date.h date/components/Day.h time/Timezone.h time/components/Millisecond.h time/TimeRange.h Range.h util/exceptions/NotImplementedError.h date/DateRange.h datetime/Datetime.cpp datetime/Datetime.h datetime/DatetimeRange.h)
+add_executable(datetime src/main.cpp util/string_util.h src/time/Time.h src/time/Time.cpp src/time/components/Hour.h src/Component.h src/time/components/Minute.h src/time/components/Second.h src/time/components/Microsecond.h src/time/components/Nanosecond.h src/date/Date.cpp src/date/Date.h src/date/components/Day.h src/time/Timezone.h src/time/components/Millisecond.h src/time/TimeRange.h src/Range.h util/exceptions/NotImplementedError.h src/date/DateRange.h src/datetime/Datetime.cpp src/datetime/Datetime.h src/datetime/DatetimeRange.h)
+
+add_subdirectory(test)

@@ -66,6 +66,8 @@ public:
 
         int get_hour_at_timezone(Timezone timezone) const;
 
+        static const int HOURS_PER_DAY;
+
 protected:
         virtual void add_hours(int hours_to_add);
         void add_minutes(int minutes_to_add);
@@ -73,8 +75,6 @@ protected:
         void add_milliseconds(uint64_t milliseconds_to_add);
         void add_microseconds(uint64_t microseconds_to_add);
         void add_nanoseconds(uint64_t nanoseconds_to_add);
-
-        static const int HOURS_PER_DAY;
 
 private:
         static const int MINUTES_PER_HOUR;
