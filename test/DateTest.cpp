@@ -19,11 +19,6 @@ TEST(Day_test, constrctor_set_variable)
         ASSERT_EQ(day.value, 1);
 }
 
-TEST(Day_test, operator_int)
-{
-        ASSERT_NO_THROW(int day_as_int = Day(1));
-}
-
 TEST(Date, constructor_sets_variables)
 {
         Date date = Date(2000, 2, 3);
@@ -56,7 +51,7 @@ TEST(Date, operator_plusequal_adds_day_basic)
         Date date = Date(1900, 1, 1);
         date += Day(1);
         int new_day = date.day;
-        ASSERT_EQ(new_day, 2);
+        EXPECT_EQ(new_day, 2);
 }
 
 TEST(Date, operator_plusequal_adds_day_new_month)
@@ -88,7 +83,7 @@ TEST(Date, operator_minusequal_subtracts_day_basic)
 {
         Date date = Date(1900, 1, 2);
         date -= Day(1);
-        ASSERT_EQ(date.day, 1);
+        EXPECT_EQ(date.day, 1);
 }
 
 TEST(Date, operator_minusequal_subtracts_month)
@@ -348,4 +343,11 @@ TEST(DateRange, in_range)
 
         date = Date(2100, 1, 1);
         EXPECT_FALSE(date_range.in_range(date));
+}
+
+
+TEST(Date, day_of_week_year_cannot_be_before_1901)
+{
+        Date date = Date(1900, 1, 1);
+        ASSERT_THROW(date.day_of_week(), not_implemented_error);
 }

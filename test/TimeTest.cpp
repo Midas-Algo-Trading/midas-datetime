@@ -7,13 +7,13 @@
 TEST(Time, constructor_sets_members)
 {
         Time time = Time(1, 2, 3, 4, 5, 6, TZ::CST);
-        ASSERT_EQ(time.hour, 1);
-        ASSERT_EQ(time.minute, 2);
-        ASSERT_EQ(time.second, 3);
-        ASSERT_EQ(time.millisecond, 4);
-        ASSERT_EQ(time.microsecond, 5);
-        ASSERT_EQ(time.nanosecond, 6);
-        ASSERT_EQ(time.timezone, TZ::CST);
+        EXPECT_EQ(time.hour, 1);
+        EXPECT_EQ(time.minute, 2);
+        EXPECT_EQ(time.second, 3);
+        EXPECT_EQ(time.millisecond, 4);
+        EXPECT_EQ(time.microsecond, 5);
+        EXPECT_EQ(time.nanosecond, 6);
+        EXPECT_EQ(time.timezone, TZ::CST);
 }
 
 TEST(Time, constructor_throws_invalid_argument)
@@ -29,241 +29,241 @@ TEST(Time, constructor_throws_invalid_argument)
 TEST(Time, now_sets_timezone)
 {
         Time time = Time::now(TZ::CST);
-        ASSERT_EQ(time.timezone, TZ::CST);
+        EXPECT_EQ(time.timezone, TZ::CST);
         int old_hour = time.hour;
         time.set_timezone(TZ::EST);
-        ASSERT_EQ(time.hour - old_hour, 1);
+        EXPECT_EQ(time.hour - old_hour, 1);
 }
 
 TEST(Time, operator_plusequal_hour_basic)
 {
         Time time = Time(1);
         time += Hour(1);
-        ASSERT_EQ(time.hour, 2);
+        EXPECT_EQ(time.hour, 2);
 }
 
 TEST(Time, operator_plusequal_hour_wraps)
 {
         Time time = Time(22);
         time += Hour(4);
-        ASSERT_EQ(time.hour, 2);
+        EXPECT_EQ(time.hour, 2);
 }
 
 TEST(Time, operator_minusequal_hour_basic)
 {
         Time time = Time(3);
         time -= Hour(1);
-        ASSERT_EQ(time.hour, 2);
+        EXPECT_EQ(time.hour, 2);
 }
 
 TEST(Time, operator_minusequal_hour_throws_out_of_range)
 {
         Time time = Time(0);
-        ASSERT_THROW(time -= Hour(1), std::out_of_range);
+        EXPECT_THROW(time -= Hour(1), std::out_of_range);
 }
 
 TEST(Time, operator_plusequal_minute_basic)
 {
         Time time = Time(0, 1);
         time += Minute(1);
-        ASSERT_EQ(time.minute, 2);
+        EXPECT_EQ(time.minute, 2);
 }
 
 TEST(Time, operator_plusequal_minute_adds_hour)
 {
         Time time = Time(0, 58);
         time += Minute(4);
-        ASSERT_EQ(time.hour, 1);
-        ASSERT_EQ(time.minute, 2);
+        EXPECT_EQ(time.hour, 1);
+        EXPECT_EQ(time.minute, 2);
 }
 
 TEST(Time, operator_minusequal_minute_basic)
 {
         Time time = Time(0, 3);
         time -= Minute(1);
-        ASSERT_EQ(time.minute, 2);
+        EXPECT_EQ(time.minute, 2);
 }
 
 TEST(Time, operator_minusequal_minute_subtracts_hour)
 {
         Time time = Time(1, 1);
         time -= Minute(2);
-        ASSERT_EQ(time.hour, 0);
-        ASSERT_EQ(time.minute, 59);
+        EXPECT_EQ(time.hour, 0);
+        EXPECT_EQ(time.minute, 59);
 }
 
 TEST(Time, operator_plusequal_second_basic)
 {
         Time time = Time(0, 0, 1);
         time += Second(1);
-        ASSERT_EQ(time.second, 2);
+        EXPECT_EQ(time.second, 2);
 }
 
 TEST(Time, operator_plusequal_second_adds_minute)
 {
         Time time = Time(0, 0, 58);
         time += Second(4);
-        ASSERT_EQ(time.minute, 1);
-        ASSERT_EQ(time.second, 2);
+        EXPECT_EQ(time.minute, 1);
+        EXPECT_EQ(time.second, 2);
 }
 
 TEST(Time, operator_minusequal_second_basic)
 {
         Time time = Time(0, 0, 3);
         time -= Second(1);
-        ASSERT_EQ(time.second, 2);
+        EXPECT_EQ(time.second, 2);
 }
 
 TEST(Time, operator_minusequal_second_subtracts_minute)
 {
         Time time = Time(0, 1, 1);
         time -= Second(2);
-        ASSERT_EQ(time.minute, 0);
-        ASSERT_EQ(time.second, 59);
+        EXPECT_EQ(time.minute, 0);
+        EXPECT_EQ(time.second, 59);
 }
 
 TEST(Time, operator_plusequal_millisecond_basic)
 {
         Time time = Time(0, 0, 0, 1);
         time += Millisecond(1);
-        ASSERT_EQ(time.millisecond, 2);
+        EXPECT_EQ(time.millisecond, 2);
 }
 
 TEST(Time, operator_plusequal_millisecond_adds_minute)
 {
         Time time = Time(0, 0, 0, 999);
         time += Millisecond(3);
-        ASSERT_EQ(time.second, 1);
-        ASSERT_EQ(time.millisecond, 2);
+        EXPECT_EQ(time.second, 1);
+        EXPECT_EQ(time.millisecond, 2);
 }
 
 TEST(Time, operator_minusequal_millisecond_basic)
 {
         Time time = Time(0, 0, 0, 3);
         time -= Millisecond(1);
-        ASSERT_EQ(time.millisecond, 2);
+        EXPECT_EQ(time.millisecond, 2);
 }
 
 TEST(Time, operator_minusequal_millisecond_subtracts_second)
 {
         Time time = Time(0, 0, 1, 1);
         time -= Millisecond(2);
-        ASSERT_EQ(time.second, 0);
-        ASSERT_EQ(time.millisecond, 999);
+        EXPECT_EQ(time.second, 0);
+        EXPECT_EQ(time.millisecond, 999);
 }
 
 TEST(Time, operator_plusequal_microsecond_basic)
 {
         Time time = Time(0, 0, 0, 0, 1);
         time += Microsecond(1);
-        ASSERT_EQ(time.microsecond, 2);
+        EXPECT_EQ(time.microsecond, 2);
 }
 
 TEST(Time, operator_plusequal_microsecond_adds_millisecond)
 {
         Time time = Time(0, 0, 0, 0, 999);
         time += Microsecond(3);
-        ASSERT_EQ(time.millisecond, 1);
-        ASSERT_EQ(time.microsecond, 2);
+        EXPECT_EQ(time.millisecond, 1);
+        EXPECT_EQ(time.microsecond, 2);
 }
 
 TEST(Time, operator_minusequal_microsecond_basic)
 {
         Time time = Time(0, 0, 0, 0, 3);
         time -= Microsecond(1);
-        ASSERT_EQ(time.microsecond, 2);
+        EXPECT_EQ(time.microsecond, 2);
 }
 
 TEST(Time, operator_minusequal_microsecond_subtracts_millisecond)
 {
         Time time = Time(0, 0, 0, 1, 1);
         time -= Microsecond(2);
-        ASSERT_EQ(time.millisecond, 0);
-        ASSERT_EQ(time.microsecond, 999);
+        EXPECT_EQ(time.millisecond, 0);
+        EXPECT_EQ(time.microsecond, 999);
 }
 
 TEST(Time, operator_plusequal_nanosecond_basic)
 {
         Time time = Time(0, 0, 0, 0, 0, 1);
         time += Nanosecond(1);
-        ASSERT_EQ(time.nanosecond, 2);
+        EXPECT_EQ(time.nanosecond, 2);
 }
 
 TEST(Time, operator_plusequal_nanoecond_adds_minute)
 {
         Time time = Time(0, 0, 0, 0, 0, 999);
         time += Nanosecond(3);
-        ASSERT_EQ(time.microsecond, 1);
-        ASSERT_EQ(time.nanosecond, 2);
+        EXPECT_EQ(time.microsecond, 1);
+        EXPECT_EQ(time.nanosecond, 2);
 }
 
 TEST(Time, operator_minusequal_nanosecond_basic)
 {
         Time time = Time(0, 0, 0, 0, 0, 3);
         time -= Nanosecond(1);
-        ASSERT_EQ(time.nanosecond, 2);
+        EXPECT_EQ(time.nanosecond, 2);
 }
 
 TEST(Time, operator_minusequal_nanosecond_subtracts_microsecond)
 {
         Time time = Time(0, 0, 0, 0, 1, 1);
         time -= Nanosecond(2);
-        ASSERT_EQ(time.microsecond, 0);
-        ASSERT_EQ(time.nanosecond, 999);
+        EXPECT_EQ(time.microsecond, 0);
+        EXPECT_EQ(time.nanosecond, 999);
 }
 
 TEST(Time, set_timezone_basic)
 {
         Time time = Time(0 ,0 ,0, 0, 0, 0, TZ::CST);
         time.set_timezone(TZ::EST);
-        ASSERT_EQ(time.hour, 1);
+        EXPECT_EQ(time.hour, 1);
 }
 
 TEST(Time, set_timezone_wraps)
 {
         Time time = Time(23 ,0 ,0, 0, 0, 0, TZ::CST);
         time.set_timezone(TZ::EST);
-        ASSERT_EQ(time.hour, 0);
+        EXPECT_EQ(time.hour, 0);
 }
 
 TEST(Time, set_default_timezone)
 {
         Timezone original_default_timezone = Time::default_timezone;
         Time::set_default_timezone(TZ::UTC);
-        ASSERT_EQ(Time::default_timezone, TZ::UTC);
+        EXPECT_EQ(Time::default_timezone, TZ::UTC);
         Time::default_timezone = original_default_timezone;
 }
 
 TEST(Time, get_hour_at_timezone_basic)
 {
         Time time = Time(1);
-        ASSERT_EQ(time.get_hour_at_timezone(TZ::UTC), 7);
+        EXPECT_EQ(time.get_hour_at_timezone(TZ::UTC), 7);
 }
 
 TEST(Time, get_hour_at_timezone_wrap)
 {
         Time time = Time(20);
-        ASSERT_EQ(time.get_hour_at_timezone(TZ::UTC), 2);
+        EXPECT_EQ(time.get_hour_at_timezone(TZ::UTC), 2);
 }
 
 TEST(Time, unit_conversions)
 {
-        ASSERT_EQ(Time::HOURS_PER_DAY, 24);
-        ASSERT_EQ(Time::MINUTES_PER_HOUR, 60);
-        ASSERT_EQ(Time::SECONDS_PER_MINUTE, 60);
-        ASSERT_EQ(Time::SECONDS_PER_HOUR, 3'600);
-        ASSERT_EQ(Time::MILLISECONDS_PER_SECOND, 1'000);
-        ASSERT_EQ(Time::MILLISECONDS_PER_MINUTE, 60'000);
-        ASSERT_EQ(Time::MILLISECONDS_PER_HOUR, 3'600'000);
-        ASSERT_EQ(Time::MICROSECONDS_PER_MILLISECOND, 1'000);
-        ASSERT_EQ(Time::MICROSECONDS_PER_HOUR, 3'600'000'000);
-        ASSERT_EQ(Time::MICROSECONDS_PER_MINUTE, 60'000'000);
-        ASSERT_EQ(Time::MICROSECONDS_PER_SECOND, 1'000'000);
-        ASSERT_EQ(Time::NANOSECONDS_PER_MICROSECOND, 1'000);
-        ASSERT_EQ(Time::NANOSECONDS_PER_HOUR, 3'600'000'000'000);
-        ASSERT_EQ(Time::NANOSECONDS_PER_MINUTE, 60'000'000'000);
-        ASSERT_EQ(Time::NANOSECONDS_PER_SECOND, 1'000'000'000);
-        ASSERT_EQ(Time::NANOSECONDS_PER_MILLISECOND, 1'000'000);
+        EXPECT_EQ(Time::HOURS_PER_DAY, 24);
+        EXPECT_EQ(Time::MINUTES_PER_HOUR, 60);
+        EXPECT_EQ(Time::SECONDS_PER_MINUTE, 60);
+        EXPECT_EQ(Time::SECONDS_PER_HOUR, 3'600);
+        EXPECT_EQ(Time::MILLISECONDS_PER_SECOND, 1'000);
+        EXPECT_EQ(Time::MILLISECONDS_PER_MINUTE, 60'000);
+        EXPECT_EQ(Time::MILLISECONDS_PER_HOUR, 3'600'000);
+        EXPECT_EQ(Time::MICROSECONDS_PER_MILLISECOND, 1'000);
+        EXPECT_EQ(Time::MICROSECONDS_PER_HOUR, 3'600'000'000);
+        EXPECT_EQ(Time::MICROSECONDS_PER_MINUTE, 60'000'000);
+        EXPECT_EQ(Time::MICROSECONDS_PER_SECOND, 1'000'000);
+        EXPECT_EQ(Time::NANOSECONDS_PER_MICROSECOND, 1'000);
+        EXPECT_EQ(Time::NANOSECONDS_PER_HOUR, 3'600'000'000'000);
+        EXPECT_EQ(Time::NANOSECONDS_PER_MINUTE, 60'000'000'000);
+        EXPECT_EQ(Time::NANOSECONDS_PER_SECOND, 1'000'000'000);
+        EXPECT_EQ(Time::NANOSECONDS_PER_MILLISECOND, 1'000'000);
 }
 
 TEST(Time, ostream)
@@ -271,7 +271,7 @@ TEST(Time, ostream)
         Time time = Time(1, 2, 3, 4, 5, 6);
         std::stringstream actual;
         actual << time;
-        ASSERT_EQ(actual.str(), "1:02:03.4.5.6");
+        EXPECT_EQ(actual.str(), "1:02:03.4.5.6");
 }
 
 TEST(TimeRange, constructor_sets_variables)
@@ -482,6 +482,11 @@ TEST(Timezone, get_from_str)
         EXPECT_EQ(TZ::get_from_str("Pacific Standard Time"), TZ::PST);
         EXPECT_EQ(TZ::get_from_str("Central Daylight Time"), TZ::CST);
         EXPECT_EQ(TZ::get_from_str("Eastern Standard Time"), TZ::EST);
+}
+
+TEST(Timezone, get_from_str_throws_if_not_timezone_str)
+{
+        EXPECT_THROW(TZ::get_from_str("Invalid timezone str"), std::invalid_argument);
 }
 
 

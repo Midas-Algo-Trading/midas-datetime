@@ -62,112 +62,80 @@ TEST(Datetime, now_sets_members)
         EXPECT_EQ(now_datetime.time(), now_time);
 }
 
-TEST(Datetime, add_hours_pos_basic)
-{
-        Datetime datetime = Datetime(1900, 1, 1, 1);
-        datetime.add_hours(1);
-        ASSERT_EQ(datetime.hour, 2);
-}
-
-TEST(Datetime, add_hours_pos_adds_day)
-{
-        Datetime datetime = Datetime(1900, 1, 1, 23);
-        datetime.add_hours(4);
-        ASSERT_EQ(datetime.day, 2);
-        ASSERT_EQ(datetime.hour, 3);
-}
-
-TEST(Datetime, add_hours_neg_basic)
-{
-        Datetime datetime = Datetime(1900, 1, 1, 3);
-        datetime.add_hours(-1);
-        ASSERT_EQ(datetime.hour, 2);
-}
-
-TEST(Datetime, add_hours_neg_subtracts_day)
-{
-        Datetime datetime = Datetime(1900, 1, 1, 1);
-        datetime.add_hours(-4);
-        ASSERT_EQ(datetime.year, 1899);
-        ASSERT_EQ(datetime.month, 12);
-        ASSERT_EQ(datetime.day, 31);
-        ASSERT_EQ(datetime.hour, 21);
-}
-
 TEST(Datetime, date)
 {
         Datetime datetime = Datetime(1900, 2, 3);
         Date date = datetime.date();
-        ASSERT_EQ(date.year, 1900);
-        ASSERT_EQ(date.month, 2);
-        ASSERT_EQ(date.day, 3);
+        EXPECT_EQ(date.year, 1900);
+        EXPECT_EQ(date.month, 2);
+        EXPECT_EQ(date.day, 3);
 }
 
 TEST(Datetime, time)
 {
         Datetime datetime = Datetime(2000, 1, 1, 1, 2, 3, 4, 5, 6);
         Time time = datetime.time();
-        ASSERT_EQ(time.hour, 1);
-        ASSERT_EQ(time.minute, 2);
-        ASSERT_EQ(time.second, 3);
-        ASSERT_EQ(time.millisecond, 4);
-        ASSERT_EQ(time.microsecond, 5);
-        ASSERT_EQ(time.nanosecond, 6);
+        EXPECT_EQ(time.hour, 1);
+        EXPECT_EQ(time.minute, 2);
+        EXPECT_EQ(time.second, 3);
+        EXPECT_EQ(time.millisecond, 4);
+        EXPECT_EQ(time.microsecond, 5);
+        EXPECT_EQ(time.nanosecond, 6);
 }
 
 TEST(Datetime, test)
 {
         Datetime datetime = Datetime(2000, 1, 1, 0, 0, 0, 0, 0, 0);
         datetime -= Nanosecond(3);
-        ASSERT_EQ(datetime, Datetime(1999, 12, 31, 23, 59, 59, 999, 999, 997));
+        EXPECT_EQ(datetime, Datetime(1999, 12, 31, 23, 59, 59, 999, 999, 997));
 }
 
 TEST(Datetime, operator_greater_than)
 {
        Datetime datetime_lesser = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 1);
        Datetime datetime_greater = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 2);
-       ASSERT_GT(datetime_greater, datetime_lesser);
+       EXPECT_GT(datetime_greater, datetime_lesser);
 }
 
 TEST(Datetime, operator_greater_than_or_equal_to)
 {
         Datetime datetime_lesser = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 1);
         Datetime datetime_greater = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 2);
-        ASSERT_GE(datetime_greater, datetime_lesser);
+        EXPECT_GE(datetime_greater, datetime_lesser);
 
         Datetime datetime_equal = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 1);
-        ASSERT_GE(datetime_greater, datetime_equal);
+        EXPECT_GE(datetime_greater, datetime_equal);
 }
 
 TEST(Datetime, operator_less_than)
 {
         Datetime datetime_lesser = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 1);
         Datetime datetime_greater = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 2);
-        ASSERT_LT(datetime_lesser, datetime_greater);
+        EXPECT_LT(datetime_lesser, datetime_greater);
 }
 
 TEST(Datetime, operator_less_than_or_equal_to)
 {
         Datetime datetime_lesser = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 1);
         Datetime datetime_greater = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 2);
-        ASSERT_LE(datetime_lesser, datetime_greater);
+        EXPECT_LE(datetime_lesser, datetime_greater);
 
         Datetime datetime_equal = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 1);
-        ASSERT_LE(datetime_lesser, datetime_equal);
+        EXPECT_LE(datetime_lesser, datetime_equal);
 }
 
 TEST(Datetime, operator_equal_to)
 {
         Datetime datetime1 = Datetime();
         Datetime datetime2 = Datetime();
-        ASSERT_EQ(datetime1, datetime2);
+        EXPECT_EQ(datetime1, datetime2);
 }
 
 TEST(Datetime, operator_not_equal_to)
 {
         Datetime datetime1 = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 1);
         Datetime datetime2 = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 2);
-        ASSERT_NE(datetime1, datetime2);
+        EXPECT_NE(datetime1, datetime2);
 }
 
 TEST(DatetimeRange, constructor_sets_variables)
@@ -206,4 +174,217 @@ TEST(DatetimeRange, in_range)
 
         datetime = Datetime(2000, 1, 1, 4, 0, 0, 0, 0, 0);
         EXPECT_FALSE(datetime_range.in_range(datetime));
+}
+
+TEST(Datetime, operator_plusequal_adds_day_basic)
+{
+        Datetime datetime = Datetime(1900, 1, 1);
+        datetime += Day(1);
+        int new_day = datetime.day;
+        EXPECT_EQ(new_day, 2);
+}
+
+TEST(Datetime, operator_plusequal_adds_day_new_month)
+{
+        Datetime datetime = Datetime(1900, 1, 31);
+        datetime += Day(1);
+        EXPECT_EQ(datetime.month, 2);
+        EXPECT_EQ(datetime.day, 1);
+}
+
+TEST(Datetime, operator_minusequal_subtracts_day_basic)
+{
+        Datetime datetime = Datetime(1900, 1, 2);
+        datetime -= Day(1);
+        EXPECT_EQ(datetime.day, 1);
+}
+
+TEST(Datetime, operator_minusequal_subtracts_month)
+{
+        Datetime datetime = Datetime(1900, 2, 1);
+        datetime -= Day(1);
+        EXPECT_EQ(datetime.month, 1);
+        EXPECT_EQ(datetime.day, 31);
+}
+
+TEST(Datetime, operator_plusequal_hour_basic)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 1);
+        datetime += Hour(1);
+        EXPECT_EQ(datetime.hour, 2);
+}
+
+TEST(Datetime, operator_plusequal_hour_adds_day)
+{
+        Datetime datetime = Datetime(2000, 1, 2, 22);
+        datetime += Hour(4);
+        EXPECT_EQ(datetime.day, 3);
+        EXPECT_EQ(datetime.hour, 2);
+}
+
+TEST(Datetime, operator_minusequal_hour_basic)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 3);
+        datetime -= Hour(1);
+        EXPECT_EQ(datetime.hour, 2);
+}
+
+TEST(Datetime, operator_minusequal_hour_subtracts_day)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0);
+        datetime -= Hour(1);
+        EXPECT_EQ(datetime.year, 1999);
+        EXPECT_EQ(datetime.month, 12);
+        EXPECT_EQ(datetime.day, 31);
+        EXPECT_EQ(datetime.hour, 23);
+}
+
+TEST(Datetime, operator_plusequal_minute_basic)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0, 1);
+        datetime += Minute(1);
+        EXPECT_EQ(datetime.minute, 2);
+}
+
+TEST(Datetime, operator_plusequal_minute_adds_hour)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0, 58);
+        datetime += Minute(4);
+        EXPECT_EQ(datetime.hour, 1);
+        EXPECT_EQ(datetime.minute, 2);
+}
+
+TEST(Datetime, operator_minusequal_minute_basic)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0, 3);
+        datetime -= Minute(1);
+        EXPECT_EQ(datetime.minute, 2);
+}
+
+TEST(Datetime, operator_minusequal_minute_subtracts_hour)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 1, 1);
+        datetime -= Minute(2);
+        EXPECT_EQ(datetime.hour, 0);
+        EXPECT_EQ(datetime.minute, 59);
+}
+
+TEST(Datetime, operator_plusequal_second_basic)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0, 0, 1);
+        datetime += Second(1);
+        EXPECT_EQ(datetime.second, 2);
+}
+
+TEST(Datetime, operator_plusequal_second_adds_minute)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0, 0, 58);
+        datetime += Second(4);
+        EXPECT_EQ(datetime.minute, 1);
+        EXPECT_EQ(datetime.second, 2);
+}
+
+TEST(Datetime, operator_minusequal_second_basic)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0, 0, 3);
+        datetime -= Second(1);
+        EXPECT_EQ(datetime.second, 2);
+}
+
+TEST(Datetime, operator_minusequal_second_subtracts_minute)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0, 1, 1);
+        datetime -= Second(2);
+        EXPECT_EQ(datetime.minute, 0);
+        EXPECT_EQ(datetime.second, 59);
+}
+
+TEST(Datetime, operator_plusequal_millisecond_basic)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0, 0, 0, 1);
+        datetime += Millisecond(1);
+        EXPECT_EQ(datetime.millisecond, 2);
+}
+
+TEST(Datetime, operator_plusequal_millisecond_adds_minute)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0, 0, 0, 999);
+        datetime += Millisecond(3);
+        EXPECT_EQ(datetime.second, 1);
+        EXPECT_EQ(datetime.millisecond, 2);
+}
+
+TEST(Datetime, operator_minusequal_millisecond_basic)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0, 0, 0, 3);
+        datetime -= Millisecond(1);
+        EXPECT_EQ(datetime.millisecond, 2);
+}
+
+TEST(Datetime, operator_minusequal_millisecond_subtracts_second)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0, 0, 1, 1);
+        datetime -= Millisecond(2);
+        EXPECT_EQ(datetime.second, 0);
+        EXPECT_EQ(datetime.millisecond, 999);
+}
+
+TEST(Datetime, operator_plusequal_microsecond_basic)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0, 0, 0, 0, 1);
+        datetime += Microsecond(1);
+        EXPECT_EQ(datetime.microsecond, 2);
+}
+
+TEST(Datetime, operator_plusequal_microsecond_adds_millisecond)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0, 0, 0, 0, 999);
+        datetime += Microsecond(3);
+        EXPECT_EQ(datetime.millisecond, 1);
+        EXPECT_EQ(datetime.microsecond, 2);
+}
+
+TEST(Datetime, operator_minusequal_microsecond_basic)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0, 0, 0, 0, 3);
+        datetime -= Microsecond(1);
+        EXPECT_EQ(datetime.microsecond, 2);
+}
+
+TEST(Datetime, operator_minusequal_microsecond_subtracts_millisecond)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0, 0, 0, 1, 1);
+        datetime -= Microsecond(2);
+        EXPECT_EQ(datetime.millisecond, 0);
+        EXPECT_EQ(datetime.microsecond, 999);
+}
+
+TEST(Datetime, operator_plusequal_nanosecond_basic)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0, 0, 0, 0, 0, 1);
+        datetime += Nanosecond(1);
+        EXPECT_EQ(datetime.nanosecond, 2);
+}
+
+TEST(Datetime, operator_plusequal_nanoecond_adds_minute)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0, 0, 0, 0, 0, 999);
+        datetime += Nanosecond(3);
+        EXPECT_EQ(datetime.microsecond, 1);
+        EXPECT_EQ(datetime.nanosecond, 2);
+}
+
+TEST(Datetime, operator_minusequal_nanosecond_basic)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0, 0, 0, 0, 0, 3);
+        datetime -= Nanosecond(1);
+        EXPECT_EQ(datetime.nanosecond, 2);
+}
+
+TEST(Datetime, operator_minusequal_nanosecond_subtracts_microsecond)
+{
+        Datetime datetime = Datetime(2000, 1, 1, 0, 0, 0, 0, 1, 1);
+        datetime -= Nanosecond(2);
+        EXPECT_EQ(datetime.microsecond, 0);
+        EXPECT_EQ(datetime.nanosecond, 999);
 }

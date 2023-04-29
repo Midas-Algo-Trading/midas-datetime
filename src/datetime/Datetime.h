@@ -36,6 +36,21 @@ public:
         bool operator<=(const Datetime& other) const;
         bool operator==(const Datetime& other) const;
         bool operator!=(const Datetime& other) const;
+
+        Datetime& operator+=(const Day& days) override;
+        Datetime& operator-=(const Day& days) override;
+        Datetime& operator+=(const Hour& hours) override;
+        Datetime& operator-=(const Hour& hours) override;
+        Datetime& operator+=(const Minute& minutes) override;
+        Datetime& operator-=(const Minute& minutes) override;
+        Datetime& operator+=(const Second& seconds) override;
+        Datetime& operator-=(const Second& seconds) override;
+        Datetime& operator+=(const Millisecond& milliseconds) override;
+        Datetime& operator-=(const Millisecond& milliseconds) override;
+        Datetime& operator+=(const Microsecond& microseconds) override;
+        Datetime& operator-=(const Microsecond& microseconds) override;
+        Datetime& operator+=(const Nanosecond& nanoseconds) override;
+        Datetime& operator-=(const Nanosecond& nanoseconds) override;
 };
 
 #endif //DATETIME_DATETIME_H

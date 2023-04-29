@@ -72,73 +72,73 @@ std::ostream &operator<<(std::ostream &os, const Time &time)
 
 Time &Time::operator+=(const Hour& hours)
 {
-        add_hours(hours);
+        add_hours(hours.value);
         return *this;
 }
 
 Time &Time::operator-=(const Hour& hours)
 {
-        add_hours(-hours);
+        add_hours(-hours.value);
         return *this;
 }
 
 Time &Time::operator+=(const Minute& minutes)
 {
-        add_minutes(minutes);
+        add_minutes(minutes.value);
         return *this;
 }
 
 Time &Time::operator-=(const Minute& minutes)
 {
-        add_minutes(-minutes);
+        add_minutes(-minutes.value);
         return *this;
 }
 
 Time &Time::operator+=(const Second& seconds)
 {
-        add_seconds(seconds);
+        add_seconds(seconds.value);
         return *this;
 }
 
 Time &Time::operator-=(const Second& seconds)
 {
-        add_seconds(-seconds);
+        add_seconds(-seconds.value);
         return *this;
 }
 
 Time &Time::operator+=(const Millisecond& milliseconds)
 {
-        add_milliseconds(milliseconds);
+        add_milliseconds(milliseconds.value);
         return *this;
 }
 
 Time &Time::operator-=(const Millisecond& milliseconds)
 {
-        add_milliseconds(-milliseconds);
+        add_milliseconds(-milliseconds.value);
         return *this;
 }
 
 Time &Time::operator+=(const Microsecond& microseconds)
 {
-        add_microseconds(microseconds);
+        add_microseconds(microseconds.value);
         return *this;
 }
 
 Time &Time::operator-=(const Microsecond& microseconds)
 {
-        add_microseconds(-microseconds);
+        add_microseconds(-microseconds.value);
         return *this;
 }
 
 Time &Time::operator+=(const Nanosecond& nanoseconds)
 {
-        add_nanoseconds(nanoseconds);
+        add_nanoseconds(nanoseconds.value);
         return *this;
 }
 
 Time &Time::operator-=(const Nanosecond& nanoseconds)
 {
-        add_nanoseconds(-nanoseconds);
+        add_nanoseconds(-nanoseconds.value);
         return *this;
 }
 

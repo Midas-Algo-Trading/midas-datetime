@@ -3,9 +3,8 @@
 
 #include "TimeComponent.h"
 
-class Second : public TimeComponent
+struct Second : TimeComponent
 {
-public:
         explicit Second(int second) : TimeComponent(second) {}
 };
 

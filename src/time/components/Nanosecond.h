@@ -3,9 +3,8 @@
 
 #include "TimeComponent.h"
 
-class Nanosecond : public TimeComponent
+struct Nanosecond : TimeComponent
 {
-public:
         explicit Nanosecond(int nanosecond) : TimeComponent(nanosecond) {}
 };
 

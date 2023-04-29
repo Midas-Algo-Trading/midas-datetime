@@ -65,3 +65,87 @@ bool Datetime::operator!=(const Datetime &other) const
 {
         return date() != other.date() || time() != other.time();
 }
+
+Datetime &Datetime::operator+=(const Day &days)
+{
+        Date::operator+=(days);
+        return *this;
+}
+
+Datetime &Datetime::operator-=(const Day &days)
+{
+        Date::operator-=(days);
+        return *this;
+}
+
+Datetime &Datetime::operator+=(const Hour &hours)
+{
+        Time::operator+=(hours);
+        return *this;
+}
+
+Datetime &Datetime::operator-=(const Hour &hours)
+{
+        Time::operator-=(hours);
+        return *this;
+}
+
+Datetime &Datetime::operator+=(const Minute &minutes)
+{
+        Time::operator+=(minutes);
+        return *this;
+}
+
+Datetime &Datetime::operator-=(const Minute &minutes)
+{
+        Time::operator-=(minutes);
+        return *this;
+}
+
+Datetime &Datetime::operator+=(const Second &seconds)
+{
+        Time::operator+=(seconds);
+        return *this;
+}
+
+Datetime &Datetime::operator-=(const Second &seconds)
+{
+        Time::operator-=(seconds);
+        return *this;
+}
+
+Datetime &Datetime::operator+=(const Millisecond &milliseconds)
+{
+        Time::operator+=(milliseconds);
+        return *this;
+}
+
+Datetime &Datetime::operator-=(const Millisecond &milliseconds)
+{
+        Time::operator-=(milliseconds);
+        return *this;
+}
+
+Datetime &Datetime::operator+=(const Microsecond &microseconds)
+{
+        Time::operator+=(microseconds);
+        return *this;
+}
+
+Datetime &Datetime::operator-=(const Microsecond &microseconds)
+{
+        Time::operator-=(microseconds);
+        return *this;
+}
+
+Datetime &Datetime::operator+=(const Nanosecond &nanoseconds)
+{
+        Time::operator+=(nanoseconds);
+        return *this;
+}
+
+Datetime &Datetime::operator-=(const Nanosecond &nanoseconds)
+{
+        Time::operator-=(nanoseconds);
+        return *this;
+}

@@ -34,13 +34,13 @@ Date Date::today(Timezone timezone)
 
 Date &Date::operator+=(const Day& days)
 {
-        add_days(days);
+        add_days(days.value);
         return *this;
 }
 
 Date &Date::operator-=(const Day& days)
 {
-        subtract_days(days);
+        subtract_days(days.value);
         return *this;
 }
 

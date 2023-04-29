@@ -23,8 +23,9 @@ public:
 
         static Date today(Timezone timezone=TZ::LOCAL);
 
-        Date& operator+=(const Day& days);
-        Date& operator-=(const Day& days);
+        virtual Date& operator+=(const Day& days);
+
+        virtual Date& operator-=(const Day& days);
         Date& operator++(int);
         Date& operator--(int);
         bool operator>(const Date& other) const;

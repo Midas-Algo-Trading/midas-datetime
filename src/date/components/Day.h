@@ -3,10 +3,9 @@
 
 #include "../../Component.h"
 
-class Day : public Component
+struct Day : Component
 {
-public:
-        explicit Day(unsigned int day) : Component(day) {}
+        explicit Day(int day) : Component(day) {}
 };
 
 #endif //DATETIME_DAY_H

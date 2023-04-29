@@ -3,9 +3,8 @@
 
 #include "../../Component.h"
 
-class TimeComponent : public Component
+struct TimeComponent : Component
 {
-public:
         explicit TimeComponent(int value) : Component(value) {}
 };
 
