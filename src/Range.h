@@ -1,7 +1,7 @@
 #ifndef DATETIME_RANGE_H
 #define DATETIME_RANGE_H
 
-#include "../util/exceptions/NotImplementedError.h"
+#include "../util/exceptions/not_implemented_error.h"
 
 template<typename T>
 struct Range
@@ -11,7 +11,11 @@ struct Range
 
         Range(T start, T end) :
                 start(start),
-                end(end) {}
+                end(end)
+        {
+                if (start > end)
+                        throw std::invalid_argument("Start must be less than or equal to end");
+        }
 
         bool in_range(T t) const
         {

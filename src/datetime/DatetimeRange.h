@@ -9,8 +9,8 @@
 class DatetimeRange : public Range<Datetime>
 {
 public:
-        DatetimeRange(const Datetime start, const Datetime end) :
-                Range(std::move(start), std::move(end)) {}
+        DatetimeRange(const Datetime& start, const Datetime& end) :
+                Range(start, end) {}
 };
 
 #endif //DATETIME_DATETIMERANGE_H

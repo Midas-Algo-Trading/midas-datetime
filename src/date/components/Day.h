@@ -6,7 +6,7 @@
 class Day : public Component
 {
 public:
-        explicit Day(int day) : Component(day) {}
+        explicit Day(unsigned int day) : Component(day) {}
 };
 
 #endif //DATETIME_DAY_H

@@ -1,4 +1,6 @@
 #include "Date.h"
+#include "../../util/string_util.h"
+#include "../../util/exceptions/not_implemented_error.h"
 #include <iostream>
 #include <chrono>
 
@@ -19,7 +21,11 @@ Date Date::today(Timezone timezone)
         if (timezone != TZ::LOCAL)
         {
                 Date today = Date(year, month, day);
-                today.set_timezone(timezone);
+                int hour = Time::now().hour + TZ::LOCAL.get_utc_offset_diff(timezone);
+                if (hour > Time::HOURS_PER_DAY)
+                        today.add_days(1);
+                else if (hour < 0)
+                        today.subtract_days(1);
                 return today;
         }
 
@@ -28,21 +34,13 @@ Date Date::today(Timezone timezone)
 
 Date &Date::operator+=(const Day& days)
 {
-        if (days > 0)
-                add_days(days);
-        else
-                subtract_days(days);
-
+        add_days(days);
         return *this;
 }
 
 Date &Date::operator-=(const Day& days)
 {
-        if (days > 0)
-                subtract_days(days);
-        else
-                add_days(days);
-
+        subtract_days(days);
         return *this;
 }
 
@@ -60,42 +58,42 @@ Date& Date::operator--(int)
 
 bool Date::operator>(const Date &other) const
 {
-        return year > other.year
-               || month > other.month
-               || day > other.day;
+        return    year > other.year
+               || year == other.year && month > other.month
+               || year == other.year && month == other.month && day > other.day;
 }
 
 bool Date::operator>=(const Date &other) const
 {
-        return year >= other.year
-            || month >= other.month
-            || day >= other.day;
+        return    year > other.year
+               || year == other.year && month > other.month
+               || year == other.year && month == other.month && day >= other.day;
 }
 
 bool Date::operator<(const Date &other) const
 {
-        return year < other.year
-               || month < other.month
-               || day < other.day;
+        return    year < other.year
+               || year == other.year && month < other.month
+               || year == other.year && month == other.month && day < other.day;
 }
 
 bool Date::operator<=(const Date &other) const
 {
-        return year <= other.year
-               || month <= other.month
-               || day <= other.day;
+        return    year < other.year
+               || year == other.year && month < other.month
+               || year == other.year && month == other.month && day <= other.day;
 }
 
 bool Date::operator==(const Date &other) const
 {
-        return year == other.year
+        return    year == other.year
                && month == other.month
                && day == other.day;
 }
 
 bool Date::operator!=(const Date &other) const
 {
-        return year != other.year
+        return    year != other.year
                || month != other.month
                || day != other.day;
 }
@@ -157,7 +155,7 @@ void Date::subtract_days(int days_to_subtract)
                 int days_till_prev_month = day;
                 if (days_to_subtract < days_till_prev_month)
                 {
-                        day += days_till_prev_month;
+                        day -= days_to_subtract;
                         return;
                 }
                 else
@@ -176,18 +174,80 @@ void Date::subtract_days(int days_to_subtract)
 
 const int Date::MONTHS_PER_YEAR = 12;
 
-void Date::set_timezone(Timezone new_timezone)
-{
-        int hour = Time::now().hour + timezone.get_utc_offset_diff(new_timezone);
-        if (hour > Time::HOURS_PER_DAY)
-                add_days(1);
-        else if (hour < 0)
-                subtract_days(1);
-
-        timezone = new_timezone;
-}
-
 std::ostream &operator<<(std::ostream &os, const Date &date)
 {
-        return os << date.year << '-' << date.month << '-' << date.day << std::endl;
+        return os
+        << date.year
+        << '-'
+        << lpad(std::to_string(date.month), 2, '0')
+        << '-'
+        << lpad(std::to_string(date.day), 2, '0');
 }
+
+Date::DayOfWeek Date::day_of_week() const
+{
+        // Checks
+        if (year < 1901)
+                throw not_implemented_error("Year must greater than 1901");
+
+        int _year = year;
+        int _month = month;
+
+        // Adjust month and year for Zeller's congruence formula
+        if (_month < 3)
+        {
+                _month += 12;
+                _year -= 1;
+        }
+
+        // Calculate anchor day (January 1st, 1900 was a Monday)
+        int anchor_day = 1 + (365 + 365 + 365 + 366) % 7; // January 1st, 1900 was a Monday
+
+        // Calculate day of the week using Zeller's congruence formula
+        int h = (
+                day + (13 * (_month + 1) / 5)
+              + _year + (_year / 4)
+              - (_year / 100)
+              + (_year / 400)
+              + anchor_day
+        ) % 7;
+
+        // Convert Sunday-Saturday numbering to Monday-Sunday numbering
+        int day_of_week = (h + 6) % 7;
+
+        switch (day_of_week) {
+        case 0:
+                return MONDAY;
+        case 1:
+                return TUESDAY;
+        case 2:
+                return WEDNESDAY;
+        case 3:
+                return THURSDAY;
+        case 4:
+                return FRIDAY;
+        case 5:
+                return SATURDAY;
+        case 6:
+                return SUNDAY;
+        default:
+                throw std::exception();
+        }
+}
+
+bool Date::is_weekday() const
+{
+        return !is_weekend();
+}
+
+bool Date::is_weekend() const
+{
+        switch (day_of_week()) {
+        case SATURDAY:
+        case SUNDAY:
+                return true;
+        default:
+                return false;
+        }
+}
+

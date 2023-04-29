@@ -14,12 +14,12 @@ public:
         int month;
         int day;
 
-        Timezone timezone = TZ::LOCAL;
-
         explicit Date(int year=1900, int month=1, int day=1) :
                 year(year),
                 month(month),
                 day(day) {}
+
+        enum DayOfWeek { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY };
 
         static Date today(Timezone timezone=TZ::LOCAL);
 
@@ -38,7 +38,11 @@ public:
 
         int max_days_in_month() const;
 
-        void set_timezone(Timezone new_timezone);
+        DayOfWeek day_of_week() const;
+
+        bool is_weekday() const;
+
+        bool is_weekend() const;
 
 protected:
         void add_days(int days_to_add);
@@ -46,7 +50,6 @@ protected:
 
 private:
         static const int MONTHS_PER_YEAR;
-
 };
 
 

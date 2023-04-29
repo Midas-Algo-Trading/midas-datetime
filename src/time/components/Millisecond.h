@@ -1,12 +1,12 @@
 #ifndef DATETIME_MILLISECOND_H
 #define DATETIME_MILLISECOND_H
 
-#include "../../Component.h"
+#include "TimeComponent.h"
 
-class Millisecond : public Component
+class Millisecond : public TimeComponent
 {
 public:
-        explicit Millisecond(int millisecond) : Component(millisecond) {}
+        explicit Millisecond(int millisecond) : TimeComponent(millisecond) {}
 };
 
 #endif //DATETIME_MILLISECOND_H

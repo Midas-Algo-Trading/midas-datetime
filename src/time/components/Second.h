@@ -1,12 +1,12 @@
 #ifndef DATETIME_SECOND_H
 #define DATETIME_SECOND_H
 
-#include "../../Component.h"
+#include "TimeComponent.h"
 
-class Second : public Component
+class Second : public TimeComponent
 {
 public:
-        explicit Second(int second) : Component(second) {}
+        explicit Second(int second) : TimeComponent(second) {}
 };
 
 #endif //DATETIME_SECOND_H
