@@ -1,5 +1,5 @@
 #include "Time.h"
-#include "../../util/string_util.h"
+#include "../../StringHelpers/StringHelpers.h"
 #include <chrono>
 #include <iostream>
 
@@ -59,9 +59,9 @@ std::ostream &operator<<(std::ostream &os, const Time &time)
         return os
         << time.hour
         << ':'
-        << lpad(std::to_string(time.minute), 2, '0')
+        << strh::align(std::to_string(time.minute), strh::Alignment::LEFT, 2, '0')
         << ':'
-        << lpad(std::to_string(time.second), 2, '0')
+        << strh::align(std::to_string(time.second), strh::Alignment::LEFT, 2, '0')
         << '.'
         << time.millisecond
         << '.'

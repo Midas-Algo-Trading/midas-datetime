@@ -37,27 +37,16 @@ public:
         enum Component { HOUR, MINUTE, SECOND, MILLISECOND, MICROSECOND, NANOSECOND };
 
         virtual Time& operator+=(const Hour& hours);
-
         virtual Time& operator-=(const Hour& hours);
-
         virtual Time& operator+=(const Minute& minutes);
-
         virtual Time& operator-=(const Minute& minutes);
-
         virtual Time& operator+=(const Second& seconds);
-
         virtual Time& operator-=(const Second& seconds);
-
         virtual Time& operator+=(const Millisecond& milliseconds);
-
         virtual Time& operator-=(const Millisecond& milliseconds);
-
         virtual Time& operator+=(const Microsecond& microseconds);
-
         virtual Time& operator-=(const Microsecond& microseconds);
-
         virtual Time& operator+=(const Nanosecond& nanoseconds);
-
         virtual Time& operator-=(const Nanosecond& nanoseconds);
         bool operator>(const Time& other) const;
         bool operator>=(const Time& other) const;

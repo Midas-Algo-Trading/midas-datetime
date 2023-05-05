@@ -37,6 +37,8 @@ public:
         bool operator==(const Datetime& other) const;
         bool operator!=(const Datetime& other) const;
 
+        Datetime& operator++(int) override;
+        Datetime& operator--(int) override;
         Datetime& operator+=(const Day& days) override;
         Datetime& operator-=(const Day& days) override;
         Datetime& operator+=(const Hour& hours) override;

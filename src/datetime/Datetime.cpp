@@ -149,3 +149,15 @@ Datetime &Datetime::operator-=(const Nanosecond &nanoseconds)
         Time::operator-=(nanoseconds);
         return *this;
 }
+
+Datetime &Datetime::operator++(int)
+{
+        Date::operator++(1);
+        return *this;
+}
+
+Datetime &Datetime::operator--(int)
+{
+        Date::operator--(1);
+        return *this;
+}

@@ -9,7 +9,6 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 add_library(DatetimeLib
-        ../util/string_util.h
         ../src/time/Time.h
         ../src/time/Time.cpp
         ../src/time/components/Hour.h
@@ -36,6 +35,5 @@ add_library(DatetimeLib
 # Now simply link against gtest or gtest_main as needed. Eg
 add_executable(test DateTest.cpp TimeTest.cpp DatetimeTest.cpp Test.cpp)
 
-target_link_libraries(test DatetimeLib)
-target_link_libraries(test gtest_main)
+target_link_libraries(test DatetimeLib StringHelpersLib gtest_main)
 add_test(NAME example_test COMMAND example)

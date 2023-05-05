@@ -19,6 +19,8 @@ public:
                 month(month),
                 day(day) {}
 
+        explicit Date(std::string);
+
         enum DayOfWeek { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY };
 
         static Date today(Timezone timezone=TZ::LOCAL);
@@ -26,8 +28,8 @@ public:
         virtual Date& operator+=(const Day& days);
 
         virtual Date& operator-=(const Day& days);
-        Date& operator++(int);
-        Date& operator--(int);
+        virtual Date& operator++(int);
+        virtual Date& operator--(int);
         bool operator>(const Date& other) const;
         bool operator>=(const Date& other) const;
         bool operator<(const Date& other) const;

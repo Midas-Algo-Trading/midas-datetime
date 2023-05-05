@@ -3,8 +3,11 @@ project(datetime)
 
 set(CMAKE_CXX_STANDARD 23)
 
+add_library(StringHelpersLib
+        StringHelpers/StringHelpers.h
+        StringHelpers/StringHelpers.cpp)
+
 add_executable(datetime src/main.cpp
-        util/string_util.h
         src/time/Time.h
         src/time/Time.cpp
         src/time/components/Hour.h
@@ -25,4 +28,5 @@ add_executable(datetime src/main.cpp
         src/datetime/Datetime.h
         src/datetime/DatetimeRange.h src/time/components/TimeComponent.h)
 
+target_link_libraries(datetime StringHelpersLib)
 add_subdirectory(test)

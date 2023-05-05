@@ -388,3 +388,17 @@ TEST(Datetime, operator_minusequal_nanosecond_subtracts_microsecond)
         EXPECT_EQ(datetime.microsecond, 0);
         EXPECT_EQ(datetime.nanosecond, 999);
 }
+
+TEST(Datetime, operator_incremenet)
+{
+        Datetime datetime = Datetime(2000, 1, 1);
+        datetime++;
+        EXPECT_EQ(datetime.day, 2);
+}
+
+TEST(Datetime, operator_decrement)
+{
+        Datetime datetime = Datetime(2000, 1, 2);
+        datetime--;
+        EXPECT_EQ(datetime.day, 1);
+}
