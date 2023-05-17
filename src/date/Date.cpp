@@ -1,8 +1,10 @@
 #include "Date.h"
 #include "../../StringHelpers/StringHelpers.h"
 #include "../../util/exceptions/not_implemented_error.h"
-#include <iostream>
 #include <chrono>
+#include <iostream>
+#include <ranges>
+#include <vector>
 
 Date Date::today(Timezone timezone)
 {
@@ -251,8 +253,43 @@ bool Date::is_weekend() const
     }
 }
 
-Date::Date(std::string)
+std::string Date::to_string() const
 {
+    return std::to_string(year)
+           + '-' + strh::align(std::to_string(month), strh::Alignment::LEFT, 2, '0')
+           + '-' + strh::align(std::to_string(day), strh::Alignment::LEFT, 2, '0');
+}
 
+template<typename... DateComponent>
+Date::Date(std::string string, DateComponent... date_components)
+{
+    std::vector<std::string> date_components_strs = strh::split_alphabetical(string);
+
+    size_t idx = 0;
+
+    // Lambda to get each date component value from each date component string
+    auto get_date_components_from_str = [&](const auto& date_component, size_t idx) {
+        switch (date_component)
+        {
+        case Date::Component::YEAR:
+            year = std::stoi(date_components_strs[idx]);
+            break;
+        case Date::Component::MONTH:
+            if (date_components_strs[idx][0] == '0')
+                month = date_components_strs[idx][1] - '0'; // char to int
+            else
+                month = std::stoi(date_components_strs[idx]);
+            break;
+        case Date::Component::DAY:
+            if (date_components_strs[idx][0] == '0')
+                day = date_components_strs[idx][1] - '0'; // char to int
+            else
+                day = std::stoi(date_components_strs[idx]);
+            break;
+        }
+    };
+
+        // Call the lambda function on each date component
+        (get_date_components_from_str(date_components, idx++), ...);
 }
 

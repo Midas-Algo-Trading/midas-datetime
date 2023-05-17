@@ -620,3 +620,30 @@ TEST(Time, floor)
         time.floor(Time::Component::NANOSECOND);
         EXPECT_EQ(time, Time(1, 1, 1, 1, 1, 499));
 }
+
+TEST(Time, to_string)
+{
+    Time time = Time(1, 2, 30, 4, 5, 6);
+    EXPECT_EQ(time.to_string(), "1:02:30.4.5.6");
+}
+
+TEST(Time, string_TimeComponents_basic)
+{
+    Time time = Time("1:02:30.4.5.6",
+                     Time::Component::HOUR, Time::Component::MINUTE, Time::Component::SECOND,
+                     Time::Component::MILLISECOND, Time::Component::MICROSECOND,
+                     Time::Component::NANOSECOND);
+    EXPECT_EQ(time.hour, 1);
+    EXPECT_EQ(time.minute, 2);
+    EXPECT_EQ(time.second, 30);
+    EXPECT_EQ(time.millisecond, 4);
+    EXPECT_EQ(time.microsecond, 5);
+    EXPECT_EQ(time.nanosecond, 6);
+}
+
+TEST(Time, string_TimeComponents_skip)
+{
+    Time time = Time("1.2", Time::Component::HOUR, Time::Component::NANOSECOND);
+    EXPECT_EQ(time.hour, 1);
+    EXPECT_EQ(time.nanosecond, 2);
+}

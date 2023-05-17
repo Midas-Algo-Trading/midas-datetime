@@ -4,19 +4,12 @@
 
 int main()
 {
-        Time::set_default_timezone(TZ::CST);
-        Time now = Time::now();
-//        for (int i = 0; i < 1000; i++) {
-//                now += Nanosecond(1);
-//        }
-        std::cout << now << std::endl;
-        now.set_timezone(TZ::UTC);
-        std::cout << now << std::endl;
-
-        Time one = Time(1, 5, 0, 0, 0, 0, TZ::CST);
-        Time two = Time(2, 5, 0, 0, 0, 0, TZ::EST);
-        std::cout << (one == two) << std::endl;
-
-        Date today = Date::today();
-        std::cout << today << std::endl;
+    if (__cplusplus == 202101L) std::cout << "C++23";
+    else if (__cplusplus == 202002L) std::cout << "C++20";
+    else if (__cplusplus == 201703L) std::cout << "C++17";
+    else if (__cplusplus == 201402L) std::cout << "C++14";
+    else if (__cplusplus == 201103L) std::cout << "C++11";
+    else if (__cplusplus == 199711L) std::cout << "C++98";
+    else std::cout << "pre-standard C++." << __cplusplus;
+    std::cout << "\n";
 }

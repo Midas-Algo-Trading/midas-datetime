@@ -19,11 +19,14 @@ public:
                 month(month),
                 day(day) {}
 
-        explicit Date(std::string);
+        template<typename... DateComponent>
+        explicit Date(std::string string, DateComponent... date_components);
 
         enum DayOfWeek { MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY };
 
         static Date today(Timezone timezone=TZ::LOCAL);
+
+        enum Component { YEAR, MONTH, DAY };
 
         virtual Date& operator+=(const Day& days);
 
@@ -46,6 +49,8 @@ public:
         bool is_weekday() const;
 
         bool is_weekend() const;
+
+        std::string to_string() const;
 
 protected:
         void add_days(int days_to_add);

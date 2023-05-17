@@ -161,3 +161,8 @@ Datetime &Datetime::operator--(int)
         Date::operator--(1);
         return *this;
 }
+
+std::string Datetime::to_string() const
+{
+    return Date::to_string() + ' ' + Time::to_string();
+}

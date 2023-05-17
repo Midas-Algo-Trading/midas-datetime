@@ -351,3 +351,24 @@ TEST(Date, day_of_week_year_cannot_be_before_1901)
         Date date = Date(1900, 1, 1);
         ASSERT_THROW(date.day_of_week(), not_implemented_error);
 }
+
+TEST(Date, to_string)
+{
+    Date date = Date(2000, 1, 10);
+    EXPECT_EQ(date.to_string(), "2000-01-10");
+}
+
+TEST(Date, string_DateComponents_basic)
+{
+    Date date = Date("2000-01-20",
+                     Date::Component::YEAR, Date::Component::MONTH, Date::Component::DAY);
+    EXPECT_EQ(date.year, 2000);
+    EXPECT_EQ(date.month, 1);
+    EXPECT_EQ(date.day, 20);
+
+    date = Date("2000-20-01",
+                Date::Component::YEAR, Date::Component::DAY, Date::Component::MONTH);
+    EXPECT_EQ(date.year, 2000);
+    EXPECT_EQ(date.month, 1);
+    EXPECT_EQ(date.day, 20);
+}

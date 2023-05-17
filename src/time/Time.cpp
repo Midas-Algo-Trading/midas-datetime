@@ -499,3 +499,55 @@ int64_t Time::total_nanoseconds() const
                + microsecond * NANOSECONDS_PER_MICROSECOND
                + nanosecond;
 }
+
+std::string Time::to_string() const
+{
+    return std::to_string(hour)
+           + ':' + strh::align(std::to_string(minute), strh::Alignment::LEFT, 2, '0')
+           + ':' + strh::align(std::to_string(second), strh::Alignment::LEFT, 2, '0')
+           + '.' + std::to_string(millisecond)
+           + '.' + std::to_string(microsecond)
+           + '.' + std::to_string(nanosecond);
+}
+
+template<typename... TimeComponent>
+Time::Time(std::string string, TimeComponent... time_components)
+{
+    std::vector<std::string> time_components_strs = strh::split_alphabetical(string);
+
+    size_t idx = 0;
+
+    // Lambda to get each time component value from each time component string
+    auto get_time_components_from_str = [&](const auto& time_component, size_t idx)
+    {
+        switch (time_component) {
+        case Time::Component::HOUR:
+            hour = std::stoi(time_components_strs[idx]);
+            break;
+        case Time::Component::MINUTE:
+            if (time_components_strs[idx][0] == '0')
+                minute = time_components_strs[idx][1] - '0'; // char to int
+            else
+                minute = std::stoi(time_components_strs[idx]);
+            break;
+        case Time::Component::SECOND:
+            if (time_components_strs[idx][0] == '0')
+                second = time_components_strs[idx][1] - '0'; // char to int
+            else
+                second = std::stoi(time_components_strs[idx]);
+            break;
+        case Time::Component::MILLISECOND:
+            millisecond = std::stoi(time_components_strs[idx]);
+            break;
+        case Time::Component::MICROSECOND:
+            microsecond = std::stoi(time_components_strs[idx]);
+            break;
+        case Time::Component::NANOSECOND:
+            nanosecond = std::stoi(time_components_strs[idx]);
+            break;
+        }
+    };
+
+    // Call the lambda function on each time component
+    (get_time_components_from_str(time_components, idx++), ...);
+}

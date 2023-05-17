@@ -23,7 +23,7 @@ public:
         int microsecond;
         int nanosecond;
 
-        Timezone timezone;
+        Timezone timezone = default_timezone;
 
         static Timezone default_timezone;
 
@@ -31,6 +31,9 @@ public:
         explicit Time(int hour=0, int minute=0, int second=0, int millisecond=0,
                       int microsecond=0, int nanosecond=0,
                       Timezone timezone=default_timezone);
+
+        template<typename... TimeComponent>
+        explicit Time(std::string string, TimeComponent... time_components);
 
         static Time now(Timezone timezone=default_timezone);
 
@@ -66,6 +69,8 @@ public:
         void ceil(Component to);
 
         void floor(Component to);
+
+    virtual std::string to_string() const;
 
         static const int HOURS_PER_DAY;
 

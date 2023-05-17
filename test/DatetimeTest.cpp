@@ -402,3 +402,47 @@ TEST(Datetime, operator_decrement)
         datetime--;
         EXPECT_EQ(datetime.day, 1);
 }
+
+TEST(Datetime, constructor_string_DateComponent1_DateComponent2_DateComponent3_TimeComponents_basic)
+{
+    Datetime datetime = Datetime("2000-01-02 3:04:50.6.7.8",
+                                 Date::Component::YEAR,
+                                 Date::Component::MONTH,
+                                 Date::Component::DAY,
+                                 Time::Component::HOUR,
+                                 Time::Component::MINUTE,
+                                 Time::Component::SECOND,
+                                 Time::Component::MILLISECOND,
+                                 Time::Component::MICROSECOND,
+                                 Time::Component::NANOSECOND);
+    EXPECT_EQ(datetime.year, 2000);
+    EXPECT_EQ(datetime.month, 1);
+    EXPECT_EQ(datetime.day, 2);
+    EXPECT_EQ(datetime.hour, 3);
+    EXPECT_EQ(datetime.minute, 4);
+    EXPECT_EQ(datetime.second, 50);
+    EXPECT_EQ(datetime.millisecond, 6);
+    EXPECT_EQ(datetime.microsecond, 7);
+    EXPECT_EQ(datetime.nanosecond, 8);
+}
+
+TEST(Datetime, constructor_string_DateComponent1_DateComponent2_DateComponent3_TimeComponents_skip)
+{
+    Datetime datetime = Datetime("2000-01-02 3.4",
+                                 Date::Component::YEAR,
+                                 Date::Component::MONTH,
+                                 Date::Component::DAY,
+                                 Time::Component::HOUR,
+                                 Time::Component::NANOSECOND);
+    EXPECT_EQ(datetime.year, 2000);
+    EXPECT_EQ(datetime.month, 1);
+    EXPECT_EQ(datetime.day, 2);
+    EXPECT_EQ(datetime.hour, 3);
+    EXPECT_EQ(datetime.nanosecond, 4);
+}
+
+TEST(Datetime, to_string)
+{
+    Datetime datetime = Datetime(2000, 1, 2, 3, 4, 50, 6, 7, 8);
+    EXPECT_EQ(datetime.to_string(), "2000-01-02 3:04:50.6.7.8");
+}
