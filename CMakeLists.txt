@@ -3,10 +3,6 @@ project(datetime)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_library(StringHelpersLib
-        StringHelpers/StringHelpers.h
-        StringHelpers/StringHelpers.cpp)
-
 add_executable(datetime src/main.cpp
         src/time/Time.h
         src/time/Time.cpp

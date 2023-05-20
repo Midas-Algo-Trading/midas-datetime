@@ -511,7 +511,7 @@ std::string Time::to_string() const
 }
 
 template<typename... TimeComponent>
-Time::Time(std::string string, TimeComponent... time_components)
+Time::Time(std::string_view string, TimeComponent... time_components)
 {
     std::vector<std::string> time_components_strs = strh::split_alphabetical(string);
 

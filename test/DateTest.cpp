@@ -358,7 +358,7 @@ TEST(Date, to_string)
     EXPECT_EQ(date.to_string(), "2000-01-10");
 }
 
-TEST(Date, string_DateComponents_basic)
+TEST(Date, constructor_string_DateComponents_basic)
 {
     Date date = Date("2000-01-20",
                      Date::Component::YEAR, Date::Component::MONTH, Date::Component::DAY);
@@ -371,4 +371,11 @@ TEST(Date, string_DateComponents_basic)
     EXPECT_EQ(date.year, 2000);
     EXPECT_EQ(date.month, 1);
     EXPECT_EQ(date.day, 20);
+}
+
+TEST(Date, constructor_string_DateComponents_out_of_range)
+{
+//        Date("2000-01-20", Date::Component::YEAR, Date::Component::MONTH);
+        EXPECT_THROW(Date("2000-01-20", Date::Component::YEAR, Date::Component::MONTH),
+                     std::format_error);
 }

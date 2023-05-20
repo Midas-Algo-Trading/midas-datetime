@@ -33,7 +33,7 @@ add_library(DatetimeLib
 
 
 # Now simply link against gtest or gtest_main as needed. Eg
-add_executable(test DateTest.cpp TimeTest.cpp DatetimeTest.cpp Test.cpp)
+add_executable(exec DateTest.cpp TimeTest.cpp DatetimeTest.cpp Test.cpp)
 
-target_link_libraries(test DatetimeLib StringHelpersLib gtest_main)
+target_link_libraries(exec DatetimeLib StringHelpersLib gtest_main)
 add_test(NAME example_test COMMAND example)

@@ -26,7 +26,7 @@ public:
 
         template<typename DateComponent1, typename DateComponent2, typename DateComponent3,
                  typename... TimeComponent>
-        explicit Datetime(std::string string, DateComponent1 date_component1,
+        explicit Datetime(std::string_view string, DateComponent1 date_component1,
                           DateComponent2 date_component2, DateComponent3 date_component3,
                           TimeComponent... time_components) :
                 // First 10 characters in 'string' will be for the date, remaining will be for

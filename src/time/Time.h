@@ -33,7 +33,7 @@ public:
                       Timezone timezone=default_timezone);
 
         template<typename... TimeComponent>
-        explicit Time(std::string string, TimeComponent... time_components);
+        explicit Time(std::string_view string, TimeComponent... time_components);
 
         static Time now(Timezone timezone=default_timezone);
 
