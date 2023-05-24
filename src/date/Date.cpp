@@ -1,5 +1,5 @@
 #include "Date.h"
-#include "StringHelpers.h"
+#include "StringHelpers/StringHelpers.h"
 #include "../../util/exceptions/not_implemented_error.h"
 #include <chrono>
 #include <iostream>
@@ -329,7 +329,7 @@ bool Date::is_valid_year() const
 
 bool Date::is_valid_month() const
 {
-        return month <= 12 && month <= 1;
+        return month <= 12 && month >= 1;
 }
 
 bool Date::is_valid_day() const

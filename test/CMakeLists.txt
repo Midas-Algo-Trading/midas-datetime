@@ -8,34 +8,7 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_library(DatetimeLib
-        ../src/time/Time.h
-        ../src/time/Time.cpp
-        ../src/time/components/Hour.h
-        ../src/Component.h
-        ../src/time/components/Minute.h
-        ../src/time/components/Second.h
-        ../src/time/components/Microsecond.h
-        ../src/time/components/Nanosecond.h
-        ../src/date/Date.cpp
-        ../src/date/Date.h
-        ../src/date/components/Day.h
-        ../src/time/Timezone.h
-        ../src/time/components/Millisecond.h
-        ../src/time/TimeRange.h
-        ../src/Range.h
-        ../util/exceptions/not_implemented_error.h
-        ../src/date/DateRange.h
-        ../src/datetime/Datetime.cpp
-        ../src/datetime/Datetime.h
-        ../src/datetime/DatetimeRange.h
-        ../src/time/components/TimeComponent.h)
-
-
 # Now simply link against gtest or gtest_main as needed. Eg
-add_executable(exec DateTest.cpp DatetimeTest.cpp Test.cpp) # TimeTest.cpp
+add_executable(exec DateTest.cpp DatetimeTest.cpp Test.cpp) # TimeTest.cpp 
 
-target_link_libraries(DatetimeLib StringHelpersLib fmt)
-target_link_libraries(exec PRIVATE DatetimeLib gtest_main fmt)
-add_test(NAME example_test COMMAND example)
-target_compile_options(exec PRIVATE -std=c++23)
+target_link_libraries(exec PRIVATE DatetimeLib gtest_main)

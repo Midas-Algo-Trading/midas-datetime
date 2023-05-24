@@ -325,20 +325,20 @@ TEST(DateRange, constructor_start_greater_than_end_throws_illegal_argument)
 
 TEST(DateRange, in_range)
 {
-        Date start = Date(1900, 1, 1);
+        Date start = Date(1925, 1, 1);
         Date end = Date(2000, 1, 1);
         DateRange date_range = DateRange(start, end);
 
         Date date = Date(1950, 1, 1);
         EXPECT_TRUE(date_range.in_range(date));
 
-        date = Date(1900, 1, 1);
+        date = Date(1925, 1, 1);
         EXPECT_TRUE(date_range.in_range(date));
 
         date = Date(2000, 1, 1);
         EXPECT_TRUE(date_range.in_range(date));
 
-        date = Date(1800, 1, 1);
+        date = Date(1900, 1, 1);
         EXPECT_FALSE(date_range.in_range(date));
 
         date = Date(2100, 1, 1);
@@ -375,7 +375,6 @@ TEST(Date, constructor_string_DateComponents_basic)
 
 TEST(Date, constructor_string_DateComponents_out_of_range)
 {
-//        Date("2000-01-20", Date::Component::YEAR, Date::Component::MONTH);
         EXPECT_THROW(Date("2000-01-20", Date::Component::YEAR, Date::Component::MONTH),
-                     std::runtime_error);
+                     std::invalid_argument);
 }

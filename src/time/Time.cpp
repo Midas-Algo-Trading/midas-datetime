@@ -1,5 +1,5 @@
 #include "Time.h"
-#include "StringHelpersLib/StringHelpers.h"
+#include "StringHelpers/StringHelpers.h"
 #include <chrono>
 #include <iostream>
 
@@ -47,7 +47,6 @@ Time Time::now(Timezone timezone)
         );
 
         return Time(hour, minute, second, millisecond, microsecond, nanosecond);
-
 }
 
 //////////////////////////////////////////////////

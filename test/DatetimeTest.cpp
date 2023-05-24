@@ -41,8 +41,8 @@ TEST(Datetime, constructor_date_time_sets_members)
 
 TEST(Datetime, contructor_int_int_int_int_int_int_int_int_int_sets_members)
 {
-        Datetime datetime = Datetime(1, 2, 3, 4, 5, 6, 7, 8, 9);
-        EXPECT_EQ(datetime.year, 1);
+        Datetime datetime = Datetime(2000, 2, 3, 4, 5, 6, 7, 8, 9);
+        EXPECT_EQ(datetime.year, 2000);
         EXPECT_EQ(datetime.month, 2);
         EXPECT_EQ(datetime.day, 3);
         EXPECT_EQ(datetime.hour, 4);
