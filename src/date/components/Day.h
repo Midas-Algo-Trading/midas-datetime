@@ -15,7 +15,7 @@ struct Day : Component
          *
          * @param day the number of days to represent.
          */
-        explicit Day(size_t day) : Component(day) {}
+        explicit Day(int day) : Component(day) {}
 };
 
 #endif //DATETIME_DAY_H

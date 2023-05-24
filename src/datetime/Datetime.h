@@ -24,16 +24,16 @@ public:
 
         static Datetime now(Timezone timezone=default_timezone);
 
-        template<typename DateComponent1, typename DateComponent2, typename DateComponent3,
-                 typename... TimeComponent>
-        explicit Datetime(std::string_view string, DateComponent1 date_component1,
-                          DateComponent2 date_component2, DateComponent3 date_component3,
-                          TimeComponent... time_components) :
-                // First 10 characters in 'string' will be for the date, remaining will be for
-                // the time.
-                Date(string.substr(0, 10), date_component1, date_component2, date_component3),
-                Time(string.substr(10, string.length()),
-                     std::forward<TimeComponent>(time_components)...) {}
+//        template<typename DateComponent1, typename DateComponent2, typename DateComponent3,
+//                 typename... TimeComponent>
+//        explicit Datetime(std::string_view string, DateComponent1 date_component1,
+//                          DateComponent2 date_component2, DateComponent3 date_component3,
+//                          TimeComponent... time_components) :
+//                // First 10 characters in 'string' will be for the date, remaining will be for
+//                // the time.
+//                Date(string.substr(0, 10), date_component1, date_component2, date_component3),
+//                Time(string.substr(10, string.length()),
+//                     std::forward<TimeComponent>(time_components)...) {}
 
         void add_hours(int hours_to_add) override;
 

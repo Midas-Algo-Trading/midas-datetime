@@ -1,11 +1,11 @@
 #include "Date.h"
-//#include "../../libraries/StringHelpers/StringHelpers.h"
+#include "StringHelpers.h"
 #include "../../util/exceptions/not_implemented_error.h"
 #include <chrono>
 #include <iostream>
-#include <ranges>
 #include <vector>
 #include "../../util/macros.h"
+#include <fmt/core.h>
 
 Date Date::today(Timezone timezone)
 {
@@ -181,10 +181,10 @@ std::ostream &operator<<(std::ostream &os, const Date &date)
 {
     return os
     << date.year
-    << '-';
-//    << strh::align(std::to_string(date.month), strh::Alignment::LEFT, 2, '0')
-//    << '-'
-//    << strh::align(std::to_string(date.day), strh::Alignment::LEFT, 2, '0');
+    << '-'
+    << strh::align(std::to_string(date.month), strh::Alignment::LEFT, 2, '0')
+    << '-'
+    << strh::align(std::to_string(date.day), strh::Alignment::LEFT, 2, '0');
 }
 
 Date::DayOfWeek Date::day_of_week() const
@@ -256,10 +256,9 @@ bool Date::is_weekend() const
 
 std::string Date::to_string() const
 {
-        return "";
-//    return std::to_string(year)
-//           + '-' + strh::align(std::to_string(month), strh::Alignment::LEFT, 2, '0')
-//           + '-' + strh::align(std::to_string(day), strh::Alignment::LEFT, 2, '0');
+    return std::to_string(year)
+           + '-' + strh::align(std::to_string(month), strh::Alignment::LEFT, 2, '0')
+           + '-' + strh::align(std::to_string(day), strh::Alignment::LEFT, 2, '0');
 }
 
 template<typename... DateComponent>
@@ -268,7 +267,7 @@ Date::Date(std::string_view string, DateComponent... date_components)
     std::vector<std::string> date_components_strs = strh::split_alphabetical(string);
 
     ASSERT(date_components_strs.size() == sizeof...(date_components),
-           std::format_error(std::format("components: '{}' with size '{}' does not match date "
+           std::invalid_argument(fmt::format("components: '{}' with size '{}' does not match date "
                                          "strings: '{}' with size '{}'",
                                          strh::from_parameter_pack(date_components...),
                                          sizeof...(date_components),
@@ -303,7 +302,8 @@ Date::Date(std::string_view string, DateComponent... date_components)
         // Call the lambda function on each date component
         (set_date_components_from_str(date_components, idx++), ...);
 
-        ASSERT(is_valid_date(), std::invalid_argument(std::format("'{}' is an invalid date", to_string())));
+        ASSERT(is_valid_date(),
+               std::invalid_argument(fmt::format("'{}' is an invalid date", to_string())));
 }
 
 bool Date::is_valid_date() const
@@ -316,7 +316,8 @@ Date::Date(int year, int month, int day) :
         month(month),
         day(day)
 {
-        ASSERT(is_valid_date(), std::invalid_argument(std::format("'{}' is an invalid date", to_string())));
+        ASSERT(is_valid_date(),
+               std::invalid_argument(fmt::format("'{}' is an invalid date", to_string())));
 }
 
 bool Date::is_valid_year() const

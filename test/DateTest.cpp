@@ -377,5 +377,5 @@ TEST(Date, constructor_string_DateComponents_out_of_range)
 {
 //        Date("2000-01-20", Date::Component::YEAR, Date::Component::MONTH);
         EXPECT_THROW(Date("2000-01-20", Date::Component::YEAR, Date::Component::MONTH),
-                     std::format_error);
+                     std::runtime_error);
 }

@@ -24,5 +24,8 @@ add_executable(datetime src/main.cpp
         src/datetime/Datetime.h
         src/datetime/DatetimeRange.h src/time/components/TimeComponent.h)
 
-target_link_libraries(datetime StringHelpersLib)
+add_subdirectory(libraries/fmt)
+add_subdirectory(libraries/StringHelpers)
+target_link_libraries(datetime PRIVATE StringHelpersLib)
+include_directories(${CMAKE_SOURCE_DIR}/libraries/fmt/include)
 add_subdirectory(test)
