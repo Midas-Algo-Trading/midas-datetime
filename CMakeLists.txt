@@ -32,6 +32,6 @@ add_library(DatetimeLib
         ../src/datetime/DatetimeRange.h
         ../src/time/components/TimeComponent.h)
 
-target_link_libraries(DatetimeLib StringHelpersLib fmt)
+target_link_libraries(DatetimeLib StringHelpers fmt)
 
 add_subdirectory(test)
