@@ -1,8 +1,8 @@
 #include "gtest/gtest.h"
 
 #define private public
-#include "../src/time/Time.cpp"
-#include "../src/time/TimeRange.h"
+#include "datetime/time/Time.h"
+#include "datetime/time/TimeRange.h"
 
 TEST(Time, constructor_sets_members)
 {
@@ -478,15 +478,15 @@ TEST(Time, operator_not_equal_to)
 
 TEST(Timezone, get_from_str)
 {
-        EXPECT_EQ(TZ::get_from_str("Coordinated Universal Time"), TZ::UTC);
-        EXPECT_EQ(TZ::get_from_str("Pacific Standard Time"), TZ::PST);
-        EXPECT_EQ(TZ::get_from_str("Central Daylight Time"), TZ::CST);
-        EXPECT_EQ(TZ::get_from_str("Eastern Standard Time"), TZ::EST);
+        EXPECT_EQ(TZ::priv_helpers::get_from_str("Coordinated Universal Time"), TZ::UTC);
+        EXPECT_EQ(TZ::priv_helpers::get_from_str("Pacific Standard Time"), TZ::PST);
+        EXPECT_EQ(TZ::priv_helpers::get_from_str("Central Daylight Time"), TZ::CST);
+        EXPECT_EQ(TZ::priv_helpers::get_from_str("Eastern Standard Time"), TZ::EST);
 }
 
 TEST(Timezone, get_from_str_throws_if_not_timezone_str)
 {
-        EXPECT_THROW(TZ::get_from_str("Invalid timezone str"), std::invalid_argument);
+        EXPECT_THROW(TZ::priv_helpers::get_from_str("Invalid timezone str"), std::invalid_argument);
 }
 
 
@@ -646,4 +646,20 @@ TEST(Time, string_TimeComponents_skip)
     Time time = Time("1.2", Time::Component::HOUR, Time::Component::NANOSECOND);
     EXPECT_EQ(time.hour, 1);
     EXPECT_EQ(time.nanosecond, 2);
+}
+
+TEST(Time, constructor_int_int_int_int_int_int_throws_invalid_argument)
+{
+    EXPECT_THROW(Time(-1), std::invalid_argument);
+}
+
+TEST(Time, constructor_string_TimeComponents_throws_invalid_argument_on_wrong_time_components)
+{
+    EXPECT_THROW(Time("1:2:3", Time::Component::HOUR, Time::Component::MINUTE),
+                 std::invalid_argument);
+}
+
+TEST(Time, constructor_string_TimeComponents_throws_invalid_argument_on_out_of_range_components)
+{
+    EXPECT_THROW(Time("25", Time::Component::HOUR), std::invalid_argument);
 }

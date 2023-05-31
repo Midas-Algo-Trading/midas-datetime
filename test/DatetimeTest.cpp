@@ -1,8 +1,9 @@
 #include "gtest/gtest.h"
 
 #define private public
-#include "../src/datetime/Datetime.cpp"
-#include "../src/datetime/DatetimeRange.h"
+#include "datetime/time/Time.h"
+#include "datetime/datetime/Datetime.h"
+#include "datetime/datetime/DatetimeRange.h"
 
 
 TEST(Datetime, constructor_date_sets_members)
@@ -392,57 +393,65 @@ TEST(Datetime, operator_minusequal_nanosecond_subtracts_microsecond)
 TEST(Datetime, operator_incremenet)
 {
         Datetime datetime = Datetime(2000, 1, 1);
-        datetime++;
+        ++datetime;
         EXPECT_EQ(datetime.day, 2);
 }
 
 TEST(Datetime, operator_decrement)
 {
         Datetime datetime = Datetime(2000, 1, 2);
-        datetime--;
+        --datetime;
         EXPECT_EQ(datetime.day, 1);
 }
 
 TEST(Datetime, constructor_string_DateComponent1_DateComponent2_DateComponent3_TimeComponents_basic)
 {
-//    Datetime datetime = Datetime("2000-01-02 3:04:50.6.7.8",
-//                                 Date::Component::YEAR,
-//                                 Date::Component::MONTH,
-//                                 Date::Component::DAY,
-//                                 Time::Component::HOUR,
-//                                 Time::Component::MINUTE,
-//                                 Time::Component::SECOND,
-//                                 Time::Component::MILLISECOND,
-//                                 Time::Component::MICROSECOND,
-//                                 Time::Component::NANOSECOND);
-//    EXPECT_EQ(datetime.year, 2000);
-//    EXPECT_EQ(datetime.month, 1);
-//    EXPECT_EQ(datetime.day, 2);
-//    EXPECT_EQ(datetime.hour, 3);
-//    EXPECT_EQ(datetime.minute, 4);
-//    EXPECT_EQ(datetime.second, 50);
-//    EXPECT_EQ(datetime.millisecond, 6);
-//    EXPECT_EQ(datetime.microsecond, 7);
-//    EXPECT_EQ(datetime.nanosecond, 8);
+    Datetime datetime = Datetime("2000-01-02 3:04:50.6.7.8",
+                                 Date::Component::YEAR,
+                                 Date::Component::MONTH,
+                                 Date::Component::DAY,
+                                 Time::Component::HOUR,
+                                 Time::Component::MINUTE,
+                                 Time::Component::SECOND,
+                                 Time::Component::MILLISECOND,
+                                 Time::Component::MICROSECOND,
+                                 Time::Component::NANOSECOND);
+    EXPECT_EQ(datetime.year, 2000);
+    EXPECT_EQ(datetime.month, 1);
+    EXPECT_EQ(datetime.day, 2);
+    EXPECT_EQ(datetime.hour, 3);
+    EXPECT_EQ(datetime.minute, 4);
+    EXPECT_EQ(datetime.second, 50);
+    EXPECT_EQ(datetime.millisecond, 6);
+    EXPECT_EQ(datetime.microsecond, 7);
+    EXPECT_EQ(datetime.nanosecond, 8);
 }
 
 TEST(Datetime, constructor_string_DateComponent1_DateComponent2_DateComponent3_TimeComponents_skip)
 {
-//    Datetime datetime = Datetime("2000-01-02 3.4",
-//                                 Date::Component::YEAR,
-//                                 Date::Component::MONTH,
-//                                 Date::Component::DAY,
-//                                 Time::Component::HOUR,
-//                                 Time::Component::NANOSECOND);
-//    EXPECT_EQ(datetime.year, 2000);
-//    EXPECT_EQ(datetime.month, 1);
-//    EXPECT_EQ(datetime.day, 2);
-//    EXPECT_EQ(datetime.hour, 3);
-//    EXPECT_EQ(datetime.nanosecond, 4);
+    Datetime datetime = Datetime("2000-01-02 3.4",
+                                 Date::Component::YEAR,
+                                 Date::Component::MONTH,
+                                 Date::Component::DAY,
+                                 Time::Component::HOUR,
+                                 Time::Component::NANOSECOND);
+    EXPECT_EQ(datetime.year, 2000);
+    EXPECT_EQ(datetime.month, 1);
+    EXPECT_EQ(datetime.day, 2);
+    EXPECT_EQ(datetime.hour, 3);
+    EXPECT_EQ(datetime.nanosecond, 4);
 }
 
 TEST(Datetime, to_string)
 {
     Datetime datetime = Datetime(2000, 1, 2, 3, 4, 50, 6, 7, 8);
     EXPECT_EQ(datetime.to_string(), "2000-01-02 3:04:50.6.7.8");
+}
+
+TEST(Datetime, ostream)
+{
+        Datetime datetime = Datetime(2000, 1, 2, 3, 4, 5, 6, 7, 8);
+        std::stringstream actual;
+        actual << datetime;
+        EXPECT_EQ(actual.str(), "2000-01-02 3:04:05.6.7.8");
 }

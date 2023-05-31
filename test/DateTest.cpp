@@ -1,9 +1,9 @@
 #include "gtest/gtest.h"
 
 #define private public
-#include "../src/date/components/Day.h"
-#include "../src/date/Date.cpp"
-#include "../src/date/DateRange.h"
+#include "datetime/date/components/Day.h"
+#include "datetime/date/Date.cpp"
+#include "datetime/date/DateRange.h"
 
 TEST(Date, ostream)
 {
@@ -13,18 +13,23 @@ TEST(Date, ostream)
         ASSERT_EQ(actual.str(), "2000-02-03");
 }
 
-TEST(Day_test, constrctor_set_variable)
+TEST(Day_test, constrctor_int_int_int_set_variable)
 {
         Day day = Day(1);
         ASSERT_EQ(day.value, 1);
 }
 
-TEST(Date, constructor_sets_variables)
+TEST(Date, constructor_int_int_int_sets_variables)
 {
         Date date = Date(2000, 2, 3);
         EXPECT_EQ(date.year, 2000);
         EXPECT_EQ(date.month, 2);
         EXPECT_EQ(date.day, 3);
+}
+
+TEST(Date, constuctor_int_int_int_throws_invalid_argument)
+{
+    EXPECT_THROW(Date(2200, 1, 1), std::invalid_argument);
 }
 
 TEST(Date, today_sets_local_date)
@@ -38,12 +43,17 @@ TEST(Date, today_sets_local_date)
 
         int today_year = now_tm->tm_year + 1900;
         int today_month = now_tm->tm_mon + 1;
-        int toda_day = now_tm->tm_mday;
+        int today_day = now_tm->tm_mday;
 
         Date today = Date::today();
         EXPECT_EQ(today.year, today_year);
         EXPECT_EQ(today.month, today_month);
-        EXPECT_EQ(today.day, toda_day);
+        EXPECT_EQ(today.day, today_day);
+}
+
+TEST(Date, today_throws_invalid_argument)
+{
+    EXPECT_THROW(Time(1800, 1, 1), std::invalid_argument);
 }
 
 TEST(Date, operator_plusequal_adds_day_basic)
@@ -114,14 +124,14 @@ TEST(Date, operator_minusqual_subtracts_year)
 TEST(Date, operator_increment)
 {
         Date date = Date(1900, 1, 1);
-        date++;
+        ++date;
         ASSERT_EQ(date.day, 2);
 }
 
 TEST(Date, operator_decrement)
 {
         Date date = Date(1900, 1, 2);
-        date--;
+        --date;
         ASSERT_EQ(date.day, 1);
 }
 
@@ -373,8 +383,28 @@ TEST(Date, constructor_string_DateComponents_basic)
     EXPECT_EQ(date.day, 20);
 }
 
-TEST(Date, constructor_string_DateComponents_out_of_range)
+TEST(Date, constructor_string_DateComponents_throws_invalid_argument_on_wrong_date_components)
 {
         EXPECT_THROW(Date("2000-01-20", Date::Component::YEAR, Date::Component::MONTH),
                      std::invalid_argument);
+}
+
+TEST(Date, constructor_string_DateComponents_throws_invalid_argument_on_out_of_range_components)
+{
+    EXPECT_THROW(Date("1800-01-01", Date::Component::YEAR, Date::Component::MONTH,
+                      Date::Component::DAY),
+                 std::invalid_argument);
+}
+
+TEST(Date, constructor_string_basic)
+{
+    Date date = Date("2000-01-20");
+    EXPECT_EQ(date.year, 2000);
+    EXPECT_EQ(date.month, 1);
+    EXPECT_EQ(date.day, 20);
+}
+
+TEST(Date, constructor_string_throws_invalid_argument)
+{
+    EXPECT_THROW(Date("1800-01-01"), std::invalid_argument);
 }

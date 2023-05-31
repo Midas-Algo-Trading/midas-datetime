@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(datetime)
+project(include/datetime)
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -10,27 +10,29 @@ include_directories(libraries/StringHelpers/include
                     libraries/fmt/include)
 
 add_library(DatetimeLib
-        ../src/time/Time.h
-        ../src/time/Time.cpp
-        ../src/time/components/Hour.h
-        ../src/Component.h
-        ../src/time/components/Minute.h
-        ../src/time/components/Second.h
-        ../src/time/components/Microsecond.h
-        ../src/time/components/Nanosecond.h
-        ../src/date/Date.cpp
-        ../src/date/Date.h
-        ../src/date/components/Day.h
-        ../src/time/Timezone.h
-        ../src/time/components/Millisecond.h
-        ../src/time/TimeRange.h
-        ../src/Range.h
+        include/datetime/time/Time.h
+        include/datetime/time/Time.cpp
+        include/datetime/time/components/Hour.h
+        include/datetime/Component.h
+        include/datetime/time/components/Minute.h
+        include/datetime/time/components/Second.h
+        include/datetime/time/components/Microsecond.h
+        include/datetime/time/components/Nanosecond.h
+        include/datetime/date/Date.cpp
+        include/datetime/date/Date.h
+        include/datetime/date/components/Day.h
+        include/datetime/time/Timezone.h
+        include/datetime/time/components/Millisecond.h
+        include/datetime/time/TimeRange.h
+        include/datetime/Range.h
         ../util/exceptions/not_implemented_error.h
-        ../src/date/DateRange.h
-        ../src/datetime/Datetime.cpp
-        ../src/datetime/Datetime.h
-        ../src/datetime/DatetimeRange.h
-        ../src/time/components/TimeComponent.h)
+        include/datetime/date/DateRange.h
+        include/datetime/datetime/Datetime.h
+        include/datetime/datetime/Datetime.cpp
+        include/datetime/datetime/DatetimeRange.h
+        include/datetime/time/components/TimeComponent.h)
+
+include_directories(include)
 
 target_link_libraries(DatetimeLib StringHelpers fmt)
 

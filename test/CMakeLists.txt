@@ -9,6 +9,6 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 # Now simply link against gtest or gtest_main as needed. Eg
-add_executable(exec DateTest.cpp DatetimeTest.cpp Test.cpp) # TimeTest.cpp 
+add_executable(exec DateTest.cpp DatetimeTest.cpp Test.cpp TimeTest.cpp)
 
-target_link_libraries(exec PRIVATE DatetimeLib gtest_main)
+target_link_libraries(exec PRIVATE DatetimeLib gtest_main StringHelpers fmt)
