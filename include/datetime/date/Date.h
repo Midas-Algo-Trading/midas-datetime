@@ -17,15 +17,15 @@ public:
     /**
      * Year of the date.
      */
-    int year = 1900;
+    uint16_t year = 1900;
     /**
      * Month of the date.
      */
-    int month = 1;
+    uint8_t month = 1;
     /**
      * Day of the date.
      */
-    int day = 1;
+    uint8_t day = 1;
 
     /**
      * Components of a date.
@@ -48,7 +48,7 @@ public:
      * @param month Month the 'Date' will be set to.
      * @param day Day the 'Date' will be set to.
      */
-    explicit Date(int year = 1900, int month = 1, int day = 1);
+    explicit Date(uint16_t year= 1900, uint8_t month = 1, uint8_t day = 1);
 
     /**
      * Creates a 'Date' from a std::string.
@@ -147,7 +147,7 @@ public:
      *
      * // output: 31
      */
-    int max_days_in_month() const;
+    size_t max_days_in_month() const;
 
     /**
      * Adds 'days' to this 'Date'.
@@ -251,14 +251,14 @@ protected:
      *
      * @param days_to_add number of days to add to this 'Date'.
      */
-    void add_days(int days_to_add);
+    void add_days(size_t days_to_add);
 
     /**
      * Subtracts days from this 'Date'.
      *
      * @param days_to_subtract number of days to subtract from this 'Date'.
      */
-    void subtract_days(int days_to_subtract);
+    void subtract_days(size_t days_to_subtract);
 
 private:
     /**

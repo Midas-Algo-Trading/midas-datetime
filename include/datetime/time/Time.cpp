@@ -63,37 +63,37 @@ std::ostream& operator<<(std::ostream& os, const Time& time)
 
 Time& Time::operator+=(const Hour& hours)
 {
-    add_hours(hours.value);
+    add_hours(static_cast<int>(hours.value));
     return *this;
 }
 
 Time& Time::operator-=(const Hour& hours)
 {
-    add_hours(-hours.value);
+    add_hours(-static_cast<int>(hours.value));
     return *this;
 }
 
 Time& Time::operator+=(const Minute& minutes)
 {
-    add_minutes(minutes.value);
+    add_minutes(static_cast<int>(minutes.value));
     return *this;
 }
 
 Time& Time::operator-=(const Minute& minutes)
 {
-    add_minutes(-minutes.value);
+    add_minutes(-static_cast<int>(minutes.value));
     return *this;
 }
 
 Time& Time::operator+=(const Second& seconds)
 {
-    add_seconds(seconds.value);
+    add_seconds(static_cast<int>(seconds.value));
     return *this;
 }
 
 Time& Time::operator-=(const Second& seconds)
 {
-    add_seconds(-seconds.value);
+    add_seconds(-static_cast<int>(seconds.value));
     return *this;
 }
 
@@ -105,7 +105,7 @@ Time& Time::operator+=(const Millisecond& milliseconds)
 
 Time& Time::operator-=(const Millisecond& milliseconds)
 {
-    add_milliseconds(-milliseconds.value);
+    add_milliseconds(-static_cast<int64_t>(milliseconds.value));
     return *this;
 }
 
@@ -117,7 +117,7 @@ Time& Time::operator+=(const Microsecond& microseconds)
 
 Time& Time::operator-=(const Microsecond& microseconds)
 {
-    add_microseconds(-microseconds.value);
+    add_microseconds(-static_cast<int64_t>(microseconds.value));
     return *this;
 }
 
@@ -129,106 +129,117 @@ Time& Time::operator+=(const Nanosecond& nanoseconds)
 
 Time& Time::operator-=(const Nanosecond& nanoseconds)
 {
-    add_nanoseconds(-nanoseconds.value);
+    add_nanoseconds(-static_cast<int64_t>(nanoseconds.value));
     return *this;
 }
 
-const int Time::MINUTES_PER_HOUR = 60;
-const int Time::SECONDS_PER_MINUTE = 60;
-const int Time::SECONDS_PER_HOUR = MINUTES_PER_HOUR * SECONDS_PER_MINUTE;
-const int Time::MILLISECONDS_PER_SECOND = 1'000;
-const int64_t Time::MILLISECONDS_PER_HOUR = SECONDS_PER_HOUR * MILLISECONDS_PER_SECOND;
-const int64_t Time::MILLISECONDS_PER_MINUTE = SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND;
-const int Time::MICROSECONDS_PER_MILLISECOND = 1'000;
-const int64_t Time::MICROSECONDS_PER_HOUR = MILLISECONDS_PER_HOUR * MICROSECONDS_PER_MILLISECOND;
-const int64_t Time::MICROSECONDS_PER_MINUTE = MILLISECONDS_PER_MINUTE
+const size_t Time::MINUTES_PER_HOUR = 60;
+const size_t Time::SECONDS_PER_MINUTE = 60;
+const size_t Time::SECONDS_PER_HOUR = MINUTES_PER_HOUR * SECONDS_PER_MINUTE;
+const size_t Time::MILLISECONDS_PER_SECOND = 1'000;
+const size_t Time::MILLISECONDS_PER_HOUR = SECONDS_PER_HOUR * MILLISECONDS_PER_SECOND;
+const size_t Time::MILLISECONDS_PER_MINUTE = SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND;
+const size_t Time::MICROSECONDS_PER_MILLISECOND = 1'000;
+const size_t Time::MICROSECONDS_PER_HOUR = MILLISECONDS_PER_HOUR * MICROSECONDS_PER_MILLISECOND;
+const size_t Time::MICROSECONDS_PER_MINUTE = MILLISECONDS_PER_MINUTE
                                                * MICROSECONDS_PER_MILLISECOND;
-const int64_t Time::MICROSECONDS_PER_SECOND = MILLISECONDS_PER_SECOND
+const size_t Time::MICROSECONDS_PER_SECOND = MILLISECONDS_PER_SECOND
                                                * MICROSECONDS_PER_MILLISECOND;
-const int Time::NANOSECONDS_PER_MICROSECOND = 1'000;
-const int64_t Time::NANOSECONDS_PER_HOUR = MICROSECONDS_PER_HOUR * NANOSECONDS_PER_MICROSECOND;
-const int64_t Time::NANOSECONDS_PER_MINUTE = MICROSECONDS_PER_MINUTE * NANOSECONDS_PER_MICROSECOND;
-const int64_t Time::NANOSECONDS_PER_SECOND = MICROSECONDS_PER_SECOND * NANOSECONDS_PER_MICROSECOND;
-const int64_t Time::NANOSECONDS_PER_MILLISECOND = MICROSECONDS_PER_MILLISECOND
+const size_t Time::NANOSECONDS_PER_MICROSECOND = 1'000;
+const size_t Time::NANOSECONDS_PER_HOUR = MICROSECONDS_PER_HOUR * NANOSECONDS_PER_MICROSECOND;
+const size_t Time::NANOSECONDS_PER_MINUTE = MICROSECONDS_PER_MINUTE * NANOSECONDS_PER_MICROSECOND;
+const size_t Time::NANOSECONDS_PER_SECOND = MICROSECONDS_PER_SECOND * NANOSECONDS_PER_MICROSECOND;
+const size_t Time::NANOSECONDS_PER_MILLISECOND = MICROSECONDS_PER_MILLISECOND
                                                    * NANOSECONDS_PER_MICROSECOND;
 
 const int Time::HOURS_PER_DAY = 24;
 
 void Time::add_hours(int hours_to_add)
 {
-    hour = (hour + hours_to_add) % HOURS_PER_DAY;
+    int new_hour = (static_cast<int>(hour) + hours_to_add) % HOURS_PER_DAY;
 
-    if (hour < 0)
+    if (new_hour < 0)
         throw std::out_of_range("Time cannot be negative");
+
+    hour = static_cast<uint8_t>(new_hour);
 }
 
 void Time::add_minutes(int minutes_to_add)
 {
     int new_total_minutes = total_minutes() + minutes_to_add;
-    int new_total_hours = new_total_minutes / MINUTES_PER_HOUR;
+    int new_total_hours = static_cast<int>(new_total_minutes / static_cast<int64_t>(MINUTES_PER_HOUR));
     int hour_change = new_total_hours - hour;
-    minute = new_total_minutes % MINUTES_PER_HOUR;
-    if (minute < 0)
+    int new_minute = static_cast<int>(new_total_minutes % static_cast<int64_t>(MINUTES_PER_HOUR));
+    if (new_minute < 0)
     {
-        minute += MINUTES_PER_HOUR;
+        new_minute += MINUTES_PER_HOUR;
         hour_change--;
     }
+    minute = new_minute;
     add_hours(hour_change);
 }
 
 void Time::add_seconds(int seconds_to_add)
 {
     int new_total_seconds = total_seconds() + seconds_to_add;
-    int new_total_minutes = new_total_seconds / SECONDS_PER_MINUTE;
+    int new_total_minutes = static_cast<int>(new_total_seconds / static_cast<int64_t>(SECONDS_PER_MINUTE));
     int minute_change = new_total_minutes - total_minutes();
-    second = new_total_seconds % SECONDS_PER_MINUTE;
-    if (second < 0)
+    int new_second = static_cast<int>(new_total_seconds % static_cast<int64_t>(SECONDS_PER_MINUTE));
+    if (new_second < 0)
     {
-        second += SECONDS_PER_MINUTE;
+        new_second += SECONDS_PER_MINUTE;
         minute_change--;
     }
+    second = new_second;
     add_minutes(minute_change);
 }
 
 void Time::add_milliseconds(int64_t milliseconds_to_add)
 {
     int64_t new_total_milliseconds = total_milliseconds() + milliseconds_to_add;
-    int64_t new_total_seconds = new_total_milliseconds / MILLISECONDS_PER_SECOND;
-    int64_t second_change = new_total_seconds - total_seconds();
-    millisecond = static_cast<int>(new_total_milliseconds % MILLISECONDS_PER_SECOND);
-    if (millisecond < 0)
+    int new_total_seconds = static_cast<int>(new_total_milliseconds / static_cast<int64_t>
+        (MILLISECONDS_PER_SECOND));
+    int second_change = new_total_seconds - total_seconds();
+    int new_millisecond = static_cast<int>(new_total_milliseconds % static_cast<int64_t>
+        (MILLISECONDS_PER_SECOND));
+    if (new_millisecond < 0)
     {
-        millisecond += MILLISECONDS_PER_SECOND;
+        new_millisecond += MILLISECONDS_PER_SECOND;
         second_change--;
     }
+    millisecond = new_millisecond;
     add_seconds(static_cast<int>(second_change));
 }
 
 void Time::add_microseconds(int64_t microseconds_to_add)
 {
     int64_t new_total_microseconds = total_microseconds() + microseconds_to_add;
-    int64_t new_total_milliseconds = new_total_microseconds / MICROSECONDS_PER_MILLISECOND;
+    int64_t new_total_milliseconds = new_total_microseconds / static_cast<int64_t>(MICROSECONDS_PER_MILLISECOND);
     int64_t millisecond_change = new_total_milliseconds - total_milliseconds();
-    microsecond = static_cast<int>(new_total_microseconds % MICROSECONDS_PER_MILLISECOND);
-    if (microsecond < 0)
+    int new_microsecond = static_cast<int>(new_total_microseconds % static_cast<int64_t>
+        (MICROSECONDS_PER_MILLISECOND));
+    if (new_microsecond < 0)
     {
-        microsecond += MICROSECONDS_PER_MILLISECOND;
+        new_microsecond += MICROSECONDS_PER_MILLISECOND;
         millisecond_change--;
     }
+    microsecond = new_microsecond;
     add_milliseconds(static_cast<int>(millisecond_change));
 }
 
 void Time::add_nanoseconds(int64_t nanoseconds_to_add)
 {
     int64_t new_total_nanoseconds = total_nanoseconds() + nanoseconds_to_add;
-    int64_t new_total_microseconds = new_total_nanoseconds / NANOSECONDS_PER_MICROSECOND;
+    int64_t new_total_microseconds = new_total_nanoseconds / static_cast<int64_t>(NANOSECONDS_PER_MICROSECOND);
     int64_t microsecond_change = new_total_microseconds - total_microseconds();
-    nanosecond = static_cast<int>(new_total_nanoseconds % NANOSECONDS_PER_MICROSECOND);
-    if (nanosecond < 0)
+    int new_nanosecond = static_cast<int>(new_total_nanoseconds % static_cast<int64_t>
+        (NANOSECONDS_PER_MICROSECOND));
+    if (new_nanosecond < 0)
     {
-        nanosecond += NANOSECONDS_PER_MICROSECOND;
+        new_nanosecond += NANOSECONDS_PER_MICROSECOND;
         microsecond_change--;
     }
+    nanosecond = new_nanosecond;
     add_microseconds(static_cast<int>(microsecond_change));
 }
 
@@ -334,8 +345,8 @@ int Time::get_hour_at_timezone(Timezone timezone) const
            % HOURS_PER_DAY;
 }
 
-Time::Time(int hour, int minute, int second, int millisecond, int microsecond,
-           int nanosecond, Timezone timezone) :
+Time::Time(uint8_t hour, uint8_t minute, uint8_t second, uint16_t millisecond, uint16_t microsecond,
+           uint16_t nanosecond, Timezone timezone) :
     hour(hour),
     minute(minute),
     second(second),
@@ -445,42 +456,52 @@ void Time::floor(Time::Component to)
 
 int Time::total_minutes() const
 {
-    return   hour * MINUTES_PER_HOUR
-           + minute;
+    return static_cast<int>(
+        hour * MINUTES_PER_HOUR
+      + minute
+    );
 }
 
 int Time::total_seconds() const
 {
-    return   hour * SECONDS_PER_HOUR
-           + minute * SECONDS_PER_MINUTE
-           + second;
+    return static_cast<int>(
+          hour * SECONDS_PER_HOUR
+        + minute * SECONDS_PER_MINUTE
+        + second
+    );
 }
 
 int64_t Time::total_milliseconds() const
 {
-    return   hour * MILLISECONDS_PER_HOUR
-           + minute * MILLISECONDS_PER_MINUTE
-           + second * MILLISECONDS_PER_SECOND
-           + millisecond;
+    return static_cast<int64_t>(
+          hour * MILLISECONDS_PER_HOUR
+        + minute * MILLISECONDS_PER_MINUTE
+        + second * MILLISECONDS_PER_SECOND
+        + millisecond
+    );
 }
 
 int64_t Time::total_microseconds() const
 {
-    return   hour * MICROSECONDS_PER_HOUR
-           + minute * MICROSECONDS_PER_MINUTE
-           + second * MICROSECONDS_PER_SECOND
-           + millisecond * MICROSECONDS_PER_MILLISECOND
-           + microsecond;
+    return static_cast<int64_t>(
+          hour * MICROSECONDS_PER_HOUR
+        + minute * MICROSECONDS_PER_MINUTE
+        + second * MICROSECONDS_PER_SECOND
+        + millisecond * MICROSECONDS_PER_MILLISECOND
+        + microsecond
+    );
 }
 
 int64_t Time::total_nanoseconds() const
 {
-    return   hour * NANOSECONDS_PER_HOUR
-           + minute * NANOSECONDS_PER_MINUTE
-           + second * NANOSECONDS_PER_SECOND
-           + microsecond * NANOSECONDS_PER_MILLISECOND
-           + microsecond * NANOSECONDS_PER_MICROSECOND
-           + nanosecond;
+    return static_cast<int64_t>(
+          hour * NANOSECONDS_PER_HOUR
+        + minute * NANOSECONDS_PER_MINUTE
+        + second * NANOSECONDS_PER_SECOND
+        + microsecond * NANOSECONDS_PER_MILLISECOND
+        + microsecond * NANOSECONDS_PER_MICROSECOND
+        + nanosecond
+    );
 }
 
 std::string Time::to_string() const

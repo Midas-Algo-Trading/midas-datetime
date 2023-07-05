@@ -15,7 +15,7 @@ struct Nanosecond : TimeComponent
      *
      * @param nanosecond number of nanoseconds.
      */
-    explicit Nanosecond(int nanosecond) :
+    explicit Nanosecond(uint32_t nanosecond) :
         TimeComponent(nanosecond) {}
 };
 

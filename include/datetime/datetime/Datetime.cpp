@@ -9,13 +9,13 @@ void Datetime::add_hours(int hours_to_add)
 {
     int new_hour = hour + hours_to_add;
     int day_change = new_hour / HOURS_PER_DAY;
-    hour = new_hour % HOURS_PER_DAY;
-
-    if (hour < 0)
+    new_hour %= HOURS_PER_DAY;
+    if (new_hour < 0)
     {
-        hour += HOURS_PER_DAY;
+        new_hour += HOURS_PER_DAY;
         day_change--;
     }
+    hour = new_hour;
 
     if (day_change > 0)
         add_days(day_change);

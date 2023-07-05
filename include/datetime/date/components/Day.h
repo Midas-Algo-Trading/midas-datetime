@@ -2,7 +2,6 @@
 #define DATETIME_DAY_H
 
 #include "datetime/Component.h"
-
 #include "DateComponent.h"
 
 /**
@@ -17,7 +16,7 @@ struct Day : DateComponent
      *
      * @param day Number of days to represent.
      */
-    explicit Day(int day) :
+    explicit Day(size_t day) :
         DateComponent(day) {}
 };
 

@@ -113,7 +113,7 @@ bool Date::is_leap_year() const
     return true;
 }
 
-int Date::max_days_in_month() const
+size_t Date::max_days_in_month() const
 {
     ASSERT(month >= 1 && month <= 12,
            std::runtime_error(fmt::format("'{}' is not a valid month", month)));
@@ -131,14 +131,14 @@ int Date::max_days_in_month() const
     }
 }
 
-void Date::add_days(int days_to_add)
+void Date::add_days(size_t days_to_add)
 {
     while (days_to_add > 0)
     {
-        int days_till_next_month = (max_days_in_month() - day) + 1;
+        size_t days_till_next_month = (max_days_in_month() - day) + 1;
         if (days_to_add < days_till_next_month)
         {
-            day += days_to_add;
+            day += static_cast<int>(days_to_add);
             return;
         }
         else
@@ -158,14 +158,14 @@ void Date::add_days(int days_to_add)
            std::runtime_error(fmt::format("'{}' is not a valid date", this->to_string())));
 }
 
-void Date::subtract_days(int days_to_subtract)
+void Date::subtract_days(size_t days_to_subtract)
 {
     while (days_to_subtract > 0)
     {
-        int days_till_prev_month = day;
+        size_t days_till_prev_month = day;
         if (days_to_subtract < days_till_prev_month)
         {
-            day -= days_to_subtract;
+            day -= static_cast<int>(days_to_subtract);
             return;
         }
         else
@@ -176,7 +176,7 @@ void Date::subtract_days(int days_to_subtract)
                 year--;
                 month = 12;
             }
-            day = max_days_in_month();
+            day = static_cast<int>(max_days_in_month());
             days_to_subtract -= days_till_prev_month;
         }
     }
@@ -226,7 +226,7 @@ Date::DayOfWeek Date::day_of_week() const
             ) % 7;
 
     // Convert Sunday-Saturday numbering to Monday-Sunday numbering
-    int day_of_week = (h + 6) % 7;
+    size_t day_of_week = (h + 6) % 7;
 
     switch (day_of_week) {
     case 0:
@@ -277,7 +277,7 @@ bool Date::is_valid_date() const
     return is_valid_year() && is_valid_month() && is_valid_day();
 }
 
-Date::Date(int year, int month, int day) :
+Date::Date(uint16_t year, uint8_t month, uint8_t day) :
     year(year),
     month(month),
     day(day)

@@ -13,7 +13,7 @@ struct TimeComponent : Component
      *
      * @param value value to have the newly created 'TimeComponent' set to.
      */
-    explicit TimeComponent(int value) :
+    explicit TimeComponent(uint32_t value) :
         Component(value) {}
 };
 

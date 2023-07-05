@@ -22,32 +22,32 @@ public:
     /**
      * Hour of a day.
      */
-    int hour = 0;
+    uint8_t hour = 0;
 
     /**
      * Minute of a day.
      */
-    int minute = 0;
+    uint8_t minute = 0;
 
     /**
      * Second of a day.
      */
-    int second = 0;
+    uint8_t second = 0;
 
     /**
      * Millisecond of a day.
      */
-    int millisecond = 0;
+    uint16_t millisecond = 0;
 
     /**
      * Microsecond of a day.
      */
-    int microsecond = 0;
+    uint16_t microsecond = 0;
 
     /**
      * Nanosecond of a day.
      */
-    int nanosecond = 0;
+    uint16_t nanosecond = 0;
 
     /**
      * 'Timezone' of the 'Time'.
@@ -73,9 +73,8 @@ public:
      * @param nanosecond nanosecond the 'Time' will be set to.
      * @param timezone timezone the 'Time' will be set to.
      */
-    explicit Time(int hour = 0, int minute = 0, int second = 0, int millisecond = 0,
-                  int microsecond = 0, int nanosecond = 0,
-                  Timezone timezone = default_timezone);
+    explicit Time(uint8_t hour = 0, uint8_t minute = 0, uint8_t second = 0, uint16_t millisecond = 0,
+                  uint16_t microsecond = 0, uint16_t nanosecond = 0, Timezone timezone = default_timezone);
 
     /**
      * Creates a 'Time' from a std::string.
@@ -420,77 +419,77 @@ private:
     /**
      * Minutes in a hour.
      */
-    static const int MINUTES_PER_HOUR;
+    static const size_t MINUTES_PER_HOUR;
 
     /**
      * Seconds in a minute.
      */
-    static const int SECONDS_PER_MINUTE;
+    static const size_t SECONDS_PER_MINUTE;
 
     /**
      * Seconds in a hour.
      */
-    static const int SECONDS_PER_HOUR;
+    static const size_t SECONDS_PER_HOUR;
 
     /**
      * Milliseconds in a second.
      */
-    static const int MILLISECONDS_PER_SECOND;
+    static const size_t MILLISECONDS_PER_SECOND;
 
     /**
      * Milliseconds in a minute.
      */
-    static const int64_t MILLISECONDS_PER_MINUTE;
+    static const size_t MILLISECONDS_PER_MINUTE;
 
     /**
      * Milliseconds in a minute.
      */
-    static const int64_t MILLISECONDS_PER_HOUR;
+    static const size_t MILLISECONDS_PER_HOUR;
 
     /**
      * Microseconds in a millisecond.
      */
-    static const int MICROSECONDS_PER_MILLISECOND;
+    static const size_t MICROSECONDS_PER_MILLISECOND;
 
     /**
      * Microseconds in a hour.
      */
-    static const int64_t MICROSECONDS_PER_HOUR;
+    static const size_t MICROSECONDS_PER_HOUR;
 
     /**
      * Microseconds in a minute.
      */
-    static const int64_t MICROSECONDS_PER_MINUTE;
+    static const size_t MICROSECONDS_PER_MINUTE;
 
     /**
      * Microseconds in a second.
      */
-    static const int64_t MICROSECONDS_PER_SECOND;
+    static const size_t MICROSECONDS_PER_SECOND;
 
     /**
      * Nanoseconds in a microsecond.
      */
-    static const int NANOSECONDS_PER_MICROSECOND;
+    static const size_t NANOSECONDS_PER_MICROSECOND;
 
     /**
      * Nanoseconds in a hour.
      */
-    static const int64_t NANOSECONDS_PER_HOUR;
+    static const size_t NANOSECONDS_PER_HOUR;
 
     /**
      * Nanoseconds in a minute.
      */
-    static const int64_t NANOSECONDS_PER_MINUTE;
+    static const size_t NANOSECONDS_PER_MINUTE;
 
     /**
      * Nanoseconds in a second.
      */
-    static const int64_t NANOSECONDS_PER_SECOND;
+    static const size_t NANOSECONDS_PER_SECOND;
 
     /**
      * Nanoseconds in a millisecond.
      */
-    static const int64_t NANOSECONDS_PER_MILLISECOND;
+    static const size_t NANOSECONDS_PER_MILLISECOND;
 
     /**
      * Gets 'hour' adjusted for 'timezone'.

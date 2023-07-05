@@ -15,7 +15,7 @@ struct Hour : TimeComponent
      *
      * @param hour number of hours.
      */
-    explicit Hour(int hour) :
+    explicit Hour(uint16_t hour) :
         TimeComponent(hour) {}
 };
 

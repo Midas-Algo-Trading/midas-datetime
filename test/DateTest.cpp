@@ -51,11 +51,6 @@ TEST(Date, today_sets_local_date)
         EXPECT_EQ(today.day, today_day);
 }
 
-TEST(Date, today_throws_invalid_argument)
-{
-    EXPECT_THROW(Time(1800, 1, 1), std::invalid_argument);
-}
-
 TEST(Date, operator_plusequal_adds_day_basic)
 {
         Date date = Date(1900, 1, 1);

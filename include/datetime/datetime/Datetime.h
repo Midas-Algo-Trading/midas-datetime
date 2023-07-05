@@ -45,8 +45,8 @@ public:
      * @param microsecond microsecond value that 'Datetime' will be set to.
      * @param nanosecond nanosecond value that 'Datetime' will be set to.
      */
-    explicit Datetime(int year = 1900, int month = 1, int day = 1, int hour = 0, int minute = 0,
-                      int second = 0, int millisecond = 0, int microsecond = 0, int nanosecond = 0)
+    explicit Datetime(uint16_t year = 1900, uint8_t month = 1, uint8_t day = 1, uint8_t hour = 0, uint8_t minute = 0,
+                      uint8_t second = 0, uint16_t millisecond = 0, uint16_t microsecond = 0, uint16_t nanosecond = 0)
         :
         Date(year, month, day),
         Time(hour, minute, second, millisecond, microsecond, nanosecond) {}

@@ -13,7 +13,7 @@ struct DateComponent : Component
      *
      * @param value the value to have the newly created 'DateComponent' set to.
      */
-    explicit DateComponent(int value) :
+    explicit DateComponent(size_t value) :
         Component(value) {}
 };
 

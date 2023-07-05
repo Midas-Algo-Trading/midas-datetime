@@ -98,7 +98,7 @@ const Timezone CST = Timezone(6);
  */
 const Timezone EST = Timezone(5);
 
-namespace priv_helpers
+namespace helpers
 {
 /**
  * Gets the 'Timezone' from a string.
@@ -139,14 +139,14 @@ static Timezone get_local_tz()
     char timezone_name[128];
     std::strftime(timezone_name, sizeof(timezone_name), "%Z", now_tm);
 
-    return priv_helpers::get_from_str(timezone_name);
+    return helpers::get_from_str(timezone_name);
 }
 }
 
 /**
  * Local 'Timezone' based on user's location.
  */
-const Timezone LOCAL = priv_helpers::get_local_tz();
+const Timezone LOCAL = helpers::get_local_tz();
 }
 
 #endif //DATETIME_TIMEZONE_H

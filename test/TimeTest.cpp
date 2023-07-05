@@ -19,11 +19,11 @@ TEST(Time, constructor_sets_members)
 TEST(Time, constructor_throws_invalid_argument)
 {
         EXPECT_THROW(Time(24), std::invalid_argument);
-        EXPECT_THROW(Time(0, 61), std::invalid_argument);
-        EXPECT_THROW(Time(0, 0, 60), std::invalid_argument);
-        EXPECT_THROW(Time(0, 0, 0, 1001), std::invalid_argument);
-        EXPECT_THROW(Time(0, 0, 0, 0, 1000), std::invalid_argument);
-        EXPECT_THROW(Time(0, 0, 0, 0, 0, 1001), std::invalid_argument);
+        EXPECT_THROW(Time(1, 61), std::invalid_argument);
+        EXPECT_THROW(Time(1, 1, 60), std::invalid_argument);
+        EXPECT_THROW(Time(1, 1, 1, 1001), std::invalid_argument);
+        EXPECT_THROW(Time(1, 1, 1, 1, 1000), std::invalid_argument);
+        EXPECT_THROW(Time(1, 1, 1, 1, 1, 1001), std::invalid_argument);
 }
 
 TEST(Time, now_sets_timezone)
@@ -64,22 +64,22 @@ TEST(Time, operator_minusequal_hour_throws_out_of_range)
 
 TEST(Time, operator_plusequal_minute_basic)
 {
-        Time time = Time(0, 1);
+        Time time = Time(1, 1);
         time += Minute(1);
         EXPECT_EQ(time.minute, 2);
 }
 
 TEST(Time, operator_plusequal_minute_adds_hour)
 {
-        Time time = Time(0, 58);
+        Time time = Time(1, 58);
         time += Minute(4);
-        EXPECT_EQ(time.hour, 1);
+        EXPECT_EQ(time.hour, 2);
         EXPECT_EQ(time.minute, 2);
 }
 
 TEST(Time, operator_minusequal_minute_basic)
 {
-        Time time = Time(0, 3);
+        Time time = Time(1, 3);
         time -= Minute(1);
         EXPECT_EQ(time.minute, 2);
 }
@@ -94,29 +94,29 @@ TEST(Time, operator_minusequal_minute_subtracts_hour)
 
 TEST(Time, operator_plusequal_second_basic)
 {
-        Time time = Time(0, 0, 1);
+        Time time = Time(1, 1, 1);
         time += Second(1);
         EXPECT_EQ(time.second, 2);
 }
 
 TEST(Time, operator_plusequal_second_adds_minute)
 {
-        Time time = Time(0, 0, 58);
+        Time time = Time(1, 1, 58);
         time += Second(4);
-        EXPECT_EQ(time.minute, 1);
+        EXPECT_EQ(time.minute, 2);
         EXPECT_EQ(time.second, 2);
 }
 
 TEST(Time, operator_minusequal_second_basic)
 {
-        Time time = Time(0, 0, 3);
+        Time time = Time(1, 1, 3);
         time -= Second(1);
         EXPECT_EQ(time.second, 2);
 }
 
 TEST(Time, operator_minusequal_second_subtracts_minute)
 {
-        Time time = Time(0, 1, 1);
+        Time time = Time(1, 1, 1);
         time -= Second(2);
         EXPECT_EQ(time.minute, 0);
         EXPECT_EQ(time.second, 59);
@@ -124,29 +124,29 @@ TEST(Time, operator_minusequal_second_subtracts_minute)
 
 TEST(Time, operator_plusequal_millisecond_basic)
 {
-        Time time = Time(0, 0, 0, 1);
+        Time time = Time(1, 1, 1, 1);
         time += Millisecond(1);
         EXPECT_EQ(time.millisecond, 2);
 }
 
 TEST(Time, operator_plusequal_millisecond_adds_minute)
 {
-        Time time = Time(0, 0, 0, 999);
+        Time time = Time(1, 1, 1, 999);
         time += Millisecond(3);
-        EXPECT_EQ(time.second, 1);
+        EXPECT_EQ(time.second, 2);
         EXPECT_EQ(time.millisecond, 2);
 }
 
 TEST(Time, operator_minusequal_millisecond_basic)
 {
-        Time time = Time(0, 0, 0, 3);
+        Time time = Time(1, 1, 1, 3);
         time -= Millisecond(1);
         EXPECT_EQ(time.millisecond, 2);
 }
 
 TEST(Time, operator_minusequal_millisecond_subtracts_second)
 {
-        Time time = Time(0, 0, 1, 1);
+        Time time = Time(1, 1, 1, 1);
         time -= Millisecond(2);
         EXPECT_EQ(time.second, 0);
         EXPECT_EQ(time.millisecond, 999);
@@ -154,29 +154,29 @@ TEST(Time, operator_minusequal_millisecond_subtracts_second)
 
 TEST(Time, operator_plusequal_microsecond_basic)
 {
-        Time time = Time(0, 0, 0, 0, 1);
+        Time time = Time(1, 1, 1, 1, 1);
         time += Microsecond(1);
         EXPECT_EQ(time.microsecond, 2);
 }
 
 TEST(Time, operator_plusequal_microsecond_adds_millisecond)
 {
-        Time time = Time(0, 0, 0, 0, 999);
+        Time time = Time(1, 1, 1, 1, 999);
         time += Microsecond(3);
-        EXPECT_EQ(time.millisecond, 1);
+        EXPECT_EQ(time.millisecond, 2);
         EXPECT_EQ(time.microsecond, 2);
 }
 
 TEST(Time, operator_minusequal_microsecond_basic)
 {
-        Time time = Time(0, 0, 0, 0, 3);
+        Time time = Time(1, 1, 1, 1, 3);
         time -= Microsecond(1);
         EXPECT_EQ(time.microsecond, 2);
 }
 
 TEST(Time, operator_minusequal_microsecond_subtracts_millisecond)
 {
-        Time time = Time(0, 0, 0, 1, 1);
+        Time time = Time(1, 1, 1, 1, 1);
         time -= Microsecond(2);
         EXPECT_EQ(time.millisecond, 0);
         EXPECT_EQ(time.microsecond, 999);
@@ -184,29 +184,29 @@ TEST(Time, operator_minusequal_microsecond_subtracts_millisecond)
 
 TEST(Time, operator_plusequal_nanosecond_basic)
 {
-        Time time = Time(0, 0, 0, 0, 0, 1);
+        Time time = Time(1, 1, 1, 1, 1, 1);
         time += Nanosecond(1);
         EXPECT_EQ(time.nanosecond, 2);
 }
 
 TEST(Time, operator_plusequal_nanoecond_adds_minute)
 {
-        Time time = Time(0, 0, 0, 0, 0, 999);
+        Time time = Time(1, 1, 1, 1, 1, 999);
         time += Nanosecond(3);
-        EXPECT_EQ(time.microsecond, 1);
+        EXPECT_EQ(time.microsecond, 2);
         EXPECT_EQ(time.nanosecond, 2);
 }
 
 TEST(Time, operator_minusequal_nanosecond_basic)
 {
-        Time time = Time(0, 0, 0, 0, 0, 3);
+        Time time = Time(1, 1, 1, 1, 1, 3);
         time -= Nanosecond(1);
         EXPECT_EQ(time.nanosecond, 2);
 }
 
 TEST(Time, operator_minusequal_nanosecond_subtracts_microsecond)
 {
-        Time time = Time(0, 0, 0, 0, 1, 1);
+        Time time = Time(1, 1, 1, 1, 1, 1);
         time -= Nanosecond(2);
         EXPECT_EQ(time.microsecond, 0);
         EXPECT_EQ(time.nanosecond, 999);
@@ -214,9 +214,9 @@ TEST(Time, operator_minusequal_nanosecond_subtracts_microsecond)
 
 TEST(Time, set_timezone_basic)
 {
-        Time time = Time(0 ,0 ,0, 0, 0, 0, TZ::CST);
+        Time time = Time(1 ,0 ,0, 0, 0, 0, TZ::CST);
         time.set_timezone(TZ::EST);
-        EXPECT_EQ(time.hour, 1);
+        EXPECT_EQ(time.hour, 2);
 }
 
 TEST(Time, set_timezone_wraps)
@@ -276,8 +276,8 @@ TEST(Time, ostream)
 
 TEST(TimeRange, constructor_sets_variables)
 {
-        Time start = Time(0, 0, 0, 0, 0, 0);
-        Time end = Time(1, 0, 0, 0, 0, 0);
+        Time start = Time(1);
+        Time end = Time(2);
         TimeRange time_range = TimeRange(start, end);
         EXPECT_EQ(time_range.start, start);
         EXPECT_EQ(time_range.end, end);
@@ -292,107 +292,107 @@ TEST(TimeRange, constructor_start_greater_than_end_throws_illegal_argument)
 
 TEST(TimeRange, in_range)
 {
-        Time start = Time(1, 0, 0, 0, 0, 0);
-        Time end = Time(3, 0, 0, 0, 0, 0);
+        Time start = Time(1);
+        Time end = Time(3);
         TimeRange date_range = TimeRange(start, end);
 
-        Time date = Time(2, 0, 0, 0, 0, 0);
+        Time date = Time(2);
         EXPECT_TRUE(date_range.in_range(date));
 
-        date = Time(1, 0, 0, 0, 0, 0);
+        date = Time(1);
         EXPECT_TRUE(date_range.in_range(date));
 
-        date = Time(3, 0, 0, 0, 0, 0);
+        date = Time(3);
         EXPECT_TRUE(date_range.in_range(date));
 
-        date = Time(0, 0, 0, 0, 0, 0);
+        date = Time();
         EXPECT_FALSE(date_range.in_range(date));
 
-        date = Time(4, 0, 0, 0, 0, 0);
+        date = Time(4);
         EXPECT_FALSE(date_range.in_range(date));
 }
 
 TEST(Time, operator_greater_than)
 {
-        Time time_greater = Time(2, 0, 0, 0, 0, 0);
-        Time time_lesser = Time(1, 0, 0, 0, 0, 0);
+        Time time_greater = Time(2);
+        Time time_lesser = Time(1);
         EXPECT_GT(time_greater, time_lesser);
 
-        time_greater = Time(0, 2, 0, 0, 0, 0);
-        time_lesser = Time(0, 1, 0, 0, 0, 0);
+        time_greater = Time(1, 2);
+        time_lesser = Time(1, 1);
         EXPECT_GT(time_greater, time_lesser);
 
-        time_greater = Time(0, 0, 2, 0, 0, 0);
-        time_lesser = Time(0, 0, 1, 0, 0, 0);
+        time_greater = Time(1, 0, 2);
+        time_lesser = Time(1, 0, 1);
         EXPECT_GT(time_greater, time_lesser);
 
-        time_greater = Time(0, 0, 0, 2, 0, 0);
-        time_lesser = Time(0, 0, 0, 1, 0, 0);
+        time_greater = Time(1, 0, 0, 2);
+        time_lesser = Time(1, 0, 0, 1);
         EXPECT_GT(time_greater, time_lesser);
 
-        time_greater = Time(0, 0, 0, 0, 2, 0);
-        time_lesser = Time(0, 0, 0, 0, 1, 0);
+        time_greater = Time(1, 0, 0, 0, 2);
+        time_lesser = Time(1, 0, 0, 0, 1);
         EXPECT_GT(time_greater, time_lesser);
 
-        time_greater = Time(0, 0, 0, 0, 0, 2);
-        time_lesser = Time(0, 0, 0, 0, 0, 1);
+        time_greater = Time(1, 0, 0, 0, 0, 2);
+        time_lesser = Time(1, 0, 0, 0, 0, 1);
         EXPECT_GT(time_greater, time_lesser);
 }
 
 TEST(Time, operator_greater_than_or_equal_to)
 {
-        Time time_greater = Time(2, 0, 0, 0, 0, 0);
-        Time time_lesser = Time(1, 0, 0, 0, 0, 0);
+        Time time_greater = Time(2);
+        Time time_lesser = Time(1);
         EXPECT_GE(time_greater, time_lesser);
 
-        time_greater = Time(0, 2, 0, 0, 0, 0);
-        time_lesser = Time(0, 1, 0, 0, 0, 0);
+        time_greater = Time(1, 2);
+        time_lesser = Time(1, 1);
         EXPECT_GE(time_greater, time_lesser);
 
-        time_greater = Time(0, 0, 2, 0, 0, 0);
-        time_lesser = Time(0, 0, 1, 0, 0, 0);
+        time_greater = Time(1, 0, 2);
+        time_lesser = Time(1, 0, 1);
         EXPECT_GE(time_greater, time_lesser);
 
-        time_greater = Time(0, 0, 0, 2, 0, 0);
-        time_lesser = Time(0, 0, 0, 1, 0, 0);
+        time_greater = Time(1, 0, 0, 2);
+        time_lesser = Time(1, 0, 0, 1);
         EXPECT_GE(time_greater, time_lesser);
 
-        time_greater = Time(0, 0, 0, 0, 2, 0);
-        time_lesser = Time(0, 0, 0, 0, 1, 0);
+        time_greater = Time(1, 0, 0, 0, 2);
+        time_lesser = Time(1, 0, 0, 0, 1);
         EXPECT_GE(time_greater, time_lesser);
 
-        time_greater = Time(0, 0, 0, 0, 0, 2);
-        time_lesser = Time(0, 0, 0, 0, 0, 1);
+        time_greater = Time(1, 0, 0, 0, 0, 2);
+        time_lesser = Time(1, 0, 0, 0, 0, 1);
         EXPECT_GE(time_greater, time_lesser);
 
-        time_lesser = Time(0, 0, 0, 0, 0, 2);
+        time_lesser = Time(1, 0, 0, 0, 0, 2);
         EXPECT_GE(time_greater, time_lesser);
 }
 
 TEST(Time, operator_less_than)
 {
-        Time time_greater = Time(2, 0, 0, 0, 0, 0);
-        Time time_lesser = Time(1, 0, 0, 0, 0, 0);
+        Time time_greater = Time(2);
+        Time time_lesser = Time(1);
         EXPECT_LT(time_lesser, time_greater);
 
-        time_greater = Time(0, 2, 0, 0, 0, 0);
-        time_lesser = Time(0, 1, 0, 0, 0, 0);
+        time_greater = Time(1, 2);
+        time_lesser = Time(1, 1);
         EXPECT_LT(time_lesser, time_greater);
 
-        time_greater = Time(0, 0, 2, 0, 0, 0);
-        time_lesser = Time(0, 0, 1, 0, 0, 0);
+        time_greater = Time(1, 0, 2);
+        time_lesser = Time(1, 0, 1);
         EXPECT_LT(time_lesser, time_greater);
 
-        time_greater = Time(0, 0, 0, 2, 0, 0);
-        time_lesser = Time(0, 0, 0, 1, 0, 0);
+        time_greater = Time(1, 0, 0, 2);
+        time_lesser = Time(1, 0, 0, 1);
         EXPECT_LT(time_lesser, time_greater);
 
-        time_greater = Time(0, 0, 0, 0, 2, 0);
-        time_lesser = Time(0, 0, 0, 0, 1, 0);
+        time_greater = Time(1, 0, 0, 0, 2);
+        time_lesser = Time(1, 0, 0, 0, 1);
         EXPECT_LT(time_lesser, time_greater);
 
-        time_greater = Time(0, 0, 0, 0, 0, 2);
-        time_lesser = Time(0, 0, 0, 0, 0, 1);
+        time_greater = Time(1, 0, 0, 0, 0, 2);
+        time_lesser = Time(1, 0, 0, 0, 0, 1);
         EXPECT_LT(time_lesser, time_greater);
 }
 
@@ -402,91 +402,91 @@ TEST(Time, operator_less_than_or_equal_to)
         Time time_lesser = Time(1, 0, 0, 0, 0, 0);
         EXPECT_LE(time_lesser, time_greater);
 
-        time_greater = Time(0, 2, 0, 0, 0, 0);
-        time_lesser = Time(0, 1, 0, 0, 0, 0);
+        time_greater = Time(1, 2);
+        time_lesser = Time(1, 1);
         EXPECT_LE(time_lesser, time_greater);
 
-        time_greater = Time(0, 0, 2, 0, 0, 0);
-        time_lesser = Time(0, 0, 1, 0, 0, 0);
+        time_greater = Time(1, 0, 2);
+        time_lesser = Time(1, 0, 1);
         EXPECT_LE(time_lesser, time_greater);
 
-        time_greater = Time(0, 0, 0, 2, 0, 0);
-        time_lesser = Time(0, 0, 0, 1, 0, 0);
+        time_greater = Time(1, 0, 0, 2);
+        time_lesser = Time(1, 0, 0, 1);
         EXPECT_LE(time_lesser, time_greater);
 
-        time_greater = Time(0, 0, 0, 0, 2, 0);
-        time_lesser = Time(0, 0, 0, 0, 1, 0);
+        time_greater = Time(1, 0, 0, 0, 2);
+        time_lesser = Time(1, 0, 0, 0, 1);
         EXPECT_LE(time_lesser, time_greater);
 
-        time_greater = Time(0, 0, 0, 0, 0, 2);
-        time_lesser = Time(0, 0, 0, 0, 0, 1);
+        time_greater = Time(1, 0, 0, 0, 0, 2);
+        time_lesser = Time(1, 0, 0, 0, 0, 1);
         EXPECT_LE(time_lesser, time_greater);
 
-        time_lesser = Time(0, 0, 0, 0, 0, 2);
+        time_lesser = Time(1, 0, 0, 0, 0, 2);
         EXPECT_LE(time_lesser, time_greater);
 }
 
 TEST(Time, operator_equal_to)
 {
-        Time time1 = Time(0, 0, 0, 0, 0, 0);
-        Time time2 = Time(0, 0, 0, 0, 0, 0);
+        Time time1 = Time();
+        Time time2 = Time();
         EXPECT_EQ(time1, time2);
 
-        time2 = Time(1, 0, 0, 0, 0, 0);
+        time2 = Time(1);
         EXPECT_NE(time1, time2);
 
-        time2 = Time(0, 1, 0, 0, 0, 0);
+        time2 = Time(1, 1);
         EXPECT_NE(time1, time2);
 
-        time2 = Time(0, 0, 1, 0, 0, 0);
+        time2 = Time(1, 0, 1);
         EXPECT_NE(time1, time2);
 
-        time2 = Time(0, 0, 0, 1, 0, 0);
+        time2 = Time(1, 0, 0, 1);
         EXPECT_NE(time1, time2);
 
-        time2 = Time(0, 0, 0, 0, 1, 0);
+        time2 = Time(1, 0, 0, 0, 1);
         EXPECT_NE(time1, time2);
 
-        time2 = Time(0, 0, 0, 0, 0, 1);
+        time2 = Time(1, 0, 0, 0, 0, 1);
         EXPECT_NE(time1, time2);
 }
 
 TEST(Time, operator_not_equal_to)
 {
-        Time time1 = Time(0, 0, 0, 0, 0, 0);
-        Time time2 = Time(1, 0, 0, 0, 0, 0);
+        Time time1 = Time();
+        Time time2 = Time(1);
         EXPECT_NE(time1, time2);
 
-        time2 = Time(0, 1, 0, 0, 0, 0);
+        time2 = Time(1, 1);
         EXPECT_NE(time1, time2);
 
-        time2 = Time(0, 2, 1, 0, 0, 0);
+        time2 = Time(1, 2, 1);
         EXPECT_NE(time1, time2);
 
-        time2 = Time(0, 0, 0, 1, 0, 0);
+        time2 = Time(1, 0, 0, 1);
         EXPECT_NE(time1, time2);
 
-        time2 = Time(0, 0, 0, 0, 1, 0);
+        time2 = Time(1, 0, 0, 0, 1);
         EXPECT_NE(time1, time2);
 
-        time2 = Time(0, 0, 0, 0, 0, 1);
+        time2 = Time(1, 0, 0, 0, 0, 1);
         EXPECT_NE(time1, time2);
 
-        time2 = Time(0, 0, 0, 0, 0, 0);
+        time2 = Time();
         EXPECT_EQ(time1, time2);
 }
 
 TEST(Timezone, get_from_str)
 {
-        EXPECT_EQ(TZ::priv_helpers::get_from_str("Coordinated Universal Time"), TZ::UTC);
-        EXPECT_EQ(TZ::priv_helpers::get_from_str("Pacific Standard Time"), TZ::PST);
-        EXPECT_EQ(TZ::priv_helpers::get_from_str("Central Daylight Time"), TZ::CST);
-        EXPECT_EQ(TZ::priv_helpers::get_from_str("Eastern Standard Time"), TZ::EST);
+        EXPECT_EQ(TZ::helpers::get_from_str("Coordinated Universal Time"), TZ::UTC);
+        EXPECT_EQ(TZ::helpers::get_from_str("Pacific Standard Time"), TZ::PST);
+        EXPECT_EQ(TZ::helpers::get_from_str("Central Daylight Time"), TZ::CST);
+        EXPECT_EQ(TZ::helpers::get_from_str("Eastern Standard Time"), TZ::EST);
 }
 
 TEST(Timezone, get_from_str_throws_if_not_timezone_str)
 {
-        EXPECT_THROW(TZ::priv_helpers::get_from_str("Invalid timezone str"), std::invalid_argument);
+        EXPECT_THROW(TZ::helpers::get_from_str("Invalid timezone str"), std::invalid_argument);
 }
 
 
@@ -569,25 +569,25 @@ TEST(Time, ceil_up)
 
 TEST(Time, ceil_no_up)
 {
-        Time time = Time(1, 0, 0, 0, 0, 0);
+        Time time = Time(1);
         time.ceil(Time::Component::HOUR);
-        EXPECT_EQ(time, Time(1, 0, 0, 0, 0, 0));
+        EXPECT_EQ(time, Time(1));
 
-        time = Time(0, 1, 0, 0, 0, 0);
+        time = Time(1, 1);
         time.ceil(Time::Component::MINUTE);
-        EXPECT_EQ(time, Time(0, 1, 0, 0, 0, 0));
+        EXPECT_EQ(time, Time(1, 1));
 
-        time = Time(0, 0, 1, 0, 0, 0);
+        time = Time(1, 0, 1);
         time.ceil(Time::Component::SECOND);
-        EXPECT_EQ(time, Time(0, 0, 1, 0, 0, 0));
+        EXPECT_EQ(time, Time(1, 0, 1));
 
-        time = Time(0, 0, 0, 1, 0, 0);
+        time = Time(1, 0, 0, 1);
         time.ceil(Time::Component::MILLISECOND);
-        EXPECT_EQ(time, Time(0, 0, 0, 1, 0, 0));
+        EXPECT_EQ(time, Time(1, 0, 0, 1));
 
-        time = Time(0, 0, 0, 0, 1, 0);
+        time = Time(1, 0, 0, 0, 1);
         time.ceil(Time::Component::MICROSECOND);
-        EXPECT_EQ(time, Time(0, 0, 0, 0, 1, 0));
+        EXPECT_EQ(time, Time(1, 0, 0, 0, 1));
 
         time = Time(1, 1, 1, 1, 1, 499);
         time.ceil(Time::Component::NANOSECOND);
@@ -596,25 +596,25 @@ TEST(Time, ceil_no_up)
 
 TEST(Time, floor)
 {
-        Time time = Time(1, 59, 0, 0, 0, 0);
+        Time time = Time(1, 59);
         time.floor(Time::Component::HOUR);
-        EXPECT_EQ(time, Time(1, 0, 0, 0, 0, 0));
+        EXPECT_EQ(time, Time(1));
 
-        time = Time(0, 1, 59, 0, 0, 0);
+        time = Time(1, 1, 59);
         time.floor(Time::Component::MINUTE);
-        EXPECT_EQ(time, Time(0, 1, 0, 0, 0, 0));
+        EXPECT_EQ(time, Time(1, 1));
 
-        time = Time(0, 0, 1, 999, 0, 0);
+        time = Time(1, 0, 1, 999);
         time.floor(Time::Component::SECOND);
-        EXPECT_EQ(time, Time(0, 0, 1, 0, 0, 0));
+        EXPECT_EQ(time, Time(1, 0, 1));
 
-        time = Time(0, 0, 0, 1, 999, 0);
+        time = Time(1, 0, 0, 1, 999);
         time.floor(Time::Component::MILLISECOND);
-        EXPECT_EQ(time, Time(0, 0, 0, 1, 0, 0));
+        EXPECT_EQ(time, Time(1, 0, 0, 1));
 
-        time = Time(0, 0, 0, 0, 1, 999);
+        time = Time(1, 0, 0, 0, 1, 999);
         time.floor(Time::Component::MICROSECOND);
-        EXPECT_EQ(time, Time(0, 0, 0, 0, 1, 0));
+        EXPECT_EQ(time, Time(1, 0, 0, 0, 1  ));
 
         time = Time(1, 1, 1, 1, 1, 499);
         time.floor(Time::Component::NANOSECOND);
@@ -650,7 +650,7 @@ TEST(Time, string_TimeComponents_skip)
 
 TEST(Time, constructor_int_int_int_int_int_int_throws_invalid_argument)
 {
-    EXPECT_THROW(Time(-1), std::invalid_argument);
+    EXPECT_THROW(Time(100), std::invalid_argument);
 }
 
 TEST(Time, constructor_string_TimeComponents_throws_invalid_argument_on_wrong_time_components)
