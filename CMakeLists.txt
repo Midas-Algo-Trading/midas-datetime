@@ -3,13 +3,7 @@ project(datetime)
 
 set(CMAKE_CXX_STANDARD 23)
 
-# stringhelpers library
-include_directories(libs/stringhelpers/include)
-
-# fmt library
 add_subdirectory(libs/fmt)
-find_package(fmt)
-include_directories(libs/fmt/include)
 
 add_library(${PROJECT_NAME}
         include/datetime/time/Time.h
@@ -36,8 +30,15 @@ target_sources(${PROJECT_NAME} PRIVATE
         src/datetime/Datetime.cpp
         src/time/Time.cpp)
 
+target_include_directories(${PROJECT_NAME} PUBLIC
+        libs/stringhelpers/include)
+
 include_directories(include)
 
 target_link_libraries(${PROJECT_NAME} fmt::fmt)
 
-add_subdirectory(tests)
+option(DATETIME_BUILD_TESTS "Build the test directory for datetime" OFF)
+
+if (DATETIME_BUILD_TESTS)
+    add_subdirectory(tests)
+endif()
