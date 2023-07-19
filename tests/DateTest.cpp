@@ -2,7 +2,7 @@
 
 #define private public
 #include "datetime/date/components/Day.h"
-#include "datetime/date/Date.cpp"
+#include "../src/date/Date.cpp"
 #include "datetime/date/DateRange.h"
 
 TEST(Date, ostream)
