@@ -19,7 +19,7 @@ add_library(${PROJECT_NAME}
         include/datetime/time/components/Millisecond.h
         include/datetime/time/TimeRange.h
         include/datetime/Range.h
-        ../util/exceptions/not_implemented_error.h
+        util/exceptions/not_implemented_error.h
         include/datetime/date/DateRange.h
         include/datetime/datetime/Datetime.h
         include/datetime/datetime/DatetimeRange.h
