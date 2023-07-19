@@ -6,7 +6,7 @@
 #include "datetime/time/Time.h"
 #include "fmt/format.h"
 #include "../../../util/macros.h"
-#include "StringHelpers/StringHelpers.h"
+#include "stringhelpers/stringhelpers.h"
 
 /**
  * Date with components: 'year', 'month', and 'day'.

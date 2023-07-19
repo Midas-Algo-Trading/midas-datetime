@@ -4,7 +4,6 @@ project(datetime)
 set(CMAKE_CXX_STANDARD 23)
 
 # stringhelpers library
-add_subdirectory(libs/stringhelpers)
 include_directories(libs/stringhelpers/include)
 
 # fmt library
@@ -39,6 +38,6 @@ target_sources(${PROJECT_NAME} PRIVATE
 
 include_directories(include)
 
-target_link_libraries(${PROJECT_NAME} stringhelpers fmt::fmt)
+target_link_libraries(${PROJECT_NAME} fmt::fmt)
 
 add_subdirectory(tests)

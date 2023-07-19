@@ -9,7 +9,7 @@
 #include "datetime/time/components/Nanosecond.h"
 #include "datetime/time/Timezone.h"
 #include "datetime/time/components/Millisecond.h"
-#include "StringHelpers/StringHelpers.h"
+#include "stringhelpers/stringhelpers.h"
 #include "../../../util/macros.h"
 
 /**
