@@ -482,6 +482,7 @@ TEST(Timezone, get_from_str)
         EXPECT_EQ(TZ::helpers::get_from_str("Pacific Standard Time"), TZ::PST);
         EXPECT_EQ(TZ::helpers::get_from_str("Central Daylight Time"), TZ::CST);
         EXPECT_EQ(TZ::helpers::get_from_str("Eastern Standard Time"), TZ::EST);
+        EXPECT_EQ(TZ::helpers::get_from_str("Pacific Daylight Time"), TZ::PDT);
 }
 
 TEST(Timezone, get_from_str_throws_if_not_timezone_str)

@@ -89,6 +89,11 @@ const Timezone UTC = Timezone(0);
 const Timezone PST = Timezone(8);
 
 /**
+ * The Pacific Daylight Time (PDT) timezone.
+ */
+const Timezone PDT = Timezone(7);
+
+/**
  * The Central Standard Time (CST) timezone.
  */
 const Timezone CST = Timezone(6);
@@ -119,6 +124,8 @@ static Timezone get_from_str(std::string_view timezone_string)
         return TZ::CST;
     else if (timezone_string == "Eastern Standard Time")
         return TZ::EST;
+    else if (timezone_string == "Pacific Daylight Time")
+        return TZ::PDT;
     throw std::invalid_argument(fmt::format("'{}' is not a valid timezone string", timezone_string));
 }
 
