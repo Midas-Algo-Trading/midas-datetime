@@ -3,10 +3,15 @@ project(datetime)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_subdirectory(libs/stringhelpers)
-add_subdirectory(libs/fmt)
+if (NOT TARGET stringhelpers)
+    add_subdirectory(libs/stringhelpers)
+endif()
 
-add_library(${PROJECT_NAME}
+if (NOT TARGET fmt)
+    add_subdirectory(libs/fmt)
+endif()
+
+    add_library(${PROJECT_NAME}
         include/datetime/time/Time.h
         include/datetime/time/components/Hour.h
         include/datetime/Component.h
