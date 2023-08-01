@@ -3,6 +3,7 @@
 #define private public
 #include "datetime/time/Time.h"
 #include "datetime/datetime/Datetime.h"
+#include "../src/datetime/Datetime.cpp"
 #include "datetime/datetime/DatetimeRange.h"
 
 

@@ -2,6 +2,7 @@
 
 #define private public
 #include "datetime/time/Time.h"
+#include "../src/time/Time.cpp"
 #include "datetime/time/TimeRange.h"
 
 TEST(Time, constructor_sets_members)
