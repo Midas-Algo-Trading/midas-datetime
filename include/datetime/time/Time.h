@@ -102,6 +102,42 @@ public:
     enum Component { HOUR, MINUTE, SECOND, MILLISECOND, MICROSECOND, NANOSECOND};
 
     /**
+     * Adds this 'Time' and 'other' 'Time'.
+     *
+     * @param other the other 'Time' added to this 'Time'.
+     *
+     * @return new 'Time' object of this 'Time' added with 'other' 'Time'.
+     */
+    virtual Time operator+(const Time& other) const;
+
+    /**
+     * Subtracts this 'Time' and 'other' 'Time'.
+     *
+     * @param other the other 'Time' subtracted to this 'Time'.
+     *
+     * @return new 'Time' object of this 'Time' subtracted with 'other' 'Time'.
+     */
+    virtual Time operator-(const Time& other) const;
+
+    /**
+     * Adds 'other' to this 'Time'.
+     *
+     * @param other the other 'Time' added to this 'Time'.
+     *
+     * @return reference to this modified 'Time'.
+     */
+    virtual Time& operator+=(const Time& other);
+
+    /**
+     * Subtracts 'other' to this 'Time'.
+     *
+     * @param other the other 'Time' Subtracted from this 'Time'.
+     *
+     * @return reference to this modified 'Time'.
+     */
+    virtual Time& operator-=(const Time& other);
+
+    /**
      * Adds 'hours' to this 'Time'.
      *
      * @param days number of days to add to this 'Time'.
@@ -287,21 +323,21 @@ public:
      *
      * // output: 1:03:00.0.0.0
      */
-    void round(Component to);
+    Time& round(Component to);
 
     /**
      * Rounds up the components of this 'Time', stopping at 'to'.
      *
      * @param to finish the rounding up of this 'Time's' components at this 'Component'.
      */
-    void ceil(Component to);
+    Time& ceil(Component to);
 
     /**
      * Rounds down the components of this 'Time', stopping at 'to'.
      *
      * @param to finish the rounding down of this 'Time's' components at this 'Component'.
      */
-    void floor(Component to);
+    Time& floor(Component to);
 
     /**
      * Represents this 'Time' as a std::string.

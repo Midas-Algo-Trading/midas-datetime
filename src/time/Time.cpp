@@ -3,8 +3,6 @@
 #include <chrono>
 #include <iostream>
 
-#
-
 Timezone Time::default_timezone = TZ::LOCAL;
 
 Time Time::now(Timezone timezone)
@@ -359,99 +357,104 @@ Time::Time(uint8_t hour, uint8_t minute, uint8_t second, uint16_t millisecond, u
            std::invalid_argument(fmt::format("Time '{}' is invalid", Time::to_string())));
 }
 
-void Time::round(Component to)
+Time& Time::round(Component to)
 {
     if (to == NANOSECOND)
-        return;
+        return *this;
 
     if (nanosecond >= NANOSECONDS_PER_MICROSECOND / 2)
         add_microseconds(1);
     nanosecond = 0;
 
     if (to == MICROSECOND)
-        return;
+        return *this;
 
     if (microsecond >= MICROSECONDS_PER_MILLISECOND / 2)
         add_milliseconds(1);
     microsecond = 0;
 
     if (to == MILLISECOND)
-        return;
+        return *this;
 
     if (millisecond >= MILLISECONDS_PER_SECOND / 2)
         add_seconds(1);
     millisecond = 0;
 
     if (to == SECOND)
-        return;
+        return *this;
 
     if (second >= SECONDS_PER_MINUTE / 2)
         add_minutes(1);
     second = 0;
 
     if (to == MINUTE)
-        return;
+        return *this;
 
     if (minute >= MINUTES_PER_HOUR / 2)
         add_hours(1);
     minute = 0;
+
+    return *this;
 }
 
-void Time::ceil(Time::Component to)
+Time& Time::ceil(Time::Component to)
 {
     if (to == NANOSECOND)
-        return;
+        return *this;
 
     if (nanosecond > 0)
         add_microseconds(1);
     nanosecond = 0;
 
     if (to == MICROSECOND)
-        return;
+        return *this;
 
     if (microsecond > 0)
         add_milliseconds(1);
     microsecond = 0;
 
     if (to == MILLISECOND)
-        return;
+        return *this;
 
     if (millisecond > 0)
         add_seconds(1);
     millisecond = 0;
 
     if (to == SECOND)
-        return;
+        return *this;
 
     if (second > 0)
         add_minutes(1);
     second = 0;
 
     if (to == MINUTE)
-        return;
+        return *this;
 
     if (minute > 0)
         add_hours(1);
     minute = 0;
+
+    return *this;
 }
 
-void Time::floor(Time::Component to)
+Time& Time::floor(Time::Component to)
 {
     if (to == NANOSECOND)
-        return;
+        return *this;
     nanosecond = 0;
     if (to == MICROSECOND)
-        return;
+        return *this;
     microsecond = 0;
     if (to == MILLISECOND)
-        return;
+        return *this;
     millisecond = 0;
     if (to == SECOND)
-        return;
+        return *this;
     second = 0;
     if (to == MINUTE)
-        return;
+        return *this;
     minute = 0;
+    return *this;
 }
 
 int Time::total_minutes() const
@@ -498,7 +501,7 @@ int64_t Time::total_nanoseconds() const
           hour * NANOSECONDS_PER_HOUR
         + minute * NANOSECONDS_PER_MINUTE
         + second * NANOSECONDS_PER_SECOND
-        + microsecond * NANOSECONDS_PER_MILLISECOND
+        + millisecond * NANOSECONDS_PER_MILLISECOND
         + microsecond * NANOSECONDS_PER_MICROSECOND
         + nanosecond
     );
@@ -548,4 +551,50 @@ bool Time::is_valid_microsecond() const
 bool Time::is_valid_nanosecond() const
 {
     return nanosecond < NANOSECONDS_PER_MICROSECOND && nanosecond >= 0;
+}
+
+Time Time::operator+(const Time& other) const
+{
+    Time ret = *this;
+    ret += Nanosecond(other.nanosecond);
+    ret += Microsecond(other.microsecond);
+    ret += Millisecond(other.millisecond);
+    ret += Second(other.second);
+    ret += Minute(other.minute);
+    ret += Hour(other.get_hour_at_timezone(timezone));
+    return ret;
+}
+
+Time Time::operator-(const Time& other) const
+{
+    Time ret = *this;
+    ret -= Hour(other.get_hour_at_timezone(timezone));
+    ret -= Minute(other.minute);
+    ret -= Second(other.second);
+    ret -= Millisecond(other.millisecond);
+    ret -= Microsecond(other.microsecond);
+    ret -= Nanosecond(other.nanosecond);
+    return ret;
+}
+
+Time& Time::operator+=(const Time& other)
+{
+    (*this) += Nanosecond(other.nanosecond);
+    (*this) += Microsecond(other.microsecond);
+    (*this) += Millisecond(other.millisecond);
+    (*this) += Second(other.second);
+    (*this) += Minute(other.minute);
+    (*this) += Hour(other.get_hour_at_timezone(timezone));
+    return (*this);
+}
+
+Time &Time::operator-=(const Time &other)
+{
+    (*this) -= Hour(other.get_hour_at_timezone(timezone));
+    (*this) -= Minute(other.minute);
+    (*this) -= Second(other.second);
+    (*this) -= Millisecond(other.millisecond);
+    (*this) -= Microsecond(other.microsecond);
+    (*this) -= Nanosecond(other.nanosecond);
+    return (*this);
 }

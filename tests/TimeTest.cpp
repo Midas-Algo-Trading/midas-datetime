@@ -665,3 +665,29 @@ TEST(Time, constructor_string_TimeComponents_throws_invalid_argument_on_out_of_r
 {
     EXPECT_THROW(Time("25", Time::Component::HOUR), std::invalid_argument);
 }
+
+TEST(Time, operator_plus_time)
+{
+    Time time = Time(1, 2, 3, 4, 5, 6) + Time(2, 3, 4, 5, 6, 7);
+    EXPECT_EQ(time, Time(3, 5, 7, 9, 11, 13));
+}
+
+TEST(Time, operator_minus_time)
+{
+    Time time = Time(3, 5, 7, 9, 11, 13) - Time(2, 3, 4, 5, 6, 7);
+    EXPECT_EQ(time, Time(1, 2, 3, 4, 5, 6));
+}
+
+TEST(Time, operator_plus_equal_time)
+{
+    Time time = Time(1, 2, 3, 4, 5, 6);
+    time += Time(2, 3, 4, 5, 6, 7);
+    EXPECT_EQ(time, Time(3, 5, 7, 9, 11, 13));
+}
+
+TEST(Time, operator_minus_equal_time)
+{
+    Time time = Time(3, 5, 7, 9, 11, 13);
+    time -= Time(2, 3, 4, 5, 6, 7);
+    EXPECT_EQ(time, Time(1, 2, 3, 4, 5, 6));
+}
