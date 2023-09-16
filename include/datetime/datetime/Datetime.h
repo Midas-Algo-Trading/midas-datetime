@@ -44,12 +44,15 @@ public:
      * @param millisecond millisecond value that 'Datetime' will be set to.
      * @param microsecond microsecond value that 'Datetime' will be set to.
      * @param nanosecond nanosecond value that 'Datetime' will be set to.
+     * @param timezone timezone that 'Datetime' will be set to.
      */
     explicit Datetime(uint16_t year = 1900, uint8_t month = 1, uint8_t day = 1, uint8_t hour = 0, uint8_t minute = 0,
-                      uint8_t second = 0, uint16_t millisecond = 0, uint16_t microsecond = 0, uint16_t nanosecond = 0)
+                      uint8_t second = 0, uint16_t millisecond = 0, uint16_t microsecond = 0,
+                      uint16_t nanosecond = 0,
+                      Timezone timezone = Time::default_timezone)
         :
         Date(year, month, day),
-        Time(hour, minute, second, millisecond, microsecond, nanosecond) {}
+        Time(hour, minute, second, millisecond, microsecond, nanosecond, timezone) {}
 
     /**
      * Creates a 'Datetime' whose components' values match the current date and time.
@@ -58,7 +61,17 @@ public:
      *
      * @return created 'Datetime'.
      */
-    static Datetime now(Timezone timezone = default_timezone);
+    static Datetime now(Timezone timezone = Time::default_timezone);
+
+    /**
+     * Constructs a datetime object from a millisecond unix timestamp.
+     *
+     * @param timestamp millisecond unix timestamp.
+     * @param timezone timezone that 'Datetime' will be set to.
+     *
+     * @return the datetime object converted from the 'timestamp'.
+     */
+    static Datetime from_ms(size_t timestamp, Timezone timezone = Time::default_timezone);
 
     /**
      * Creates a 'Datetime' from a std::string.
@@ -322,7 +335,6 @@ public:
      * @return reference to 'os' after inserting 'date' into 'os'.
      */
     friend std::ostream& operator<<(std::ostream& os, const Datetime& datetime);
-
 
 private:
 

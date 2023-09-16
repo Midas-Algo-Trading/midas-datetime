@@ -171,3 +171,49 @@ std::ostream& operator<<(std::ostream& os, const Datetime& datetime)
 {
     return os << datetime.to_string();
 }
+
+Datetime Datetime::from_ms(size_t timestamp, Timezone timezone)
+{
+    // The timezone offset in milliseconds,
+    size_t timezone_offset_ms = 5 * 60 * 60 * 1000;
+
+    // Convert milliseconds to seconds and milliseconds
+    size_t timestamp_sec = (timestamp - timezone_offset_ms) / 1000;
+    uint16_t millisecond = timestamp % 1000;
+
+    auto is_leap_year = [](size_t year) {
+        return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
+    };
+
+    // Calculate year.
+    uint16_t year = 1970;  // Unix epoch year.
+    while (timestamp_sec >= 31536000)  // Number of seconds in a non-leap year.
+    {
+        size_t seconds_in_year = is_leap_year(year) ? 31622400 : 31536000;
+        timestamp_sec -= seconds_in_year;
+        year++;
+    }
+
+    // Number of days in each month for a non-leap year,
+    size_t days_in_month[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    // Adjust February for leap years.
+    if (is_leap_year(year))
+        days_in_month[2] = 29;
+
+    // Calculate month and day.
+    uint8_t month = 1;
+    size_t seconds_per_day = 86400;
+    while (timestamp_sec >= days_in_month[month] * seconds_per_day)
+    {
+        timestamp_sec -= days_in_month[month] * seconds_per_day;
+        month++;
+    }
+    uint8_t day = (timestamp_sec / seconds_per_day) + 1;
+
+    uint8_t hour = (timestamp_sec % 86400LL) / 3600;
+    uint8_t minute = (timestamp_sec % 3600) / 60;
+    uint8_t second = timestamp_sec % 60;
+
+    return Datetime(year, month, day, hour, minute, second, millisecond, 0, 0, timezone);
+}

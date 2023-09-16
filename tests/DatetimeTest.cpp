@@ -456,3 +456,31 @@ TEST(Datetime, ostream)
         actual << datetime;
         EXPECT_EQ(actual.str(), "2000-01-02 3:04:05.6.7.8");
 }
+
+TEST(Datetime, from_ms_basic)
+{
+    Datetime datetime = Datetime::from_ms(1694813880000);
+    EXPECT_EQ(datetime.year, 2023);
+    EXPECT_EQ(datetime.month, 9);
+    EXPECT_EQ(datetime.day, 15);
+    EXPECT_EQ(datetime.hour, 16);
+    EXPECT_EQ(datetime.minute, 38);
+    EXPECT_EQ(datetime.second, 0);
+    EXPECT_EQ(datetime.millisecond, 0);
+    EXPECT_EQ(datetime.microsecond, 0);
+    EXPECT_EQ(datetime.nanosecond, 0);
+}
+
+TEST(Datetime, from_ms_complex)
+{
+    Datetime datetime = Datetime::from_ms(1694823828492);
+    EXPECT_EQ(datetime.year, 2023);
+    EXPECT_EQ(datetime.month, 9);
+    EXPECT_EQ(datetime.day, 15);
+    EXPECT_EQ(datetime.hour, 19);
+    EXPECT_EQ(datetime.minute, 23);
+    EXPECT_EQ(datetime.second, 48);
+    EXPECT_EQ(datetime.millisecond, 492);
+    EXPECT_EQ(datetime.microsecond, 0);
+    EXPECT_EQ(datetime.nanosecond, 0);
+}
