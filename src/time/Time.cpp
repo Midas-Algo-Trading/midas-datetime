@@ -5,7 +5,9 @@
 
 Timezone Time::default_timezone = TZ::LOCAL;
 
-Time Time::now(Timezone timezone)
+Time Time::now(uint8_t hour_offset, uint8_t minute_offset, uint8_t second_offset, uint16_t
+               millisecond_offset, uint16_t microsecond_offset, uint16_t nanosecond_offset,
+               Timezone timezone)
 {
     // Get the current local time
     std::time_t now = std::time(nullptr);
@@ -46,7 +48,12 @@ Time Time::now(Timezone timezone)
         - (microsecond * NANOSECONDS_PER_MICROSECOND)
     );
 
-    Time time = Time(hour, minute, second, millisecond, microsecond, nanosecond);
+    Time time = Time(hour + hour_offset,
+                     minute + minute_offset,
+                     second + second_offset,
+                     millisecond + millisecond_offset,
+                     microsecond + microsecond_offset,
+                     nanosecond + nanosecond_offset);
 
     ASSERT(time.is_valid_time(),
            std::invalid_argument(fmt::format("Time '{}' is invalid", time.to_string())));

@@ -1,8 +1,12 @@
 #include "datetime/datetime/Datetime.h"
 
-Datetime Datetime::now(Timezone timezone)
+Datetime Datetime::now(uint8_t  day_offset, uint8_t hour_offset, uint8_t minute_offset,
+                       uint8_t second_offset, uint16_t millisecond_offset,
+                       uint16_t microsecond_offset, uint16_t nanosecond_offset, Timezone timezone)
 {
-    return Datetime(Date::today(), Time::now(timezone));
+    return Datetime(Date::today(day_offset, timezone),
+                    Time::now(hour_offset, minute_offset, second_offset, millisecond_offset,
+                              microsecond_offset, nanosecond_offset, timezone));
 }
 
 void Datetime::add_hours(int hours_to_add)

@@ -61,7 +61,10 @@ public:
      *
      * @return created 'Datetime'.
      */
-    static Datetime now(Timezone timezone = Time::default_timezone);
+    static Datetime now(uint8_t day_offset = 0, uint8_t hour_offset = 0, uint8_t minute_offset =0,
+                        uint8_t second_offset = 0, uint16_t millisecond_offset = 0,
+                        uint16_t microsecond_offset = 0, uint16_t nanosecond_offset = 0,
+                        Timezone timezone = default_timezone);
 
     /**
      * Constructs a datetime object from a millisecond unix timestamp.

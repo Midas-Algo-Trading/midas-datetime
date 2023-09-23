@@ -3,7 +3,7 @@
 #include <chrono>
 #include <iostream>
 
-Date Date::today(Timezone timezone)
+Date Date::today(uint8_t day_offset, Timezone timezone)
 {
     // Get the current time
     auto now = std::chrono::system_clock::now();
@@ -28,12 +28,15 @@ Date Date::today(Timezone timezone)
         return today;
     }
 
-    // Check if date is valid
+    // Create date
     Date date = Date(year, month, day);
+    date += Day(day_offset);
+
+    // Check if date is valid
     ASSERT(date.is_valid_date(),
            std::invalid_argument(fmt::format("{} is an invalid date", date.to_string())));
 
-    return Date(year, month, day);
+    return date;
 }
 
 Date& Date::operator+=(const Day& days)
@@ -301,4 +304,23 @@ bool Date::is_valid_month() const
 bool Date::is_valid_day() const
 {
     return day <= max_days_in_month() && day >= 1;
+}
+
+Date Date::operator+(const Day& days)
+{
+    Date date = (*this);
+    date += days;
+    return date;
+}
+
+Date Date::operator-(const Day &days)
+{
+    Date date = (*this);
+    date -= days;
+    return date;
+}
+
+Date Date::tomorrow(Timezone timezone)
+{
+    return Date::today(1, timezone);
 }

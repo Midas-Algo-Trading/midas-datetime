@@ -94,7 +94,9 @@ public:
      *
      * @return created 'Time'.
      */
-    static Time now(Timezone timezone = default_timezone);
+    static Time now(uint8_t hour_offset = 0, uint8_t minute_offset = 0, uint8_t second_offset = 0,
+                    uint16_t millisecond_offset = 0, uint16_t microsecond_offset = 0, uint16_t
+                    nanosecond_offset = 0, Timezone timezone = default_timezone);
 
     /**
      * Components of a time.

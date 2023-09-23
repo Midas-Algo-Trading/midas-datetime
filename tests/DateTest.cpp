@@ -403,3 +403,24 @@ TEST(Date, constructor_string_throws_invalid_argument)
 {
     EXPECT_THROW(Date("1800-01-01"), std::invalid_argument);
 }
+
+TEST(Date, operator_plus)
+{
+    Date date = Date(2000, 1, 1);
+    Date new_date = date + Day(1);
+    EXPECT_EQ(new_date, Date(2000, 1, 2));
+}
+
+TEST(Date, operator_minus)
+{
+    Date date = Date(2000, 1, 2);
+    Date new_date = date - Day(1);
+    EXPECT_EQ(new_date, Date(2000, 1, 1));
+}
+
+TEST(Date, tomorrow)
+{
+    Date today = Date::today();
+    Date tomorrow = Date::tomorrow();
+    EXPECT_EQ(tomorrow - Day(1), today);
+}

@@ -84,7 +84,16 @@ public:
      *
      * @return a 'Date' that matches today's date.
      */
-    static Date today(Timezone timezone = TZ::LOCAL);
+    static Date today(uint8_t day_offset = 0, Timezone timezone = TZ::LOCAL);
+
+    /**
+     * Creates a 'Date' that matches tomorrow's date.
+     *
+     * @param timezone timezone to get tomorrow's date of.
+     *
+     * @return a 'Date' that matches tomorrow's date.
+     */
+    static Date tomorrow(Timezone timezone = TZ::LOCAL);
 
     /**
      * Gets the 'DayOfWeek' of this 'Date'.
@@ -166,6 +175,24 @@ public:
      * @return A reference to this modified 'Date'.
      */
     virtual Date& operator-=(const Day& days);
+
+    /**
+     * Adds 'days' to 'this'.
+     *
+     * @param days the number of days to add.
+     *
+     * @return a new 'Date' with 'days' added.
+     */
+    Date operator+(const Day& days);
+
+    /**
+     * Subtracts 'days' to 'this'.
+     *
+     * @param days the number of days to subtract.
+     *
+     * @return a new 'Date' with 'days' subtracted.
+     */
+    Date operator-(const Day& days);
 
     /**
      * Adds a day to this 'Date'.

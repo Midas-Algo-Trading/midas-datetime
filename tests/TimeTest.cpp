@@ -29,7 +29,7 @@ TEST(Time, constructor_throws_invalid_argument)
 
 TEST(Time, now_sets_timezone)
 {
-        Time time = Time::now(TZ::CST);
+        Time time = Time::now(0, 0, 0, 0, 0, 0, TZ::CST);
         EXPECT_EQ(time.timezone, TZ::CST);
         int old_hour = time.hour;
         time.set_timezone(TZ::EST);
