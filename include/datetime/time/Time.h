@@ -282,12 +282,12 @@ public:
     bool operator<=(const Time& other) const;
 
     /**
-          * Checks if 'other' is not equal to this 'Time'.
-          *
-          * @param other 'Time' to check if not equal to this 'Time'.
-          *
-          * @return 'true' if 'other' is not equal to this 'Time', 'false' otherwise.
-          */
+      * Checks if 'other' is not equal to this 'Time'.
+      *
+      * @param other 'Time' to check if not equal to this 'Time'.
+      *
+      * @return 'true' if 'other' is not equal to this 'Time', 'false' otherwise.
+      */
     bool operator==(const Time& other) const;
 
     /**
@@ -296,6 +296,114 @@ public:
      * @return reference to this modified 'Time'.
      */
     bool operator!=(const Time& other) const;
+
+    /**
+     * Adds 'hours' to 'this'.
+     *
+     * @param minutes the number of hours to add.
+     *
+     * @return a new 'Time' with 'hours' added.
+     */
+    Time operator+(const Hour& hours) const;
+
+    /**
+     * Adds 'hours' to 'this'.
+     *
+     * @param minutes the number of hours to add.
+     *
+     * @return a new 'Time' with 'hours' added.
+     */
+    Time operator-(const Hour& hours) const;
+
+    /**
+     * Adds 'minutes' to 'this'.
+     *
+     * @param minutes the number of minutes to add.
+     *
+     * @return a new 'Time' with 'minutes' added.
+     */
+    Time operator+(const Minute& minutes) const;
+
+    /**
+     * Adds 'minutes' to 'this'.
+     *
+     * @param minutes the number of minutes to add.
+     *
+     * @return a new 'Time' with 'minutes' added.
+     */
+    Time operator-(const Minute& minutes) const;
+
+    /**
+    * Adds 'seconds' to 'this'.
+    *
+    * @param seconds the number of seconds to add.
+    *
+    * @return a new 'Time' with 'seconds' added.
+    */
+    Time operator+(const Second& seconds) const;
+
+    /**
+     * Adds 'seconds' to 'this'.
+     *
+     * @param seconds the number of seconds to add.
+     *
+     * @return a new 'Time' with 'seconds' added.
+     */
+    Time operator-(const Second& seconds) const;
+
+    /**
+    * Adds 'milliseconds' to 'this'.
+    *
+    * @param milliseconds the number of milliseconds to add.
+    *
+    * @return a new 'Time' with 'milliseconds' added.
+    */
+    Time operator+(const Millisecond& milliseconds) const;
+
+    /**
+     * Adds 'milliseconds' to 'this'.
+     *
+     * @param milliseconds the number of milliseconds to add.
+     *
+     * @return a new 'Time' with 'milliseconds' added.
+     */
+    Time operator-(const Millisecond& milliseconds) const;
+
+    /**
+    * Adds 'microseconds' to 'this'.
+    *
+    * @param microseconds the number of microseconds to add.
+    *
+    * @return a new 'Time' with 'microseconds' added.
+    */
+    Time operator+(const Microsecond& microseconds) const;
+
+    /**
+     * Adds 'microseconds' to 'this'.
+     *
+     * @param microseconds the number of microseconds to add.
+     *
+     * @return a new 'Time' with 'microseconds' added.
+     */
+    Time operator-(const Microsecond& microseconds) const;
+
+    /**
+     * Adds 'nanoseconds' to 'this'.
+     *
+     * @param nanoseconds the number of nanoseconds to add.
+     *
+     * @return a new 'Time' with 'nanoseconds' added.
+     */
+    Time operator+(const Nanosecond& nanoseconds) const;
+
+    /**
+     * Adds 'nanoseconds' to 'this'.
+     *
+     * @param nanoseconds the number of nanoseconds to add.
+     *
+     * @return a new 'Time' with 'nanoseconds' added.
+     */
+    Time operator-(const Nanosecond& nanoseconds) const;
 
     /**
      * Sets the 'timezone' of this 'Time'.

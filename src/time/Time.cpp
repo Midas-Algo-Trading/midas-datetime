@@ -598,3 +598,87 @@ Time &Time::operator-=(const Time &other)
     (*this) -= Nanosecond(other.nanosecond);
     return (*this);
 }
+
+Time Time::operator+(const Hour& hours) const
+{
+    Time ret = *this;
+    ret += hours;
+    return ret;
+}
+
+Time Time::operator-(const Hour& hours) const
+{
+    Time ret = *this;
+    ret -= hours;
+    return ret;
+}
+
+Time Time::operator+(const Minute& minutes) const
+{
+    Time ret = *this;
+    ret += minutes;
+    return ret;
+}
+
+Time Time::operator-(const Minute& minutes) const
+{
+    Time ret = *this;
+    ret -= minutes;
+    return ret;
+}
+
+Time Time::operator+(const Second& seconds) const
+{
+    Time ret = *this;
+    ret += seconds;
+    return ret;
+}
+
+Time Time::operator-(const Second& seconds) const
+{
+    Time ret = *this;
+    ret -= seconds;
+    return ret;
+}
+
+Time Time::operator+(const Millisecond& milliseconds) const
+{
+    Time ret = *this;
+    ret += milliseconds;
+    return ret;
+}
+
+Time Time::operator-(const Millisecond& milliseconds) const
+{
+    Time ret = *this;
+    ret -= milliseconds;
+    return ret;
+}
+
+Time Time::operator+(const Microsecond& microseconds) const
+{
+    Time ret = *this;
+    ret += microseconds;
+    return ret;
+}
+
+Time Time::operator-(const Microsecond& microseconds) const
+{
+    Time ret = *this;
+    ret -= microseconds;
+    return ret;
+}
+
+Time Time::operator+(const Nanosecond& nanoseconds) const
+{
+    Time ret = *this;
+    ret += nanoseconds;
+    return ret;
+}
+
+Time Time::operator-(const Nanosecond& nanoseconds) const
+{
+    Time ret = *this;
+    ret -= nanoseconds;
+    return ret;
+}

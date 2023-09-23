@@ -691,3 +691,87 @@ TEST(Time, operator_minus_equal_time)
     time -= Time(2, 3, 4, 5, 6, 7);
     EXPECT_EQ(time, Time(1, 2, 3, 4, 5, 6));
 }
+
+TEST(Time, operator_plus_hour)
+{
+    Time time = Time(1, 2, 3, 4, 5, 6);
+    Time new_time = time + Hour(1);
+    EXPECT_EQ(new_time, Time(2, 2, 3, 4, 5, 6));
+}
+
+TEST(Time, operator_plus_minute)
+{
+    Time time = Time(1, 2, 3, 4, 5, 6);
+    Time new_time = time + Minute(1);
+    EXPECT_EQ(new_time, Time(1, 3, 3, 4, 5, 6));
+}
+
+TEST(Time, operator_plus_second)
+{
+    Time time = Time(1, 2, 3, 4, 5, 6);
+    Time new_time = time + Second(1);
+    EXPECT_EQ(new_time, Time(1, 2, 4, 4, 5, 6));
+}
+
+TEST(Time, operator_plus_millisecond)
+{
+    Time time = Time(1, 2, 3, 4, 5, 6);
+    Time new_time = time + Millisecond(1);
+    EXPECT_EQ(new_time, Time(1, 2, 3, 5, 5, 6));
+}
+
+TEST(Time, operator_plus_microsecond)
+{
+    Time time = Time(1, 2, 3, 4, 5, 6);
+    Time new_time = time + Microsecond(1);
+    EXPECT_EQ(new_time, Time(1, 2, 3, 4, 6, 6));
+}
+
+TEST(Time, operator_plus_nanosecond)
+{
+    Time time = Time(1, 2, 3, 4, 5, 6);
+    Time new_time = time + Nanosecond(1);
+    EXPECT_EQ(new_time, Time(1, 2, 3, 4, 5, 7));
+}
+
+TEST(Time, operator_minus_hour)
+{
+    Time time = Time(2, 2, 3, 4, 5, 6);
+    Time new_time = time - Hour(1);
+    EXPECT_EQ(new_time, Time(1, 2, 3, 4, 5, 6));
+}
+
+TEST(Time, operator_minus_minute)
+{
+    Time time = Time(1, 2, 3, 4, 5, 6);
+    Time new_time = time - Minute(1);
+    EXPECT_EQ(new_time, Time(1, 1, 3, 4, 5, 6));
+}
+
+TEST(Time, operator_minus_second)
+{
+    Time time = Time(1, 2, 3, 4, 5, 6);
+    Time new_time = time - Second(1);
+    EXPECT_EQ(new_time, Time(1, 2, 2, 4, 5, 6));
+}
+
+TEST(Time, operator_minus_millisecond)
+{
+    Time time = Time(1, 2, 3, 4, 5, 6);
+    Time new_time = time - Millisecond(1);
+    EXPECT_EQ(new_time, Time(1, 2, 3, 3, 5, 6));
+}
+
+TEST(Time, operator_minus_microsecond)
+{
+    Time time = Time(1, 2, 3, 4, 5, 6);
+    Time new_time = time - Microsecond(1);
+    EXPECT_EQ(new_time, Time(1, 2, 3, 4, 4, 6));
+}
+
+TEST(Time, operator_minus_nanosecond)
+{
+    Time time = Time(1, 2, 3, 4, 5, 6);
+    Time new_time = time - Nanosecond(1);
+    EXPECT_EQ(new_time, Time(1, 2, 3, 4, 5, 5));
+}
