@@ -36,34 +36,36 @@ Time Datetime::time() const
 
 bool Datetime::operator>(const Datetime& other) const
 {
-    return date() > other.date() || time() > other.time();
+    return Date::operator>(other.date())
+        || Date::operator==(other.date()) && Time::operator>(other.time());
 }
 
 bool Datetime::operator>=(const Datetime& other) const
 {
-    return date() > other.date()
-           || date() == other.date() && time() >= other.time();
+    return Date::operator>(other.date())
+        || Date::operator==(other.date()) && Time::operator>=(other.time());
 }
 
 bool Datetime::operator<(const Datetime& other) const
 {
-    return date() < other.date() || time() < other.time();
+    return Date::operator<(other.date())
+        || Date::operator==(other.date()) && Time::operator<(other.time());
 }
 
 bool Datetime::operator<=(const Datetime& other) const
 {
-    return date() < other.date()
-           || date() == other.date() && time() <= other.time();
+    return Date::operator<(other.date())
+        || Date::operator==(other.date()) && Time::operator<=(other.time());
 }
 
 bool Datetime::operator==(const Datetime& other) const
 {
-    return date() == other.date() && time() == other.time();
+    return Date::operator==(other.date()) && Time::operator==(other.time());
 }
 
 bool Datetime::operator!=(const Datetime& other) const
 {
-    return date() != other.date() || time() != other.time();
+    return Date::operator!=(other.date()) || Time::operator!=(other.time());
 }
 
 Datetime &Datetime::operator+=(const Day& days)
