@@ -223,3 +223,99 @@ Datetime Datetime::from_ms(size_t timestamp, Timezone timezone)
 
     return Datetime(year, month, day, hour, minute, second, millisecond, 0, 0, timezone);
 }
+
+Datetime operator+(Datetime datetime, const Hour& hours)
+{
+    datetime += hours;
+    return datetime;
+}
+
+Datetime operator-(Datetime datetime, const Hour& hours)
+{
+    datetime -= hours;
+    return datetime;
+}
+
+Datetime operator+(Datetime datetime, const Minute& minutes)
+{
+    datetime += minutes;
+    return datetime;
+}
+
+Datetime operator-(Datetime datetime, const Minute& minutes)
+{
+    datetime -= minutes;
+    return datetime;
+}
+
+Datetime operator+(Datetime datetime, const Second& seconds)
+{
+    datetime += seconds;
+    return datetime;
+}
+
+Datetime operator-(Datetime datetime, const Second& seconds)
+{
+    datetime -= seconds;
+    return datetime;
+}
+
+Datetime operator+(Datetime datetime, const Millisecond& milliseconds)
+{
+    datetime += milliseconds;
+    return datetime;
+}
+
+Datetime operator-(Datetime datetime, const Millisecond& milliseconds)
+{
+    datetime -= milliseconds;
+    return datetime;
+}
+
+Datetime operator+(Datetime datetime, const Microsecond& microseconds)
+{
+    datetime += microseconds;
+    return datetime;
+}
+
+Datetime operator-(Datetime datetime, const Microsecond& microseconds)
+{
+    datetime -= microseconds;
+    return datetime;
+}
+
+Datetime operator+(Datetime datetime, const Nanosecond& nanoseconds)
+{
+    datetime += nanoseconds;
+    return datetime;
+}
+
+Datetime operator-(Datetime datetime, const Nanosecond& nanoseconds)
+{
+    datetime -= nanoseconds;
+    return datetime;
+}
+
+Datetime operator+(Datetime datetime, const Time& other)
+{
+    datetime += other;
+    return datetime;
+}
+
+Datetime operator-(Datetime datetime, const Time& other)
+{
+    datetime -= other;
+    return datetime;
+}
+
+Datetime& Datetime::operator+=(const Time& time)
+{
+    Time::operator+=(time);
+    return *this;
+}
+
+Datetime &Datetime::operator-=(const Time &time)
+{
+    Time::operator-=(time);
+    return *this;
+}

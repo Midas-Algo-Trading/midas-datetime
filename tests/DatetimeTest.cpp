@@ -484,3 +484,113 @@ TEST(Datetime, from_ms_complex)
     EXPECT_EQ(datetime.microsecond, 0);
     EXPECT_EQ(datetime.nanosecond, 0);
 }
+
+TEST(Datetime, operator_plus_time)
+{
+    Datetime datetime = Datetime(2000, 1, 2, 3, 4, 5, 6, 7, 8) + Time(1, 2, 3, 4, 5, 6);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 2, 4, 6, 8, 10, 12, 14));
+}
+
+TEST(Datetime, operator_minus_time)
+{
+    Datetime datetime = Datetime(2000, 1, 2, 3, 4, 5, 6, 7, 8) - Time(1, 2, 3, 4, 5, 6);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 2, 2, 2, 2, 2, 2, 2));
+}
+
+TEST(Datetime, operator_plus_equal_time)
+{
+    Datetime datetime = Datetime(2000, 1, 2, 3, 4, 5, 6, 7, 8);
+    datetime += Time(1, 2, 3, 4, 5, 6);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 2, 4, 6, 8, 10, 12, 14));
+}
+
+TEST(Datetime, operator_minus_equal_time)
+{
+    Datetime datetime = Datetime(2000, 1, 2, 3, 4, 5, 6, 7, 8);
+    datetime -= Time(1, 2, 3, 4, 5, 6);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 2, 2, 2, 2, 2, 2, 2));
+}
+
+TEST(Datetime, operator_plus_hour)
+{
+    Datetime datetime = Datetime(2000, 1, 1, 1, 2, 3, 4, 5, 6);
+    Datetime new_datetime = datetime + Hour(1);
+    EXPECT_EQ(new_datetime, Datetime(2000, 1, 1, 2, 2, 3, 4, 5, 6));
+}
+
+TEST(Datetime, operator_plus_minute)
+{
+    Datetime datetime = Datetime(2000, 1, 1, 1, 2, 3, 4, 5, 6);
+    Datetime new_datetime = datetime + Minute(1);
+    EXPECT_EQ(new_datetime, Datetime(2000, 1, 1, 1, 3, 3, 4, 5, 6));
+}
+
+TEST(Datetime, operator_plus_second)
+{
+    Datetime datetime = Datetime(2000, 1, 1, 1, 2, 3, 4, 5, 6);
+    Datetime new_datetime = datetime + Second(1);
+    EXPECT_EQ(new_datetime, Datetime(2000, 1, 1, 1, 2, 4, 4, 5, 6));
+}
+
+TEST(Datetime, operator_plus_millisecond)
+{
+    Datetime datetime = Datetime(2000, 1, 1, 1, 2, 3, 4, 5, 6);
+    Datetime new_datetime = datetime + Millisecond(1);
+    EXPECT_EQ(new_datetime, Datetime(2000, 1, 1, 1, 2, 3, 5, 5, 6));
+}
+
+TEST(Datetime, operator_plus_microsecond)
+{
+    Datetime datetime = Datetime(2000, 1, 1, 1, 2, 3, 4, 5, 6);
+    Datetime new_datetime = datetime + Microsecond(1);
+    EXPECT_EQ(new_datetime, Datetime(2000, 1, 1, 1, 2, 3, 4, 6, 6));
+}
+
+TEST(Datetime, operator_plus_nanosecond)
+{
+    Datetime datetime = Datetime(2000, 1, 1, 1, 2, 3, 4, 5, 6);
+    Datetime new_datetime = datetime + Nanosecond(1);
+    EXPECT_EQ(new_datetime, Datetime(2000, 1, 1, 1, 2, 3, 4, 5, 7));
+}
+
+TEST(Datetime, operator_minus_hour)
+{
+    Datetime datetime = Datetime(2000, 1, 1, 2, 2, 3, 4, 5, 6);
+    Datetime new_datetime = datetime - Hour(1);
+    EXPECT_EQ(new_datetime, Datetime(2000, 1, 1, 1, 2, 3, 4, 5, 6));
+}
+
+TEST(Datetime, operator_minus_minute)
+{
+    Datetime datetime = Datetime(2000, 1, 1, 1, 2, 3, 4, 5, 6);
+    Datetime new_datetime = datetime - Minute(1);
+    EXPECT_EQ(new_datetime, Datetime(2000, 1, 1, 1, 1, 3, 4, 5, 6));
+}
+
+TEST(Datetime, operator_minus_second)
+{
+    Datetime datetime = Datetime(2000, 1, 1, 1, 2, 3, 4, 5, 6);
+    Datetime new_datetime = datetime - Second(1);
+    EXPECT_EQ(new_datetime, Datetime(2000, 1, 1, 1, 2, 2, 4, 5, 6));
+}
+
+TEST(Datetime, operator_minus_millisecond)
+{
+    Datetime datetime = Datetime(2000, 1, 1, 1, 2, 3, 4, 5, 6);
+    Datetime new_datetime = datetime - Millisecond(1);
+    EXPECT_EQ(new_datetime, Datetime(2000, 1, 1, 1, 2, 3, 3, 5, 6));
+}
+
+TEST(Datetime, operator_minus_microsecond)
+{
+    Datetime datetime = Datetime(2000, 1, 1, 1, 2, 3, 4, 5, 6);
+    Datetime new_datetime = datetime - Microsecond(1);
+    EXPECT_EQ(new_datetime, Datetime(2000, 1, 1, 1, 2, 3, 4, 4, 6));
+}
+
+TEST(Datetime, operator_minus_nanosecond)
+{
+    Datetime datetime = Datetime(2000, 1, 1, 1, 2, 3, 4, 5, 6);
+    Datetime new_datetime = datetime - Nanosecond(1);
+    EXPECT_EQ(new_datetime, Datetime(2000, 1, 1, 1, 2, 3, 4, 5, 5));
+}

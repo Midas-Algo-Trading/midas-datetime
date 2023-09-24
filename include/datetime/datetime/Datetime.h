@@ -204,6 +204,24 @@ public:
     Datetime& operator--() override;
 
     /**
+     * Adds 'time' to this 'Datetime'.
+     *
+     * @param time the other 'Time' added to this 'Datetime'.
+     *
+     * @return reference to this modified 'Datetime'.
+     */
+    Datetime& operator+=(const Time& time) override;
+
+    /**
+     * Subtracts 'time' to this 'Datetime'.
+     *
+     * @param time the other 'Time' subtracted from this 'Datetime'.
+     *
+     * @return reference to this modified 'Datetime'.
+     */
+    Datetime& operator-=(const Time& time) override;
+
+    /**
      * Adds 'days' to this 'Datetime'.
      *
      * @param days number of days to add to this 'Datetime'.
@@ -328,6 +346,146 @@ public:
      * @return A reference to this modified 'Datetime'.
      */
     Datetime& operator-=(const Nanosecond& nanoseconds) override;
+
+    /**
+     * Adds 'hours' to 'datetime'.
+     *
+     * @param datetime the base 'Datetime' to add 'hours' to.
+     * @param hours the number of hours to add.
+     *
+     * @return a new 'Datetime' with 'hours' added.
+     */
+    friend Datetime operator+(Datetime datetime, const Hour& hours);
+
+    /**
+     * Subtracts 'hours' from 'datetime'.
+     *
+     * @param datetime the base 'Datetime' to subtract 'hours' from.
+     * @param hours the number of hours to subtract.
+     *
+     * @return a new 'Datetime' with 'hours' subtracted.
+     */
+    friend Datetime operator-(Datetime datetime, const Hour& hours);
+
+    /**
+     * Adds 'minutes' to 'datetime'.
+     *
+     * @param datetime the base 'Datetime' to add 'minutes' to.
+     * @param minutes the number of minutes to add.
+     *
+     * @return a new 'Datetime' with 'minutes' added.
+     */
+    friend Datetime operator+(Datetime datetime, const Minute& minutes);
+
+    /**
+     * Subtracts 'minutes' from 'datetime'.
+     *
+     * @param datetime the base 'Datetime' to subtract 'minutes' from.
+     * @param minutes the number of minutes to subtract.
+     *
+     * @return a new 'Datetime' with 'minutes' subtracted.
+     */
+    friend Datetime operator-(Datetime datetime, const Minute& minutes);
+
+    /**
+     * Adds 'seconds' to 'datetime'.
+     *
+     * @param datetime the base 'Datetime' to add 'seconds' to.
+     * @param seconds the number of seconds to add.
+     *
+     * @return a new 'Datetime' with 'seconds' added.
+     */
+    friend Datetime operator+(Datetime datetime, const Second& seconds);
+
+    /**
+     * Subtracts 'seconds' from 'datetime'.
+     *
+     * @param datetime the base 'Datetime' to subtract 'seconds' from.
+     * @param seconds the number of seconds to subtract.
+     *
+     * @return a new 'Datetime' with 'seconds' subtracted.
+     */
+    friend Datetime operator-(Datetime datetime, const Second& seconds);
+
+    /**
+      * Adds 'milliseconds' to 'datetime'.
+      *
+      * @param datetime the base 'Datetime' to add 'milliseconds' to.
+      * @param milliseconds the number of milliseconds to add.
+      *
+      * @return a new 'Datetime' with 'milliseconds' added.
+      */
+    friend Datetime operator+(Datetime datetime, const Millisecond& milliseconds);
+
+    /**
+     * Subtracts 'milliseconds' from 'datetime'.
+     *
+     * @param datetime the base 'Datetime' to subtract 'milliseconds' from.
+     * @param milliseconds the number of milliseconds to subtract.
+     *
+     * @return a new 'Datetime' with 'milliseconds' subtracted.
+     */
+    friend Datetime operator-(Datetime datetime, const Millisecond& milliseconds);
+
+    /**
+    * Adds 'microseconds' to 'datetime'.
+    *
+    * @param datetime the base 'Datetime' to add 'microseconds' to.
+    * @param microseconds the number of microseconds to add.
+    *
+    * @return a new 'Datetime' with 'microseconds' added.
+    */
+    friend Datetime operator+(Datetime datetime, const Microsecond& microseconds);
+
+    /**
+     * Subtracts 'microseconds' from 'datetime'.
+     *
+     * @param datetime the base 'Datetime' to subtract 'microseconds' from.
+     * @param microseconds the number of microseconds to subtract.
+     *
+     * @return a new 'Datetime' with 'microseconds' subtracted.
+     */
+    friend Datetime operator-(Datetime datetime, const Microsecond& microseconds);
+
+    /**
+     * Adds 'nanoseconds' to 'datetime'.
+     *
+     * @param datetime the base 'Datetime' to add 'nanoseconds' to.
+     * @param nanoseconds the number of nanoseconds to add.
+     *
+     * @return a new 'Datetime' with 'nanoseconds' added.
+     */
+    friend Datetime operator+(Datetime datetime, const Nanosecond& nanoseconds);
+
+    /**
+    * Subtracts 'nanoseconds' from 'datetime'.
+    *
+    * @param datetime the base 'Datetime' to subtract 'nanoseconds' from.
+    * @param nanoseconds the number of nanoseconds to subtract.
+    *
+    * @return a new 'Datetime' with 'nanoseconds' subtracted.
+    */
+    friend Datetime operator-(Datetime datetime, const Nanosecond& nanoseconds);
+
+    /**
+     * Adds this 'Datetime' and 'other' 'Datetime'.
+     *
+     * @param datetime the base 'Datetime' to add 'other' to.
+     * @param other the other 'Datetime' added to this 'Datetime'.
+     *
+     * @return new 'Datetime' object of this 'Datetime' added with 'other' 'Datetime'.
+     */
+    friend Datetime operator+(Datetime datetime, const Time& other);
+
+    /**
+     * Subtracts this 'Datetime' and 'other' 'Datetime'.
+     *
+     * @param datetime the base 'Datetime' to subtract 'other' from.
+     * @param other the other 'Datetime' subtracted to this 'Datetime'.
+     *
+     * @return new 'Datetime' object of this 'Datetime' subtracted with 'other' 'Datetime'.
+     */
+    friend Datetime operator-(Datetime datetime, const Time& other);
 
     /**
      * Outputs 'datetime' into 'os'.
