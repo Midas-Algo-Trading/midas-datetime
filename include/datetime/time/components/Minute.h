@@ -15,7 +15,7 @@ struct Minute : TimeComponent
      *
      * @param minute number of minutes.
      */
-    explicit Minute(uint16_t minute) :
+    explicit Minute(uint32_t minute) :
         TimeComponent(minute) {}
 };
 
