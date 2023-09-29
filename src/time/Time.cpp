@@ -532,32 +532,32 @@ bool Time::is_valid_time() const
 
 bool Time::is_valid_hour() const
 {
-    return hour < HOURS_PER_DAY && hour >= 0;
+    return hour <= HOURS_PER_DAY && hour >= 0;
 }
 
 bool Time::is_valid_minute() const
 {
-    return minute < MINUTES_PER_HOUR && minute >= 0;
+    return minute <= MINUTES_PER_HOUR && minute >= 0;
 }
 
 bool Time::is_valid_second() const
 {
-    return second < SECONDS_PER_MINUTE && second >= 0;
+    return second <= SECONDS_PER_MINUTE && second >= 0;
 }
 
 bool Time::is_valid_millisecond() const
 {
-    return millisecond < MILLISECONDS_PER_SECOND && millisecond >= 0;
+    return millisecond <= MILLISECONDS_PER_SECOND && millisecond >= 0;
 }
 
 bool Time::is_valid_microsecond() const
 {
-    return microsecond < MICROSECONDS_PER_MILLISECOND && microsecond >= 0;
+    return microsecond <= MICROSECONDS_PER_MILLISECOND && microsecond >= 0;
 }
 
 bool Time::is_valid_nanosecond() const
 {
-    return nanosecond < NANOSECONDS_PER_MICROSECOND && nanosecond >= 0;
+    return nanosecond <= NANOSECONDS_PER_MICROSECOND && nanosecond >= 0;
 }
 
 Time operator+(Time time, const Time& other)
