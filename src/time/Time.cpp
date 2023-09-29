@@ -532,17 +532,17 @@ bool Time::is_valid_time() const
 
 bool Time::is_valid_hour() const
 {
-    return hour <= HOURS_PER_DAY && hour >= 0;
+    return hour < HOURS_PER_DAY && hour >= 0;
 }
 
 bool Time::is_valid_minute() const
 {
-    return minute <= MINUTES_PER_HOUR && minute >= 0;
+    return minute < MINUTES_PER_HOUR && minute >= 0;
 }
 
 bool Time::is_valid_second() const
 {
-    return second <= SECONDS_PER_MINUTE && second >= 0;
+    return second < SECONDS_PER_MINUTE && second >= 0;
 }
 
 bool Time::is_valid_millisecond() const
