@@ -29,11 +29,11 @@ TEST(Time, constructor_throws_invalid_argument)
 
 TEST(Time, now_sets_timezone)
 {
-        Time time = Time::now(0, 0, 0, 0, 0, 0, TZ::CST);
-        EXPECT_EQ(time.timezone, TZ::CST);
+        Time time = Time::now(0, 0, 0, 0, 0, 0, TZ::EST);
+        EXPECT_EQ(time.timezone, TZ::EST);
         int old_hour = time.hour;
-        time.set_timezone(TZ::EST);
-        EXPECT_EQ(time.hour - old_hour, 1);
+        time.set_timezone(TZ::CST);
+        EXPECT_EQ(time.hour - old_hour, -1);
 }
 
 TEST(Time, operator_plusequal_hour_basic)
@@ -238,13 +238,13 @@ TEST(Time, set_default_timezone)
 TEST(Time, get_hour_at_timezone_basic)
 {
         Time time = Time(1);
-        EXPECT_EQ(time.get_hour_at_timezone(TZ::UTC), 7);
+        EXPECT_EQ(time.get_hour_at_timezone(TZ::UTC), 6);
 }
 
 TEST(Time, get_hour_at_timezone_wrap)
 {
         Time time = Time(20);
-        EXPECT_EQ(time.get_hour_at_timezone(TZ::UTC), 2);
+        EXPECT_EQ(time.get_hour_at_timezone(TZ::UTC), 1);
 }
 
 TEST(Time, unit_conversions)

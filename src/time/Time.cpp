@@ -3,7 +3,7 @@
 #include <chrono>
 #include <iostream>
 
-Timezone Time::default_timezone = TZ::LOCAL;
+Timezone Time::default_timezone = TZ::EST;
 
 Time Time::now(uint8_t hour_offset, uint8_t minute_offset, uint8_t second_offset, uint16_t
                millisecond_offset, uint16_t microsecond_offset, uint16_t nanosecond_offset,
@@ -36,17 +36,29 @@ Time Time::now(uint8_t hour_offset, uint8_t minute_offset, uint8_t second_offset
     // Extract the values of the millisecond, microsecond, and nanosecond
 
     int millisecond = static_cast<int>(ms.count());
+    if (millisecond == MILLISECONDS_PER_SECOND) {
+        second++;
+        millisecond -= MILLISECONDS_PER_SECOND;
+    }
 
     int microsecond = static_cast<int>(
         us.count()
         - (millisecond * MICROSECONDS_PER_MILLISECOND)
     );
+    if (microsecond == MICROSECONDS_PER_MILLISECOND) {
+        millisecond++;
+        microsecond -= MICROSECONDS_PER_MILLISECOND;
+    }
 
     int nanosecond = static_cast<int>(
         ns.count()
         - (millisecond * NANOSECONDS_PER_MILLISECOND)
         - (microsecond * NANOSECONDS_PER_MICROSECOND)
     );
+    if (nanosecond == NANOSECONDS_PER_MICROSECOND) {
+        microsecond++;
+        nanosecond -= NANOSECONDS_PER_MICROSECOND;
+    }
 
     Time time = Time(hour + hour_offset,
                      minute + minute_offset,
@@ -547,17 +559,17 @@ bool Time::is_valid_second() const
 
 bool Time::is_valid_millisecond() const
 {
-    return millisecond <= MILLISECONDS_PER_SECOND && millisecond >= 0;
+    return millisecond < MILLISECONDS_PER_SECOND && millisecond >= 0;
 }
 
 bool Time::is_valid_microsecond() const
 {
-    return microsecond <= MICROSECONDS_PER_MILLISECOND && microsecond >= 0;
+    return microsecond < MICROSECONDS_PER_MILLISECOND && microsecond >= 0;
 }
 
 bool Time::is_valid_nanosecond() const
 {
-    return nanosecond <= NANOSECONDS_PER_MICROSECOND && nanosecond >= 0;
+    return nanosecond < NANOSECONDS_PER_MICROSECOND && nanosecond >= 0;
 }
 
 Time operator+(Time time, const Time& other)
