@@ -18,9 +18,9 @@ struct TimeComponent : Component
     explicit TimeComponent(uint32_t value) :
         Component(value)
     {
-        ASSERT(value <= std::numeric_limits<int>::max(),
+        ASSERT(value <= 2147483648,
                fmt::format("TimeComponent value: {} is too large. Max size is {}",
-                           value, std::numeric_limits<int>::max()));
+                           value, 2147483648));
     }
 };
 
