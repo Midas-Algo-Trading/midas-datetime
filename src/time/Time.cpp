@@ -6,7 +6,7 @@
 Timezone Time::default_timezone = TZ::EST;
 
 Time Time::now(uint8_t hour_offset, uint8_t minute_offset, uint8_t second_offset, uint16_t
-               millisecond_offset, uint16_t microsecond_offset, uint16_t nanosecond_offset,
+millisecond_offset, uint16_t microsecond_offset, uint16_t nanosecond_offset,
                Timezone timezone)
 {
     // Get the current local time
@@ -21,44 +21,18 @@ Time Time::now(uint8_t hour_offset, uint8_t minute_offset, uint8_t second_offset
     // Set hour from system timezone to timezone
     hour += TZ::LOCAL.get_utc_offset_diff(timezone);
 
-    // Get the current system clock time
-    auto system_time = std::chrono::system_clock::now();
+    auto currentTimePoint = std::chrono::high_resolution_clock::now() + std::chrono::hours(hour);
 
-    // Calculate the time difference between the system clock time and the local time
-    auto system_time_today = system_time
-                             - std::chrono::system_clock::from_time_t(std::mktime(&local_tm));
+    // Convert the time point to nanoseconds
+    auto nanoseconds = std::chrono::time_point_cast<std::chrono::nanoseconds>(currentTimePoint);
 
-    // Extract the values of the different components
-    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(system_time_today);
-    auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(system_time_today);
-    auto us = std::chrono::duration_cast<std::chrono::microseconds>(system_time_today);
+    // Extract the nanoseconds count
+    auto nanosecondsCount = nanoseconds.time_since_epoch().count();
 
-    // Extract the values of the millisecond, microsecond, and nanosecond
-
-    int millisecond = static_cast<int>(ms.count());
-    if (millisecond == MILLISECONDS_PER_SECOND) {
-        second++;
-        millisecond -= MILLISECONDS_PER_SECOND;
-    }
-
-    int microsecond = static_cast<int>(
-        us.count()
-        - (millisecond * MICROSECONDS_PER_MILLISECOND)
-    );
-    if (microsecond == MICROSECONDS_PER_MILLISECOND) {
-        millisecond++;
-        microsecond -= MICROSECONDS_PER_MILLISECOND;
-    }
-
-    int nanosecond = static_cast<int>(
-        ns.count()
-        - (millisecond * NANOSECONDS_PER_MILLISECOND)
-        - (microsecond * NANOSECONDS_PER_MICROSECOND)
-    );
-    if (nanosecond == NANOSECONDS_PER_MICROSECOND) {
-        microsecond++;
-        nanosecond -= NANOSECONDS_PER_MICROSECOND;
-    }
+    // Calculate milliseconds, microseconds, and remaining nanoseconds
+    int millisecond = static_cast<int>(nanosecondsCount / 1'000'000 % 1'000);
+    int microsecond = static_cast<int>(nanosecondsCount / 1'000 % 1'000);
+    int nanosecond = static_cast<int>(nanosecondsCount % 1'000);
 
     Time time = Time(hour + hour_offset,
                      minute + minute_offset,
@@ -159,15 +133,15 @@ const size_t Time::MILLISECONDS_PER_MINUTE = SECONDS_PER_MINUTE * MILLISECONDS_P
 const size_t Time::MICROSECONDS_PER_MILLISECOND = 1'000;
 const size_t Time::MICROSECONDS_PER_HOUR = MILLISECONDS_PER_HOUR * MICROSECONDS_PER_MILLISECOND;
 const size_t Time::MICROSECONDS_PER_MINUTE = MILLISECONDS_PER_MINUTE
-                                               * MICROSECONDS_PER_MILLISECOND;
+                                             * MICROSECONDS_PER_MILLISECOND;
 const size_t Time::MICROSECONDS_PER_SECOND = MILLISECONDS_PER_SECOND
-                                               * MICROSECONDS_PER_MILLISECOND;
+                                             * MICROSECONDS_PER_MILLISECOND;
 const size_t Time::NANOSECONDS_PER_MICROSECOND = 1'000;
 const size_t Time::NANOSECONDS_PER_HOUR = MICROSECONDS_PER_HOUR * NANOSECONDS_PER_MICROSECOND;
 const size_t Time::NANOSECONDS_PER_MINUTE = MICROSECONDS_PER_MINUTE * NANOSECONDS_PER_MICROSECOND;
 const size_t Time::NANOSECONDS_PER_SECOND = MICROSECONDS_PER_SECOND * NANOSECONDS_PER_MICROSECOND;
 const size_t Time::NANOSECONDS_PER_MILLISECOND = MICROSECONDS_PER_MILLISECOND
-                                                   * NANOSECONDS_PER_MICROSECOND;
+                                                 * NANOSECONDS_PER_MICROSECOND;
 
 const int Time::HOURS_PER_DAY = 24;
 
@@ -215,10 +189,10 @@ void Time::add_milliseconds(int64_t milliseconds_to_add)
 {
     int64_t new_total_milliseconds = total_milliseconds() + milliseconds_to_add;
     int new_total_seconds = static_cast<int>(new_total_milliseconds / static_cast<int64_t>
-        (MILLISECONDS_PER_SECOND));
+    (MILLISECONDS_PER_SECOND));
     int second_change = new_total_seconds - total_seconds();
     int new_millisecond = static_cast<int>(new_total_milliseconds % static_cast<int64_t>
-        (MILLISECONDS_PER_SECOND));
+    (MILLISECONDS_PER_SECOND));
     if (new_millisecond < 0)
     {
         new_millisecond += MILLISECONDS_PER_SECOND;
@@ -234,7 +208,7 @@ void Time::add_microseconds(int64_t microseconds_to_add)
     int64_t new_total_milliseconds = new_total_microseconds / static_cast<int64_t>(MICROSECONDS_PER_MILLISECOND);
     int64_t millisecond_change = new_total_milliseconds - total_milliseconds();
     int new_microsecond = static_cast<int>(new_total_microseconds % static_cast<int64_t>
-        (MICROSECONDS_PER_MILLISECOND));
+    (MICROSECONDS_PER_MILLISECOND));
     if (new_microsecond < 0)
     {
         new_microsecond += MICROSECONDS_PER_MILLISECOND;
@@ -250,7 +224,7 @@ void Time::add_nanoseconds(int64_t nanoseconds_to_add)
     int64_t new_total_microseconds = new_total_nanoseconds / static_cast<int64_t>(NANOSECONDS_PER_MICROSECOND);
     int64_t microsecond_change = new_total_microseconds - total_microseconds();
     int new_nanosecond = static_cast<int>(new_total_nanoseconds % static_cast<int64_t>
-        (NANOSECONDS_PER_MICROSECOND));
+    (NANOSECONDS_PER_MICROSECOND));
     if (new_nanosecond < 0)
     {
         new_nanosecond += NANOSECONDS_PER_MICROSECOND;
@@ -277,15 +251,15 @@ bool Time::operator>(const Time& other) const
     int other_hour = other.get_hour_at_timezone(timezone);
 
     return    hour > other_hour
-           || hour == other_hour && minute > other.minute
-           || hour == other_hour && minute == other.minute && second > other.second
-           || hour == other_hour && minute == other.minute && second == other.second
-              && millisecond > other.millisecond
-           || hour == other_hour && minute == other.minute && second == other.second
-              && millisecond == other.millisecond && microsecond > other.microsecond
-           || hour == other_hour && minute == other.minute && second == other.second
-              && millisecond == other.millisecond && microsecond == other.microsecond
-              && nanosecond > other.nanosecond;
+              || hour == other_hour && minute > other.minute
+              || hour == other_hour && minute == other.minute && second > other.second
+              || hour == other_hour && minute == other.minute && second == other.second
+                 && millisecond > other.millisecond
+              || hour == other_hour && minute == other.minute && second == other.second
+                 && millisecond == other.millisecond && microsecond > other.microsecond
+              || hour == other_hour && minute == other.minute && second == other.second
+                 && millisecond == other.millisecond && microsecond == other.microsecond
+                 && nanosecond > other.nanosecond;
 }
 
 bool Time::operator>=(const Time& other) const
@@ -293,15 +267,15 @@ bool Time::operator>=(const Time& other) const
     int other_hour = other.get_hour_at_timezone(timezone);
 
     return    hour > other_hour
-           || hour == other_hour && minute > other.minute
-           || hour == other_hour && minute == other.minute && second > other.second
-           || hour == other_hour && minute == other.minute && second == other.second
-              && millisecond > other.millisecond
-           || hour == other_hour && minute == other.minute && second == other.second
-              && millisecond == other.millisecond && microsecond > other.microsecond
-           || hour == other_hour && minute == other.minute && second == other.second
-              && millisecond == other.millisecond && microsecond == other.microsecond
-              && nanosecond >= other.nanosecond;
+              || hour == other_hour && minute > other.minute
+              || hour == other_hour && minute == other.minute && second > other.second
+              || hour == other_hour && minute == other.minute && second == other.second
+                 && millisecond > other.millisecond
+              || hour == other_hour && minute == other.minute && second == other.second
+                 && millisecond == other.millisecond && microsecond > other.microsecond
+              || hour == other_hour && minute == other.minute && second == other.second
+                 && millisecond == other.millisecond && microsecond == other.microsecond
+                 && nanosecond >= other.nanosecond;
 }
 
 bool Time::operator<(const Time& other) const
@@ -309,15 +283,15 @@ bool Time::operator<(const Time& other) const
     int other_hour = other.get_hour_at_timezone(timezone);
 
     return    hour < other_hour
-           || hour == other_hour && minute < other.minute
-           || hour == other_hour && minute == other.minute && second < other.second
-           || hour == other_hour && minute == other.minute && second == other.second
-              && millisecond < other.millisecond
-           || hour == other_hour && minute == other.minute && second == other.second
-              && millisecond == other.millisecond && microsecond < other.microsecond
-           || hour == other_hour && minute == other.minute && second == other.second
-              && millisecond == other.millisecond && microsecond == other.microsecond
-              && nanosecond < other.nanosecond;
+              || hour == other_hour && minute < other.minute
+              || hour == other_hour && minute == other.minute && second < other.second
+              || hour == other_hour && minute == other.minute && second == other.second
+                 && millisecond < other.millisecond
+              || hour == other_hour && minute == other.minute && second == other.second
+                 && millisecond == other.millisecond && microsecond < other.microsecond
+              || hour == other_hour && minute == other.minute && second == other.second
+                 && millisecond == other.millisecond && microsecond == other.microsecond
+                 && nanosecond < other.nanosecond;
 }
 
 bool Time::operator<=(const Time& other) const
@@ -325,35 +299,35 @@ bool Time::operator<=(const Time& other) const
     int other_hour = other.get_hour_at_timezone(timezone);
 
     return    hour < other_hour
-           || hour == other_hour && minute < other.minute
-           || hour == other_hour && minute == other.minute && second < other.second
-           || hour == other_hour && minute == other.minute && second == other.second
-              && millisecond < other.millisecond
-           || hour == other_hour && minute == other.minute && second == other.second
-              && millisecond == other.millisecond && microsecond < other.microsecond
-           || hour == other_hour && minute == other.minute && second == other.second
-              && millisecond == other.millisecond && microsecond == other.microsecond
-              && nanosecond <= other.nanosecond;
+              || hour == other_hour && minute < other.minute
+              || hour == other_hour && minute == other.minute && second < other.second
+              || hour == other_hour && minute == other.minute && second == other.second
+                 && millisecond < other.millisecond
+              || hour == other_hour && minute == other.minute && second == other.second
+                 && millisecond == other.millisecond && microsecond < other.microsecond
+              || hour == other_hour && minute == other.minute && second == other.second
+                 && millisecond == other.millisecond && microsecond == other.microsecond
+                 && nanosecond <= other.nanosecond;
 }
 
 bool Time::operator==(const Time& other) const
 {
     return    hour == other.get_hour_at_timezone(timezone)
-           && minute == other.minute
-           && second == other.second
-           && millisecond == other.millisecond
-           && microsecond == other.microsecond
-           && nanosecond == other.nanosecond;
+              && minute == other.minute
+              && second == other.second
+              && millisecond == other.millisecond
+              && microsecond == other.microsecond
+              && nanosecond == other.nanosecond;
 }
 
 bool Time::operator!=(const Time& other) const
 {
     return    hour != other.get_hour_at_timezone(timezone)
-           || minute != other.minute
-           || second != other.second
-           || millisecond != other.millisecond
-           || microsecond != other.microsecond
-           || nanosecond != other.nanosecond;
+              || minute != other.minute
+              || second != other.second
+              || millisecond != other.millisecond
+              || microsecond != other.microsecond
+              || nanosecond != other.nanosecond;
 }
 
 int Time::get_hour_at_timezone(Timezone timezone) const
@@ -364,13 +338,13 @@ int Time::get_hour_at_timezone(Timezone timezone) const
 
 Time::Time(uint8_t hour, uint8_t minute, uint8_t second, uint16_t millisecond, uint16_t microsecond,
            uint16_t nanosecond, Timezone timezone) :
-    hour(hour),
-    minute(minute),
-    second(second),
-    millisecond(millisecond),
-    microsecond(microsecond),
-    nanosecond(nanosecond),
-    timezone(timezone)
+        hour(hour),
+        minute(minute),
+        second(second),
+        millisecond(millisecond),
+        microsecond(microsecond),
+        nanosecond(nanosecond),
+        timezone(timezone)
 {
     ASSERT(is_valid_time(),
            std::invalid_argument(fmt::format("Time '{}' is invalid", Time::to_string())));
@@ -479,50 +453,50 @@ Time& Time::floor(Time::Component to)
 int Time::total_minutes() const
 {
     return static_cast<int>(
-        hour * MINUTES_PER_HOUR
-      + minute
+            hour * MINUTES_PER_HOUR
+            + minute
     );
 }
 
 int Time::total_seconds() const
 {
     return static_cast<int>(
-          hour * SECONDS_PER_HOUR
-        + minute * SECONDS_PER_MINUTE
-        + second
+            hour * SECONDS_PER_HOUR
+            + minute * SECONDS_PER_MINUTE
+            + second
     );
 }
 
 int64_t Time::total_milliseconds() const
 {
     return static_cast<int64_t>(
-          hour * MILLISECONDS_PER_HOUR
-        + minute * MILLISECONDS_PER_MINUTE
-        + second * MILLISECONDS_PER_SECOND
-        + millisecond
+            hour * MILLISECONDS_PER_HOUR
+            + minute * MILLISECONDS_PER_MINUTE
+            + second * MILLISECONDS_PER_SECOND
+            + millisecond
     );
 }
 
 int64_t Time::total_microseconds() const
 {
     return static_cast<int64_t>(
-          hour * MICROSECONDS_PER_HOUR
-        + minute * MICROSECONDS_PER_MINUTE
-        + second * MICROSECONDS_PER_SECOND
-        + millisecond * MICROSECONDS_PER_MILLISECOND
-        + microsecond
+            hour * MICROSECONDS_PER_HOUR
+            + minute * MICROSECONDS_PER_MINUTE
+            + second * MICROSECONDS_PER_SECOND
+            + millisecond * MICROSECONDS_PER_MILLISECOND
+            + microsecond
     );
 }
 
 int64_t Time::total_nanoseconds() const
 {
     return static_cast<int64_t>(
-          hour * NANOSECONDS_PER_HOUR
-        + minute * NANOSECONDS_PER_MINUTE
-        + second * NANOSECONDS_PER_SECOND
-        + millisecond * NANOSECONDS_PER_MILLISECOND
-        + microsecond * NANOSECONDS_PER_MICROSECOND
-        + nanosecond
+            hour * NANOSECONDS_PER_HOUR
+            + minute * NANOSECONDS_PER_MINUTE
+            + second * NANOSECONDS_PER_SECOND
+            + millisecond * NANOSECONDS_PER_MILLISECOND
+            + microsecond * NANOSECONDS_PER_MICROSECOND
+            + nanosecond
     );
 }
 
@@ -539,7 +513,7 @@ std::string Time::to_string() const
 bool Time::is_valid_time() const
 {
     return is_valid_hour() && is_valid_minute() && is_valid_second() && is_valid_millisecond()
-        && is_valid_microsecond() && is_valid_nanosecond();
+           && is_valid_microsecond() && is_valid_nanosecond();
 }
 
 bool Time::is_valid_hour() const

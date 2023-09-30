@@ -237,14 +237,16 @@ TEST(Time, set_default_timezone)
 
 TEST(Time, get_hour_at_timezone_basic)
 {
+        Time::set_default_timezone(TZ::EST);
         Time time = Time(1);
-        EXPECT_EQ(time.get_hour_at_timezone(TZ::UTC), 6);
+        EXPECT_EQ(time.get_hour_at_timezone(TZ::UTC), 5);
 }
 
 TEST(Time, get_hour_at_timezone_wrap)
 {
+        Time::set_default_timezone(TZ::EST);
         Time time = Time(20);
-        EXPECT_EQ(time.get_hour_at_timezone(TZ::UTC), 1);
+        EXPECT_EQ(time.get_hour_at_timezone(TZ::UTC), 0);
 }
 
 TEST(Time, unit_conversions)
