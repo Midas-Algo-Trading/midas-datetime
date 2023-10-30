@@ -105,7 +105,7 @@ bool Date::operator!=(const Date& other) const
         || day != other.day;
 }
 
-bool Date::is_leap_year() const
+bool Date::is_leap_year(uint16_t year)
 {
     if (year % 4 != 0)
         return false;
@@ -116,14 +116,14 @@ bool Date::is_leap_year() const
     return true;
 }
 
-size_t Date::max_days_in_month() const
+size_t Date::max_days_in_month(uint8_t month_idx, std::optional<uint16_t> year)
 {
-    ASSERT(month >= 1 && month <= 12,
-           std::runtime_error(fmt::format("'{}' is not a valid month", month)));
+    ASSERT(month_idx >= 1 && month_idx <= 12,
+           std::runtime_error(fmt::format("'{}' is not a valid month", month_idx)));
 
-    switch (month) {
+    switch (month_idx) {
     case 2:
-        return is_leap_year() ? 29 : 28;
+        return year.has_value() && is_leap_year(year.value()) ? 29 : 28;
     case 4:
     case 6:
     case 9:
@@ -138,7 +138,7 @@ void Date::add_days(size_t days_to_add)
 {
     while (days_to_add > 0)
     {
-        size_t days_till_next_month = (max_days_in_month() - day) + 1;
+        size_t days_till_next_month = (max_days_in_month(month, year) - day) + 1;
         if (days_to_add < days_till_next_month)
         {
             day += static_cast<int>(days_to_add);
@@ -179,7 +179,7 @@ void Date::subtract_days(size_t days_to_subtract)
                 year--;
                 month = 12;
             }
-            day = static_cast<int>(max_days_in_month());
+            day = static_cast<int>(max_days_in_month(month, year));
             days_to_subtract -= days_till_prev_month;
         }
     }
@@ -303,7 +303,7 @@ bool Date::is_valid_month() const
 
 bool Date::is_valid_day() const
 {
-    return day <= max_days_in_month() && day >= 1;
+    return day <= max_days_in_month(month, year) && day >= 1;
 }
 
 Date Date::operator+(const Day& days)

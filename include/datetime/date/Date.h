@@ -138,25 +138,25 @@ public:
     virtual std::string to_string() const;
 
     /**
-     * Returns whether 'year' in this 'Date' is a leap year.
+     * Returns whether 'year' is a leap year.
      *
-     * @return 'true' if 'year' in this 'Date' is a leap year.
+     * @return 'true' if 'year' is a leap year.
      */
-    bool is_leap_year() const;
+    static bool is_leap_year(uint16_t year);
 
     /**
-     * Gets the maximum number of days in 'month' in this 'Date'.
+     * Gets the maximum number of days in the month that corresponds to 'month_idx'.
      *
-     * @return maximum number of days in 'month' in this 'Date'.
+     * @return maximum number of days in the month that corresponds to 'month_idx'.
      *
      * @example
      * Date date = Date(2000, 1, 2);
-     * int max_days_in_january = date.max_days_in_month();
+     * size_t max_days_in_january = Date::max_days_in_month(date.month);
      * std::cout << max_days_in_january;
      *
      * // output: 31
      */
-    size_t max_days_in_month() const;
+    static size_t max_days_in_month(uint8_t month_idx, std::optional<uint16_t> year = {});
 
     /**
      * Adds 'days' to this 'Date'.

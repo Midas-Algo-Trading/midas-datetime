@@ -459,13 +459,13 @@ TEST(Datetime, ostream)
 
 TEST(Datetime, from_ms_basic)
 {
-    Datetime datetime = Datetime::from_ms(1694813880000);
-    EXPECT_EQ(datetime.year, 2023);
-    EXPECT_EQ(datetime.month, 9);
-    EXPECT_EQ(datetime.day, 15);
-    EXPECT_EQ(datetime.hour, 16);
-    EXPECT_EQ(datetime.minute, 38);
-    EXPECT_EQ(datetime.second, 0);
+    Datetime datetime = Datetime::from_ms(946803845000, TZ::UTC);
+    EXPECT_EQ(datetime.year, 2000);
+    EXPECT_EQ(datetime.month, 1);
+    EXPECT_EQ(datetime.day, 2);
+    EXPECT_EQ(datetime.hour, 9);
+    EXPECT_EQ(datetime.minute, 4);
+    EXPECT_EQ(datetime.second, 5);
     EXPECT_EQ(datetime.millisecond, 0);
     EXPECT_EQ(datetime.microsecond, 0);
     EXPECT_EQ(datetime.nanosecond, 0);
@@ -473,14 +473,14 @@ TEST(Datetime, from_ms_basic)
 
 TEST(Datetime, from_ms_complex)
 {
-    Datetime datetime = Datetime::from_ms(1694823828492);
-    EXPECT_EQ(datetime.year, 2023);
-    EXPECT_EQ(datetime.month, 9);
-    EXPECT_EQ(datetime.day, 15);
-    EXPECT_EQ(datetime.hour, 19);
-    EXPECT_EQ(datetime.minute, 23);
-    EXPECT_EQ(datetime.second, 48);
-    EXPECT_EQ(datetime.millisecond, 492);
+    Datetime datetime = Datetime::from_ms(946803845999, TZ::UTC);
+    EXPECT_EQ(datetime.year, 2000);
+    EXPECT_EQ(datetime.month, 1);
+    EXPECT_EQ(datetime.day, 2);
+    EXPECT_EQ(datetime.hour, 9);
+    EXPECT_EQ(datetime.minute, 4);
+    EXPECT_EQ(datetime.second, 5);
+    EXPECT_EQ(datetime.millisecond, 999);
     EXPECT_EQ(datetime.microsecond, 0);
     EXPECT_EQ(datetime.nanosecond, 0);
 }
@@ -593,4 +593,10 @@ TEST(Datetime, operator_minus_nanosecond)
     Datetime datetime = Datetime(2000, 1, 1, 1, 2, 3, 4, 5, 6);
     Datetime new_datetime = datetime - Nanosecond(1);
     EXPECT_EQ(new_datetime, Datetime(2000, 1, 1, 1, 2, 3, 4, 5, 5));
+}
+
+TEST(Datetime, to_ms)
+{
+    Datetime datetime = Datetime(2000, 1, 2, 3, 4, 5, 6, 0, 0, TZ::UTC);
+    EXPECT_EQ(datetime.to_ms(), 946782245006);
 }

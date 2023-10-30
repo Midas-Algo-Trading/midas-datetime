@@ -180,11 +180,8 @@ std::ostream& operator<<(std::ostream& os, const Datetime& datetime)
 
 Datetime Datetime::from_ms(size_t timestamp, Timezone timezone)
 {
-    // The timezone offset in milliseconds,
-    size_t timezone_offset_ms = 5 * 60 * 60 * 1000;
-
     // Convert milliseconds to seconds and milliseconds
-    size_t timestamp_sec = (timestamp - timezone_offset_ms) / 1000;
+    size_t timestamp_sec = timestamp / 1000;
     uint16_t millisecond = timestamp % 1000;
 
     auto is_leap_year = [](size_t year) {
@@ -217,7 +214,7 @@ Datetime Datetime::from_ms(size_t timestamp, Timezone timezone)
     }
     uint8_t day = (timestamp_sec / seconds_per_day) + 1;
 
-    uint8_t hour = (timestamp_sec % 86400LL) / 3600;
+    uint8_t hour = ((timestamp_sec % 86400LL) / 3600) - timezone.utc_offset;
     uint8_t minute = (timestamp_sec % 3600) / 60;
     uint8_t second = timestamp_sec % 60;
 
@@ -318,4 +315,36 @@ Datetime &Datetime::operator-=(const Time &time)
 {
     Time::operator-=(time);
     return *this;
+}
+
+size_t Datetime::to_ms() const
+{
+    // Convert year, month, day, hour, minute, second to seconds.
+    size_t timestamp_sec = 0;
+
+    // Years in seconds.
+    for (uint16_t y = 1970; y < year; ++y)
+    {
+        timestamp_sec += (is_leap_year(y) ? 31622400 : 31536000);
+    }
+
+    // Months in seconds.
+    for (uint8_t m = 1; m < month; ++m)
+    {
+        timestamp_sec += max_days_in_month(m) * 86400;
+    }
+
+    // Days in seconds.
+    timestamp_sec += (day - 1) * 86400;
+
+    // Hour, minute, and second offset
+    timestamp_sec += hour * 3600 + minute * 60 + second;
+
+    // The timezone offset in milliseconds.
+    size_t timezone_offset_ms = timezone.utc_offset * SECONDS_PER_HOUR;
+
+    // Convert to milliseconds and add the timezone offset
+    size_t timestamp_ms = (timestamp_sec * 1000) + millisecond + timezone_offset_ms;
+
+    return timestamp_ms;
 }

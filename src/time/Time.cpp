@@ -39,7 +39,8 @@ millisecond_offset, uint16_t microsecond_offset, uint16_t nanosecond_offset,
                      second + second_offset,
                      millisecond + millisecond_offset,
                      microsecond + microsecond_offset,
-                     nanosecond + nanosecond_offset);
+                     nanosecond + nanosecond_offset,
+                     timezone);
 
     ASSERT(time.is_valid_time(),
            std::invalid_argument(fmt::format("Time '{}' is invalid", time.to_string())));

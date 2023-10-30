@@ -219,41 +219,29 @@ TEST(Date, operator_not_equal_to)
 TEST(Date, is_leap_year)
 {
         Date date = Date(2004, 1, 1);
-        EXPECT_TRUE(date.is_leap_year());
+        EXPECT_TRUE(Date::is_leap_year(date.year));
         date = Date(1900, 1, 1);
-        EXPECT_FALSE(date.is_leap_year());
+        EXPECT_FALSE(Date::is_leap_year(date.year));
         date = Date(2000, 1, 1);
-        EXPECT_TRUE(date.is_leap_year());
+        EXPECT_TRUE(Date::is_leap_year(date.year));
         date = Date(1999, 1, 1);
-        EXPECT_FALSE(date.is_leap_year());
+        EXPECT_FALSE(Date::is_leap_year(date.year));
 }
 
 TEST(Date, max_days_in_month)
 {
-        Date date = Date(1900, 1, 1);
-        EXPECT_EQ(date.max_days_in_month(), 31);
-        date = Date(1900, 2, 1);
-        EXPECT_EQ(date.max_days_in_month(), 28);
-        date = Date(1900, 3, 1);
-        EXPECT_EQ(date.max_days_in_month(), 31);
-        date = Date(1900, 4, 1);
-        EXPECT_EQ(date.max_days_in_month(), 30);
-        date = Date(1900, 5, 1);
-        EXPECT_EQ(date.max_days_in_month(), 31);
-        date = Date(1900, 6, 1);
-        EXPECT_EQ(date.max_days_in_month(), 30);
-        date = Date(1900, 7, 1);
-        EXPECT_EQ(date.max_days_in_month(), 31);
-        date = Date(1900, 8, 1);
-        EXPECT_EQ(date.max_days_in_month(), 31);
-        date = Date(1900, 9, 1);
-        EXPECT_EQ(date.max_days_in_month(), 30);
-        date = Date(1900, 10, 1);
-        EXPECT_EQ(date.max_days_in_month(), 31);
-        date = Date(1900, 11, 1);
-        EXPECT_EQ(date.max_days_in_month(), 30);
-        date = Date(1900, 12, 1);
-        EXPECT_EQ(date.max_days_in_month(), 31);
+        EXPECT_EQ(Date::max_days_in_month(1), 31);
+        EXPECT_EQ(Date::max_days_in_month(2), 28);
+        EXPECT_EQ(Date::max_days_in_month(3), 31);
+        EXPECT_EQ(Date::max_days_in_month(4), 30);
+        EXPECT_EQ(Date::max_days_in_month(5), 31);
+        EXPECT_EQ(Date::max_days_in_month(6), 30);
+        EXPECT_EQ(Date::max_days_in_month(7), 31);
+        EXPECT_EQ(Date::max_days_in_month(8), 31);
+        EXPECT_EQ(Date::max_days_in_month(9), 30);
+        EXPECT_EQ(Date::max_days_in_month(10), 31);
+        EXPECT_EQ(Date::max_days_in_month(11), 30);
+        EXPECT_EQ(Date::max_days_in_month(12), 31);
 }
 
 TEST(Date, months_per_year)

@@ -77,6 +77,13 @@ public:
     static Datetime from_ms(size_t timestamp, Timezone timezone = Time::default_timezone);
 
     /**
+     * Converts 'this' to UNIX ms timestamp.
+     *
+     * @return 'this' as a UNIX ms timestamp.
+     */
+    size_t to_ms() const;
+
+    /**
      * Creates a 'Datetime' from a std::string.
      *
      * @tparam DateComponent1 should be of type 'Date::Component'.

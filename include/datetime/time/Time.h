@@ -583,8 +583,6 @@ protected:
      */
     int64_t total_nanoseconds() const;
 
-private:
-
     // Following int64_t values are not unsigned ints to avoid numerous narrowing conversions.
 
     /**
@@ -661,6 +659,8 @@ private:
      * Nanoseconds in a millisecond.
      */
     static const size_t NANOSECONDS_PER_MILLISECOND;
+
+private:
 
     /**
      * Checks if this 'Time's' components are all valid.
