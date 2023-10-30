@@ -78,52 +78,66 @@ public:
 
 namespace TZ
 {
-/**
- * The Universal Time Coordinated (UTC) timezone.
- */
+    /**
+     * The Universal Time Coordinated (UTC) timezone.
+     */
     const Timezone UTC = Timezone(0);
 
-/**
- * The Pacific Standard Time (PST) timezone.
- */
+    /**
+     * The Pacific Standard Time (PST) timezone.
+     */
     const Timezone PST = Timezone(7);
 
-/**
- * The Pacific Daylight Time (PDT) timezone.
- */
+    /**
+     * The Pacific Daylight Time (PDT) timezone.
+     */
     const Timezone PDT = Timezone(7);
 
-/**
- * The Central Standard Time (CST) timezone.
- */
-    const Timezone CST = Timezone(5);
+    /**
+     * The Central Standard Time (CST) timezone.
+     */
+    const Timezone CST = Timezone(6);
 
-/**
- * Eastern Standard Time (EST) timezone.
- */
-    const Timezone EST = Timezone(4);
+    /**
+    * The Central Daylight Time (CDT) timezone.
+    */
+    const Timezone CDT = Timezone(5);
+
+    /**
+     * Eastern Standard Time (EST) timezone.
+     */
+    const Timezone EST = Timezone(5);
+
+    /**
+    * Eastern Daylight Time (EDT) timezone.
+    */
+    const Timezone EDT = Timezone(4);
 
     namespace helpers
     {
-/**
- * Gets the 'Timezone' from a string.
- *
- * @param timezone_string name of a timezone from the result of std::localtime(...).
- *
- * @return 'Timezone' that corresponds with 'timezone_string'.
- *
- * @throws std::invalid_argument Thrown if no timezones matched 'timezone_string'.
- */
+        /**
+         * Gets the 'Timezone' from a string.
+         *
+         * @param timezone_string name of a timezone from the result of std::localtime(...).
+         *
+         * @return 'Timezone' that corresponds with 'timezone_string'.
+         *
+         * @throws std::invalid_argument Thrown if no timezones matched 'timezone_string'.
+         */
         static Timezone get_from_str(std::string_view timezone_string)
         {
             if (timezone_string == "Coordinated Universal Time")
                 return UTC;
             else if (timezone_string == "Pacific Standard Time")
                 return TZ::PST;
-            else if (timezone_string == "Central Daylight Time")
+            else if (timezone_string == "Central Standard Time")
                 return TZ::CST;
+            else if (timezone_string == "Central Daylight Time")
+                return TZ::CDT;
             else if (timezone_string == "Eastern Standard Time")
                 return TZ::EST;
+            else if (timezone_string == "Eastern Daylight Time")
+                return TZ::EDT;
             else if (timezone_string == "Pacific Daylight Time")
                 return TZ::PDT;
             throw std::invalid_argument(fmt::format("'{}' is not a valid timezone string", timezone_string));

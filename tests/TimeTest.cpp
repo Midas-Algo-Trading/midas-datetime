@@ -239,13 +239,13 @@ TEST(Time, get_hour_at_timezone_basic)
 {
         Time::set_default_timezone(TZ::EST);
         Time time = Time(1);
-        EXPECT_EQ(time.get_hour_at_timezone(TZ::UTC), 5);
+        EXPECT_EQ(time.get_hour_at_timezone(TZ::UTC), 6);
 }
 
 TEST(Time, get_hour_at_timezone_wrap)
 {
         Time::set_default_timezone(TZ::EST);
-        Time time = Time(20);
+        Time time = Time(19);
         EXPECT_EQ(time.get_hour_at_timezone(TZ::UTC), 0);
 }
 
@@ -463,8 +463,10 @@ TEST(Timezone, get_from_str)
 {
         EXPECT_EQ(TZ::helpers::get_from_str("Coordinated Universal Time"), TZ::UTC);
         EXPECT_EQ(TZ::helpers::get_from_str("Pacific Standard Time"), TZ::PST);
-        EXPECT_EQ(TZ::helpers::get_from_str("Central Daylight Time"), TZ::CST);
+        EXPECT_EQ(TZ::helpers::get_from_str("Central Standard Time"), TZ::CST);
+        EXPECT_EQ(TZ::helpers::get_from_str("Central Daylight Time"), TZ::CDT);
         EXPECT_EQ(TZ::helpers::get_from_str("Eastern Standard Time"), TZ::EST);
+        EXPECT_EQ(TZ::helpers::get_from_str("Eastern Daylight Time"), TZ::EDT);
         EXPECT_EQ(TZ::helpers::get_from_str("Pacific Daylight Time"), TZ::PDT);
 }
 
