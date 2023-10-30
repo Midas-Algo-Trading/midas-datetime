@@ -501,14 +501,14 @@ int64_t Time::total_nanoseconds() const
     );
 }
 
-std::string Time::to_string() const
+std::string Time::to_string(char separate_time, char separate_seconds) const
 {
     return std::to_string(hour)
-           + ':' + strh::align(std::to_string(minute), strh::Alignment::LEFT, 2, '0')
-           + ':' + strh::align(std::to_string(second), strh::Alignment::LEFT, 2, '0')
-           + '.' + std::to_string(millisecond)
-           + '.' + std::to_string(microsecond)
-           + '.' + std::to_string(nanosecond);
+           + separate_time + strh::align(std::to_string(minute), strh::Alignment::LEFT, 2, '0')
+           + separate_time + strh::align(std::to_string(second), strh::Alignment::LEFT, 2, '0')
+           + separate_seconds + std::to_string(millisecond)
+           + separate_seconds + std::to_string(microsecond)
+           + separate_seconds + std::to_string(nanosecond);
 }
 
 bool Time::is_valid_time() const

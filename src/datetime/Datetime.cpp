@@ -168,9 +168,9 @@ Datetime &Datetime::operator--()
     return *this;
 }
 
-std::string Datetime::to_string() const
+std::string Datetime::to_string(char separate_components, char separate_time) const
 {
-    return Date::to_string() + ' ' + Time::to_string();
+    return Date::to_string() + separate_components + Time::to_string(separate_time);
 }
 
 std::ostream& operator<<(std::ostream& os, const Datetime& datetime)
