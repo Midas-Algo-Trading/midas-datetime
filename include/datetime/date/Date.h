@@ -135,7 +135,7 @@ public:
      *
      * // output: 2000-01-30
      */
-    virtual std::string to_string() const;
+    virtual std::string to_string(char separate_year = '-', char separate_day = '-') const;
 
     /**
      * Returns whether 'year' in this 'Date' is a leap year.

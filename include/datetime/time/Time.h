@@ -479,7 +479,7 @@ public:
      *
      * @return resulting std::string.
      */
-    virtual std::string to_string() const;
+    virtual std::string to_string(char separate_time = ':', char separate_seconds = '.') const;
 
     /**
      * Gets 'hour' adjusted for 'timezone'.
