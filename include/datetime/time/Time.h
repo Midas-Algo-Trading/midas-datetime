@@ -111,7 +111,7 @@ public:
      *
      * @return new 'Time' object of 'time' added to 'other'.
      */
-    friend Time operator+(Time time, const Time& other);
+    friend Time operator+(Time time, Time other);
 
     /**
      * Subtracts 'other' from 'time'.
@@ -121,7 +121,7 @@ public:
      *
      * @return new 'Time' object of 'other' subtracted from 'time'.
      */
-    friend Time operator-(Time time, const Time& other);
+    friend Time operator-(Time time, Time other);
 
     /**
      * Adds 'other' to this 'Time'.
@@ -130,7 +130,7 @@ public:
      *
      * @return reference to this modified 'Time'.
      */
-    virtual Time& operator+=(const Time& other);
+    virtual Time& operator+=(Time other);
 
     /**
      * Subtracts 'other' to this 'Time'.
@@ -139,7 +139,7 @@ public:
      *
      * @return reference to this modified 'Time'.
      */
-    virtual Time& operator-=(const Time& other);
+    virtual Time& operator-=(Time other);
 
     /**
      * Adds 'hours' to this 'Time'.
@@ -256,7 +256,7 @@ public:
      *
      * @return 'true' if 'other' is greater than this 'Time', 'false' otherwise.
      */
-    bool operator>(const Time& other) const;
+    bool operator>(Time other) const;
 
     /**
      * Checks if 'other' is greater than or equal to this 'Time'.
@@ -265,7 +265,7 @@ public:
      *
      * @return 'true' if 'other' is greater than or equal to this 'Time', 'false' otherwise.
      */
-    bool operator>=(const Time& other) const;
+    bool operator>=(Time other) const;
 
     /**
      * Checks if 'other' is less than this 'Time'.
@@ -274,7 +274,7 @@ public:
      *
      * @return 'true' if 'other' is less than this 'Time', 'false' otherwise.
      */
-    bool operator<(const Time& other) const;
+    bool operator<(Time other) const;
 
     /**
        * Checks if 'other' is less than or equal to this 'Time'.
@@ -283,7 +283,7 @@ public:
        *
        * @return 'true' if 'other' is less than or equal to this 'Time', 'false' otherwise.
        */
-    bool operator<=(const Time& other) const;
+    bool operator<=(Time other) const;
 
     /**
       * Checks if 'other' is equal to this 'Time'.
@@ -292,7 +292,7 @@ public:
       *
       * @return 'true' if 'other' is equal to this 'Time', 'false' otherwise.
       */
-    bool operator==(const Time& other) const;
+    bool operator==(Time other) const;
 
     /**
       * Checks if 'other' is not equal to this 'Time'.
@@ -301,7 +301,7 @@ public:
       *
       * @return 'true' if 'other' is not equal to this 'Time', 'false' otherwise.
       */
-    bool operator!=(const Time& other) const;
+    bool operator!=(Time other) const;
 
     /**
      * Adds 'hours' to 'time'.
@@ -482,15 +482,6 @@ public:
     virtual std::string to_string() const;
 
     /**
-     * Gets 'hour' adjusted for 'timezone'.
-     *
-     * @param timezone timezone to adjust 'hour' to.
-     *
-     * @return adjusted 'hour'.
-     */
-    int get_hour_at_timezone(Timezone timezone) const;
-
-    /**
      * Hours in a day.
      */
     static const int HOURS_PER_DAY;
@@ -511,21 +502,21 @@ protected:
      *
      * @param hours_to_add number of hours to add.
      */
-    virtual void add_hours(int hours_to_add);
+    virtual void add_hours(int64_t hours_to_add);
 
     /**
      * Adds minutes to this 'Time'.
      *
      * @param minutes_to_add number of minutes to add.
      */
-    virtual void add_minutes(int minutes_to_add);
+    virtual void add_minutes(int64_t minutes_to_add);
 
     /**
      * Adds seconds to this 'Time'.
      *
      * @param seconds_to_add number of seconds to add.
      */
-    virtual void add_seconds(int seconds_to_add);
+    virtual void add_seconds(int64_t seconds_to_add);
 
     /**
       * Adds milliseconds to this 'Time'.

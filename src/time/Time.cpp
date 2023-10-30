@@ -5,9 +5,9 @@
 
 Timezone Time::default_timezone = TZ::EST;
 
-Time Time::now(uint8_t hour_offset, uint8_t minute_offset, uint8_t second_offset, uint16_t
-millisecond_offset, uint16_t microsecond_offset, uint16_t nanosecond_offset,
-               Timezone timezone)
+Time Time::now(uint8_t hour_offset, uint8_t minute_offset, uint8_t second_offset,
+               uint16_t millisecond_offset, uint16_t microsecond_offset,
+               uint16_t nanosecond_offset, Timezone timezone)
 {
     // Get the current local time
     std::time_t now = std::time(nullptr);
@@ -17,9 +17,6 @@ millisecond_offset, uint16_t microsecond_offset, uint16_t nanosecond_offset,
     int hour = local_tm.tm_hour;
     int minute = local_tm.tm_min;
     int second = local_tm.tm_sec;
-
-    // Set hour from system timezone to timezone
-    hour += TZ::LOCAL.get_utc_offset_diff(timezone);
 
     auto currentTimePoint = std::chrono::high_resolution_clock::now() + std::chrono::hours(hour);
 
@@ -40,10 +37,13 @@ millisecond_offset, uint16_t microsecond_offset, uint16_t nanosecond_offset,
                      millisecond + millisecond_offset,
                      microsecond + microsecond_offset,
                      nanosecond + nanosecond_offset,
-                     timezone);
+                     TZ::LOCAL); // Gets the time in local time, so Timezone must be TZ::LOCAL
 
     ASSERT(time.is_valid_time(),
            std::invalid_argument(fmt::format("Time '{}' is invalid", time.to_string())));
+
+    time.set_timezone(timezone); // Set the local time to 'timezone'.
+
 
     return time;
 }
@@ -55,37 +55,37 @@ std::ostream& operator<<(std::ostream& os, const Time& time)
 
 Time& Time::operator+=(const Hour& hours)
 {
-    add_hours(static_cast<int>(hours.value));
+    add_hours(hours.value);
     return *this;
 }
 
 Time& Time::operator-=(const Hour& hours)
 {
-    add_hours(-static_cast<int>(hours.value));
+    add_hours(-hours.value);
     return *this;
 }
 
 Time& Time::operator+=(const Minute& minutes)
 {
-    add_minutes(static_cast<int>(minutes.value));
+    add_minutes(minutes.value);
     return *this;
 }
 
 Time& Time::operator-=(const Minute& minutes)
 {
-    add_minutes(-static_cast<int>(minutes.value));
+    add_minutes(-minutes.value);
     return *this;
 }
 
 Time& Time::operator+=(const Second& seconds)
 {
-    add_seconds(static_cast<int>(seconds.value));
+    add_seconds(seconds.value);
     return *this;
 }
 
 Time& Time::operator-=(const Second& seconds)
 {
-    add_seconds(-static_cast<int>(seconds.value));
+    add_seconds(-seconds.value);
     return *this;
 }
 
@@ -97,7 +97,7 @@ Time& Time::operator+=(const Millisecond& milliseconds)
 
 Time& Time::operator-=(const Millisecond& milliseconds)
 {
-    add_milliseconds(-static_cast<int64_t>(milliseconds.value));
+    add_milliseconds(-milliseconds.value);
     return *this;
 }
 
@@ -109,7 +109,7 @@ Time& Time::operator+=(const Microsecond& microseconds)
 
 Time& Time::operator-=(const Microsecond& microseconds)
 {
-    add_microseconds(-static_cast<int64_t>(microseconds.value));
+    add_microseconds(-microseconds.value);
     return *this;
 }
 
@@ -121,7 +121,7 @@ Time& Time::operator+=(const Nanosecond& nanoseconds)
 
 Time& Time::operator-=(const Nanosecond& nanoseconds)
 {
-    add_nanoseconds(-static_cast<int64_t>(nanoseconds.value));
+    add_nanoseconds(-nanoseconds.value);
     return *this;
 }
 
@@ -146,9 +146,9 @@ const size_t Time::NANOSECONDS_PER_MILLISECOND = MICROSECONDS_PER_MILLISECOND
 
 const int Time::HOURS_PER_DAY = 24;
 
-void Time::add_hours(int hours_to_add)
+void Time::add_hours(int64_t hours_to_add)
 {
-    int new_hour = (static_cast<int>(hour) + hours_to_add) % HOURS_PER_DAY;
+    int new_hour = static_cast<int>((static_cast<int64_t>(hour) + hours_to_add) % HOURS_PER_DAY);
 
     if (new_hour < 0)
         throw std::out_of_range("Time cannot be negative");
@@ -156,11 +156,11 @@ void Time::add_hours(int hours_to_add)
     hour = static_cast<uint8_t>(new_hour);
 }
 
-void Time::add_minutes(int minutes_to_add)
+void Time::add_minutes(int64_t minutes_to_add)
 {
-    int new_total_minutes = total_minutes() + minutes_to_add;
-    int new_total_hours = static_cast<int>(new_total_minutes / static_cast<int64_t>(MINUTES_PER_HOUR));
-    int hour_change = new_total_hours - hour;
+    int64_t new_total_minutes = total_minutes() + minutes_to_add;
+    int64_t new_total_hours = static_cast<int>(new_total_minutes / static_cast<int64_t>(MINUTES_PER_HOUR));
+    int64_t hour_change = new_total_hours - hour;
     int new_minute = static_cast<int>(new_total_minutes % static_cast<int64_t>(MINUTES_PER_HOUR));
     if (new_minute < 0)
     {
@@ -171,11 +171,11 @@ void Time::add_minutes(int minutes_to_add)
     add_hours(hour_change);
 }
 
-void Time::add_seconds(int seconds_to_add)
+void Time::add_seconds(int64_t seconds_to_add)
 {
-    int new_total_seconds = total_seconds() + seconds_to_add;
-    int new_total_minutes = static_cast<int>(new_total_seconds / static_cast<int64_t>(SECONDS_PER_MINUTE));
-    int minute_change = new_total_minutes - total_minutes();
+    int64_t new_total_seconds = total_seconds() + seconds_to_add;
+    int64_t new_total_minutes = static_cast<int>(new_total_seconds / static_cast<int64_t>(SECONDS_PER_MINUTE));
+    int64_t minute_change = new_total_minutes - total_minutes();
     int new_second = static_cast<int>(new_total_seconds % static_cast<int64_t>(SECONDS_PER_MINUTE));
     if (new_second < 0)
     {
@@ -242,78 +242,79 @@ void Time::set_default_timezone(Timezone timezone)
 
 void Time::set_timezone(Timezone new_timezone)
 {
-    hour += timezone.get_utc_offset_diff(new_timezone);
-    hour %= HOURS_PER_DAY;
+    (*this) += Hour(timezone.get_utc_offset_diff(new_timezone));
     timezone = new_timezone;
 }
 
-bool Time::operator>(const Time& other) const
+bool Time::operator>(Time other) const
 {
-    int other_hour = other.get_hour_at_timezone(timezone);
+    other.set_timezone(timezone);
 
-    return    hour > other_hour
-              || hour == other_hour && minute > other.minute
-              || hour == other_hour && minute == other.minute && second > other.second
-              || hour == other_hour && minute == other.minute && second == other.second
+    return    hour > other.hour
+              || hour == other.hour && minute > other.minute
+              || hour == other.hour && minute == other.minute && second > other.second
+              || hour == other.hour && minute == other.minute && second == other.second
                  && millisecond > other.millisecond
-              || hour == other_hour && minute == other.minute && second == other.second
+              || hour == other.hour && minute == other.minute && second == other.second
                  && millisecond == other.millisecond && microsecond > other.microsecond
-              || hour == other_hour && minute == other.minute && second == other.second
+              || hour == other.hour && minute == other.minute && second == other.second
                  && millisecond == other.millisecond && microsecond == other.microsecond
                  && nanosecond > other.nanosecond;
 }
 
-bool Time::operator>=(const Time& other) const
+bool Time::operator>=(Time other) const
 {
-    int other_hour = other.get_hour_at_timezone(timezone);
+    other.set_timezone(timezone);
 
-    return    hour > other_hour
-              || hour == other_hour && minute > other.minute
-              || hour == other_hour && minute == other.minute && second > other.second
-              || hour == other_hour && minute == other.minute && second == other.second
+    return    hour > other.hour
+              || hour == other.hour && minute > other.minute
+              || hour == other.hour && minute == other.minute && second > other.second
+              || hour == other.hour && minute == other.minute && second == other.second
                  && millisecond > other.millisecond
-              || hour == other_hour && minute == other.minute && second == other.second
+              || hour == other.hour && minute == other.minute && second == other.second
                  && millisecond == other.millisecond && microsecond > other.microsecond
-              || hour == other_hour && minute == other.minute && second == other.second
+              || hour == other.hour && minute == other.minute && second == other.second
                  && millisecond == other.millisecond && microsecond == other.microsecond
                  && nanosecond >= other.nanosecond;
 }
 
-bool Time::operator<(const Time& other) const
+bool Time::operator<(Time other) const
 {
-    int other_hour = other.get_hour_at_timezone(timezone);
+    other.set_timezone(timezone);
 
-    return    hour < other_hour
-              || hour == other_hour && minute < other.minute
-              || hour == other_hour && minute == other.minute && second < other.second
-              || hour == other_hour && minute == other.minute && second == other.second
+    return    hour < other.hour
+              || hour == other.hour && minute < other.minute
+              || hour == other.hour && minute == other.minute && second < other.second
+              || hour == other.hour && minute == other.minute && second == other.second
                  && millisecond < other.millisecond
-              || hour == other_hour && minute == other.minute && second == other.second
+              || hour == other.hour && minute == other.minute && second == other.second
                  && millisecond == other.millisecond && microsecond < other.microsecond
-              || hour == other_hour && minute == other.minute && second == other.second
+              || hour == other.hour && minute == other.minute && second == other.second
                  && millisecond == other.millisecond && microsecond == other.microsecond
                  && nanosecond < other.nanosecond;
 }
 
-bool Time::operator<=(const Time& other) const
+bool Time::operator<=(Time other) const
 {
-    int other_hour = other.get_hour_at_timezone(timezone);
+    other.set_timezone(timezone);
 
-    return    hour < other_hour
-              || hour == other_hour && minute < other.minute
-              || hour == other_hour && minute == other.minute && second < other.second
-              || hour == other_hour && minute == other.minute && second == other.second
+    return    hour < other.hour
+              || hour == other.hour && minute < other.minute
+              || hour == other.hour && minute == other.minute && second < other.second
+              || hour == other.hour && minute == other.minute && second == other.second
                  && millisecond < other.millisecond
-              || hour == other_hour && minute == other.minute && second == other.second
+              || hour == other.hour && minute == other.minute && second == other.second
                  && millisecond == other.millisecond && microsecond < other.microsecond
-              || hour == other_hour && minute == other.minute && second == other.second
+              || hour == other.hour && minute == other.minute && second == other.second
                  && millisecond == other.millisecond && microsecond == other.microsecond
                  && nanosecond <= other.nanosecond;
 }
 
-bool Time::operator==(const Time& other) const
+bool Time::operator==(Time other) const
 {
-    return    hour == other.get_hour_at_timezone(timezone)
+    other.set_timezone(timezone);
+
+    return    hour == other.hour
               && minute == other.minute
               && second == other.second
               && millisecond == other.millisecond
@@ -321,20 +322,16 @@ bool Time::operator==(const Time& other) const
               && nanosecond == other.nanosecond;
 }
 
-bool Time::operator!=(const Time& other) const
+bool Time::operator!=(Time other) const
 {
-    return    hour != other.get_hour_at_timezone(timezone)
+    other.set_timezone(timezone);
+    
+    return    hour != other.hour
               || minute != other.minute
               || second != other.second
               || millisecond != other.millisecond
               || microsecond != other.microsecond
               || nanosecond != other.nanosecond;
-}
-
-int Time::get_hour_at_timezone(Timezone timezone) const
-{
-    return (hour + this->timezone.get_utc_offset_diff(timezone))
-           % HOURS_PER_DAY;
 }
 
 Time::Time(uint8_t hour, uint8_t minute, uint8_t second, uint16_t millisecond, uint16_t microsecond,
@@ -547,20 +544,24 @@ bool Time::is_valid_nanosecond() const
     return nanosecond < NANOSECONDS_PER_MICROSECOND && nanosecond >= 0;
 }
 
-Time operator+(Time time, const Time& other)
+Time operator+(Time time, Time other)
 {
+    other.set_timezone(time.timezone);
+
     time += Nanosecond(other.nanosecond);
     time += Microsecond(other.microsecond);
     time += Millisecond(other.millisecond);
     time += Second(other.second);
     time += Minute(other.minute);
-    time += Hour(other.get_hour_at_timezone(time.timezone));
+    time += Hour(other.hour);
     return time;
 }
 
-Time operator-(Time time, const Time& other)
+Time operator-(Time time, Time other)
 {
-    time -= Hour(other.get_hour_at_timezone(time.timezone));
+    other.set_timezone(time.timezone);
+
+    time -= Hour(other.hour);
     time -= Minute(other.minute);
     time -= Second(other.second);
     time -= Millisecond(other.millisecond);
@@ -569,20 +570,24 @@ Time operator-(Time time, const Time& other)
     return time;
 }
 
-Time& Time::operator+=(const Time& other)
+Time& Time::operator+=(Time other)
 {
+    other.set_timezone(timezone);
+
     (*this) += Nanosecond(other.nanosecond);
     (*this) += Microsecond(other.microsecond);
     (*this) += Millisecond(other.millisecond);
     (*this) += Second(other.second);
     (*this) += Minute(other.minute);
-    (*this) += Hour(other.get_hour_at_timezone(timezone));
+    (*this) += Hour(other.hour);
     return (*this);
 }
 
-Time &Time::operator-=(const Time &other)
+Time &Time::operator-=(Time other)
 {
-    (*this) -= Hour(other.get_hour_at_timezone(timezone));
+    other.set_timezone(timezone);
+
+    (*this) -= Hour(other.hour);
     (*this) -= Minute(other.minute);
     (*this) -= Second(other.second);
     (*this) -= Millisecond(other.millisecond);

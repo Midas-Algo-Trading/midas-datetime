@@ -9,11 +9,11 @@ Datetime Datetime::now(uint8_t  day_offset, uint8_t hour_offset, uint8_t minute_
                               microsecond_offset, nanosecond_offset, timezone));
 }
 
-void Datetime::add_hours(int hours_to_add)
+void Datetime::add_hours(int64_t hours_to_add)
 {
-    int new_hour = hour + hours_to_add;
-    int day_change = new_hour / HOURS_PER_DAY;
-    new_hour %= HOURS_PER_DAY;
+    int64_t hours = static_cast<int64_t>(hour) + hours_to_add;
+    int64_t day_change = static_cast<int64_t>(hours) / HOURS_PER_DAY;
+    int new_hour = static_cast<int>(hours % HOURS_PER_DAY);
     if (new_hour < 0)
     {
         new_hour += HOURS_PER_DAY;
@@ -24,7 +24,7 @@ void Datetime::add_hours(int hours_to_add)
     if (day_change > 0)
         add_days(day_change);
     if (day_change < 0)
-        subtract_days(day_change * -1);
+        subtract_days(-day_change);
 }
 
 Date Datetime::date() const
@@ -38,37 +38,49 @@ Time Datetime::time() const
 }
 
 
-bool Datetime::operator>(const Datetime& other) const
+bool Datetime::operator>(Datetime other) const
 {
+    other.set_timezone(timezone);
+
     return Date::operator>(other.date())
         || Date::operator==(other.date()) && Time::operator>(other.time());
 }
 
-bool Datetime::operator>=(const Datetime& other) const
+bool Datetime::operator>=(Datetime other) const
 {
+    other.set_timezone(timezone);
+
     return Date::operator>(other.date())
         || Date::operator==(other.date()) && Time::operator>=(other.time());
 }
 
-bool Datetime::operator<(const Datetime& other) const
+bool Datetime::operator<(Datetime other) const
 {
+    other.set_timezone(timezone);
+
     return Date::operator<(other.date())
         || Date::operator==(other.date()) && Time::operator<(other.time());
 }
 
-bool Datetime::operator<=(const Datetime& other) const
+bool Datetime::operator<=(Datetime other) const
 {
+    other.set_timezone(timezone);
+
     return Date::operator<(other.date())
         || Date::operator==(other.date()) && Time::operator<=(other.time());
 }
 
-bool Datetime::operator==(const Datetime& other) const
+bool Datetime::operator==(Datetime other) const
 {
+    other.set_timezone(timezone);
+
     return Date::operator==(other.date()) && Time::operator==(other.time());
 }
 
-bool Datetime::operator!=(const Datetime& other) const
+bool Datetime::operator!=(Datetime other) const
 {
+    other.set_timezone(timezone);
+
     return Date::operator!=(other.date()) || Time::operator!=(other.time());
 }
 
@@ -178,47 +190,54 @@ std::ostream& operator<<(std::ostream& os, const Datetime& datetime)
     return os << datetime.to_string();
 }
 
-Datetime Datetime::from_ms(size_t timestamp, Timezone timezone)
+Datetime Datetime::from_ms(size_t timestamp, Timezone to_timezone, Timezone from_timezone)
 {
-    // Convert milliseconds to seconds and milliseconds
-    size_t timestamp_sec = timestamp / 1000;
-    uint16_t millisecond = timestamp % 1000;
-
-    auto is_leap_year = [](size_t year) {
-        return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
-    };
-
-    // Calculate year.
+    // Year.
     uint16_t year = 1970;  // Unix epoch year.
-    while (timestamp_sec >= 31536000)  // Number of seconds in a non-leap year.
+    while (timestamp >= MILLISECONDS_PER_NON_LEAP_YEAR)
     {
-        size_t seconds_in_year = is_leap_year(year) ? 31622400 : 31536000;
-        timestamp_sec -= seconds_in_year;
+        size_t ms_in_year = is_leap_year(year)
+                                    ? MILLISECONDS_PER_LEAP_YEAR
+                                    : MILLISECONDS_PER_NON_LEAP_YEAR;
+        timestamp -= ms_in_year;
         year++;
     }
 
-    // Number of days in each month for a non-leap year,
-    size_t days_in_month[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-
-    // Adjust February for leap years.
-    if (is_leap_year(year))
-        days_in_month[2] = 29;
-
-    // Calculate month and day.
+    // Month.
     uint8_t month = 1;
-    size_t seconds_per_day = 86400;
-    while (timestamp_sec >= days_in_month[month] * seconds_per_day)
+    while (timestamp >= max_days_in_month(month, year) * MILLISECONDS_PER_DAY)
     {
-        timestamp_sec -= days_in_month[month] * seconds_per_day;
+        timestamp -= max_days_in_month(month, year) * MILLISECONDS_PER_DAY;
         month++;
     }
-    uint8_t day = (timestamp_sec / seconds_per_day) + 1;
 
-    uint8_t hour = ((timestamp_sec % 86400LL) / 3600) - timezone.utc_offset;
-    uint8_t minute = (timestamp_sec % 3600) / 60;
-    uint8_t second = timestamp_sec % 60;
+    // Day.
+    // We'll later add 1 to 'day' because we cannot have day = 0. Minimum day is 1.
+    uint8_t day = timestamp / MILLISECONDS_PER_DAY;
+    timestamp %= MILLISECONDS_PER_DAY;
 
-    return Datetime(year, month, day, hour, minute, second, millisecond, 0, 0, timezone);
+    // Hour.
+    uint8_t hour = timestamp / MILLISECONDS_PER_HOUR;
+    timestamp %= MILLISECONDS_PER_HOUR;
+
+    // Minute.
+    uint8_t minute = timestamp / MILLISECONDS_PER_MINUTE;
+    timestamp %= MILLISECONDS_PER_MINUTE;
+
+    // Second.
+    uint8_t second = timestamp / MILLISECONDS_PER_SECOND;
+    timestamp %= MILLISECONDS_PER_SECOND;
+
+    // Millisecond.
+    uint16_t millisecond = timestamp;
+
+
+    Datetime ret =
+        Datetime(year, month, day+1, hour, minute, second, millisecond, 0, 0, from_timezone);
+
+    ret.set_timezone(to_timezone);
+
+    return ret;
 }
 
 Datetime operator+(Datetime datetime, const Hour& hours)
@@ -293,58 +312,71 @@ Datetime operator-(Datetime datetime, const Nanosecond& nanoseconds)
     return datetime;
 }
 
-Datetime operator+(Datetime datetime, const Time& other)
+Datetime operator+(Datetime datetime, Time other)
 {
+    other.set_timezone(datetime.timezone);
     datetime += other;
     return datetime;
 }
 
-Datetime operator-(Datetime datetime, const Time& other)
+Datetime operator-(Datetime datetime, Time other)
 {
+    other.set_timezone(datetime.timezone);
     datetime -= other;
     return datetime;
 }
 
-Datetime& Datetime::operator+=(const Time& time)
+Datetime& Datetime::operator+=(Time time)
 {
-    Time::operator+=(time);
+    Time::operator+=(std::move(time));
     return *this;
 }
 
-Datetime &Datetime::operator-=(const Time &time)
+Datetime &Datetime::operator-=(Time time)
 {
-    Time::operator-=(time);
+    Time::operator-=(std::move(time));
     return *this;
 }
 
-size_t Datetime::to_ms() const
+size_t Datetime::to_ms(std::optional<Timezone> timezone) const
 {
-    // Convert year, month, day, hour, minute, second to seconds.
-    size_t timestamp_sec = 0;
+    // Create datetime copy to convert incase we need to change timezone.
+    Datetime datetime = Datetime(*this);
+    if (timezone.has_value())
+        datetime.set_timezone(timezone.value());
 
-    // Years in seconds.
-    for (uint16_t y = 1970; y < year; ++y)
+    size_t ret = 0;
+
+    // Years.
+    for (uint16_t y = 1970; y < datetime.year; ++y)
     {
-        timestamp_sec += (is_leap_year(y) ? 31622400 : 31536000);
+        ret += (is_leap_year(y) ? MILLISECONDS_PER_LEAP_YEAR : MILLISECONDS_PER_NON_LEAP_YEAR);
     }
 
-    // Months in seconds.
-    for (uint8_t m = 1; m < month; ++m)
+    // Months.
+    for (uint8_t m = 1; m < datetime.month; ++m)
     {
-        timestamp_sec += max_days_in_month(m) * 86400;
+        ret += max_days_in_month(m, year) * MILLISECONDS_PER_DAY;
     }
 
-    // Days in seconds.
-    timestamp_sec += (day - 1) * 86400;
+    // Days.
+    ret += (day - 1) * MILLISECONDS_PER_DAY;
 
-    // Hour, minute, and second offset
-    timestamp_sec += hour * 3600 + minute * 60 + second;
+    // Hour.
+    ret += datetime.hour * MILLISECONDS_PER_HOUR;
 
-    // The timezone offset in milliseconds.
-    size_t timezone_offset_ms = timezone.utc_offset * SECONDS_PER_HOUR;
+    // Minute.
+    ret += datetime.minute * MILLISECONDS_PER_MINUTE;
 
-    // Convert to milliseconds and add the timezone offset
-    size_t timestamp_ms = (timestamp_sec * 1000) + millisecond + timezone_offset_ms;
+    // Second.
+    ret += datetime.second * MILLISECONDS_PER_SECOND;
 
-    return timestamp_ms;
+    // Millisecond.
+    ret += datetime.millisecond;
+
+    return ret;
 }
+
+const size_t Datetime::MILLISECONDS_PER_DAY = MILLISECONDS_PER_HOUR * 24;
+const size_t Datetime::MILLISECONDS_PER_NON_LEAP_YEAR = MILLISECONDS_PER_DAY * 365;
+const size_t Datetime::MILLISECONDS_PER_LEAP_YEAR = MILLISECONDS_PER_NON_LEAP_YEAR + MILLISECONDS_PER_DAY;

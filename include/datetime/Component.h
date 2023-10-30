@@ -11,14 +11,14 @@ struct Component
     /**
      * Value of this 'Component'.
      */
-    uint32_t value;
+    int64_t value;
 
     /**
      * Creates a 'Component' whose 'value' matches 'value'.
      *
      * @param value value to have the newly created 'Component' set to.
      */
-    explicit Component(uint64_t value) :
+    explicit Component(int64_t value) :
         value(value) {}
 };
 

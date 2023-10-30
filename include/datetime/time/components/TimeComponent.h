@@ -15,13 +15,8 @@ struct TimeComponent : Component
      *
      * @param value value to have the newly created 'TimeComponent' set to.
      */
-    explicit TimeComponent(uint32_t value) :
-        Component(value)
-    {
-        ASSERT(value <= 2147483648,
-               fmt::format("TimeComponent value: {} is too large. Max size is {}",
-                           value, 2147483648));
-    }
+    explicit TimeComponent(int64_t value) :
+        Component(value) {}
 };
 
 #endif //DATETIME_TIMECOMPONENT_H

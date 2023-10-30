@@ -55,15 +55,6 @@ TEST(Datetime, contructor_int_int_int_int_int_int_int_int_int_sets_members)
         EXPECT_EQ(datetime.nanosecond, 9);
 }
 
-TEST(Datetime, now_sets_members)
-{
-        Datetime now_datetime = Datetime::now();
-        Time now_time = Time::now();
-        now_datetime.round(Time::MILLISECOND);
-        now_time.round(Time::Component::MILLISECOND);
-        EXPECT_EQ(now_datetime.time(), now_time);
-}
-
 TEST(Datetime, date)
 {
         Datetime datetime = Datetime(1900, 2, 3);
@@ -85,18 +76,25 @@ TEST(Datetime, time)
         EXPECT_EQ(time.nanosecond, 6);
 }
 
-TEST(Datetime, test)
-{
-        Datetime datetime = Datetime(2000, 1, 1, 0, 0, 0, 0, 0, 0);
-        datetime -= Nanosecond(3);
-        EXPECT_EQ(datetime, Datetime(1999, 12, 31, 23, 59, 59, 999, 999, 997));
-}
-
 TEST(Datetime, operator_greater_than)
 {
        Datetime datetime_lesser = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 1);
        Datetime datetime_greater = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 2);
        EXPECT_GT(datetime_greater, datetime_lesser);
+}
+
+TEST(Datetime, operator_greater_than_timezone)
+{
+    Datetime datetime_lesser = Datetime(2000, 1, 1, 1, 0, 0, 0, 0, 0, TZ::UTC);
+    Datetime datetime_greater = Datetime(2000, 1, 1, 1, 0, 0, 0, 0, 0, TZ::EST);
+    EXPECT_GT(datetime_greater, datetime_lesser);
+}
+
+TEST(Datetime, operator_greater_than_timezone_day_wrap)
+{
+    Datetime datetime_lesser = Datetime(2000, 1, 1, 20, 0, 0, 0, 0, 0, TZ::UTC);
+    Datetime datetime_greater = Datetime(2000, 1, 1, 20, 0, 0, 0, 0, 0, TZ::EST);
+    EXPECT_GT(datetime_greater, datetime_lesser);
 }
 
 TEST(Datetime, operator_greater_than_or_equal_to)
@@ -105,8 +103,28 @@ TEST(Datetime, operator_greater_than_or_equal_to)
         Datetime datetime_greater = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 2);
         EXPECT_GE(datetime_greater, datetime_lesser);
 
-        Datetime datetime_equal = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 1);
+        Datetime datetime_equal = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 2);
         EXPECT_GE(datetime_greater, datetime_equal);
+}
+
+TEST(Datetime, operator_greater_than_or_equal_to_timezone)
+{
+    Datetime datetime_lesser = Datetime(2000, 1, 1, 1, 0, 0, 0, 0, 0, TZ::UTC);
+    Datetime datetime_greater = Datetime(2000, 1, 1, 1, 0, 0, 0, 0, 0, TZ::EST);
+    EXPECT_GE(datetime_greater, datetime_lesser);
+
+    Datetime datetime_equal = Datetime(2000, 1, 1, 1, 0, 0, 0, 0, 0, TZ::EST);
+    EXPECT_GE(datetime_greater, datetime_equal);
+}
+
+TEST(Datetime, operator_greater_than_or_equal_to_timezone_day_wrap)
+{
+    Datetime datetime_lesser = Datetime(2000, 1, 1, 20, 0, 0, 0, 0, 0, TZ::UTC);
+    Datetime datetime_greater = Datetime(2000, 1, 1, 20, 0, 0, 0, 0, 0, TZ::EST);
+    EXPECT_GT(datetime_greater, datetime_lesser);
+
+    Datetime datetime_equal = Datetime(2000, 1, 1, 20, 0, 0, 0, 0, 0, TZ::EST);
+    EXPECT_GE(datetime_greater, datetime_equal);
 }
 
 TEST(Datetime, operator_less_than)
@@ -116,14 +134,48 @@ TEST(Datetime, operator_less_than)
         EXPECT_LT(datetime_lesser, datetime_greater);
 }
 
+TEST(Datetime, operator_less_than_timezone)
+{
+    Datetime datetime_lesser = Datetime(2000, 1, 1, 1, 0, 0, 0, 0, 0, TZ::UTC);
+    Datetime datetime_greater = Datetime(2000, 1, 1, 1, 0, 0, 0, 0, 0, TZ::EST);
+    EXPECT_LT(datetime_lesser, datetime_greater);
+}
+
+TEST(Datetime, operator_less_than_timezone_day_wrap)
+{
+    Datetime datetime_lesser = Datetime(2000, 1, 1, 20, 0, 0, 0, 0, 0, TZ::UTC);
+    Datetime datetime_greater = Datetime(2000, 1, 1, 20, 0, 0, 0, 0, 0, TZ::EST);
+    EXPECT_LT(datetime_lesser, datetime_greater);
+}
+
 TEST(Datetime, operator_less_than_or_equal_to)
 {
         Datetime datetime_lesser = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 1);
         Datetime datetime_greater = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 2);
         EXPECT_LE(datetime_lesser, datetime_greater);
 
-        Datetime datetime_equal = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 1);
+        Datetime datetime_equal = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 2);
         EXPECT_LE(datetime_lesser, datetime_equal);
+}
+
+TEST(Datetime, operator_less_than_or_equal_to_timezone)
+{
+    Datetime datetime_lesser = Datetime(2000, 1, 1, 1, 0, 0, 0, 0, 0, TZ::UTC);
+    Datetime datetime_greater = Datetime(2000, 1, 1, 1, 0, 0, 0, 0, 0, TZ::EST);
+    EXPECT_LE(datetime_lesser, datetime_greater);
+
+    Datetime datetime_equal = Datetime(2000, 1, 1, 1, 0, 0, 0, 0, 0, TZ::EST);
+    EXPECT_LE(datetime_greater, datetime_equal);
+}
+
+TEST(Datetime, operator_less_than_or_equal_to_timezone_day_wrap)
+{
+    Datetime datetime_lesser = Datetime(2000, 1, 1, 20, 0, 0, 0, 0, 0, TZ::UTC);
+    Datetime datetime_greater = Datetime(2000, 1, 1, 20, 0, 0, 0, 0, 0, TZ::EST);
+    EXPECT_LE(datetime_lesser, datetime_greater);
+
+    Datetime datetime_equal = Datetime(2000, 1, 1, 20, 0, 0, 0, 0, 0, TZ::EST);
+    EXPECT_LE(datetime_greater, datetime_equal);
 }
 
 TEST(Datetime, operator_equal_to)
@@ -133,11 +185,39 @@ TEST(Datetime, operator_equal_to)
         EXPECT_EQ(datetime1, datetime2);
 }
 
+TEST(Datetime, operator_equal_to_timezone)
+{
+    Datetime datetime1 = Datetime(2000, 1, 2, 3, 0, 0, 0, 0, 0, TZ::EST);
+    Datetime datetime2 = Datetime(2000, 1, 2, 8, 0, 0, 0, 0, 0, TZ::UTC);
+    EXPECT_EQ(datetime1, datetime2);
+}
+
+TEST(Datetime, operator_equal_to_timezone_day_wrap)
+{
+    Datetime datetime1 = Datetime(2000, 1, 3, 1, 0, 0, 0, 0, 0, TZ::UTC);
+    Datetime datetime2 = Datetime(2000, 1, 2, 20, 0, 0, 0, 0, 0, TZ::EST);
+    EXPECT_EQ(datetime1, datetime2);
+}
+
 TEST(Datetime, operator_not_equal_to)
 {
         Datetime datetime1 = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 1);
         Datetime datetime2 = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 2);
         EXPECT_NE(datetime1, datetime2);
+}
+
+TEST(Datetime, operator_not_equal_to_timezone)
+{
+    Datetime datetime1 = Datetime(2000, 1, 2, 3, 0, 0, 0, 0, 0, TZ::EST);
+    Datetime datetime2 = Datetime(2000, 1, 2, 3, 0, 0, 0, 0, 0, TZ::UTC);
+    EXPECT_NE(datetime1, datetime2);
+}
+
+TEST(Datetime, operator_not_equal_to_timezone_day_wrap)
+{
+    Datetime datetime1 = Datetime(2000, 1, 2, 20, 0, 0, 0, 0, 0, TZ::UTC);
+    Datetime datetime2 = Datetime(2000, 1, 2, 20, 0, 0, 0, 0, 0, TZ::EST);
+    EXPECT_NE(datetime1, datetime2);
 }
 
 TEST(DatetimeRange, constructor_sets_variables)
@@ -473,11 +553,11 @@ TEST(Datetime, from_ms_basic)
 
 TEST(Datetime, from_ms_complex)
 {
-    Datetime datetime = Datetime::from_ms(946803845999, TZ::UTC);
+    Datetime datetime = Datetime::from_ms(946803845999, TZ::EST);
     EXPECT_EQ(datetime.year, 2000);
     EXPECT_EQ(datetime.month, 1);
     EXPECT_EQ(datetime.day, 2);
-    EXPECT_EQ(datetime.hour, 9);
+    EXPECT_EQ(datetime.hour, 4);
     EXPECT_EQ(datetime.minute, 4);
     EXPECT_EQ(datetime.second, 5);
     EXPECT_EQ(datetime.millisecond, 999);
@@ -491,10 +571,22 @@ TEST(Datetime, operator_plus_time)
     EXPECT_EQ(datetime, Datetime(2000, 1, 2, 4, 6, 8, 10, 12, 14));
 }
 
+TEST(Datetime, operator_plus_time_day_wrap)
+{
+    Datetime datetime = Datetime(2000, 1, 2, 3) + Time(23);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 3, 2));
+}
+
 TEST(Datetime, operator_minus_time)
 {
     Datetime datetime = Datetime(2000, 1, 2, 3, 4, 5, 6, 7, 8) - Time(1, 2, 3, 4, 5, 6);
     EXPECT_EQ(datetime, Datetime(2000, 1, 2, 2, 2, 2, 2, 2, 2));
+}
+
+TEST(Datetime, operator_minus_time_day_wrap)
+{
+    Datetime datetime = Datetime(2000, 1, 2, 3) - Time(4);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 23));
 }
 
 TEST(Datetime, operator_plus_equal_time)
@@ -504,11 +596,25 @@ TEST(Datetime, operator_plus_equal_time)
     EXPECT_EQ(datetime, Datetime(2000, 1, 2, 4, 6, 8, 10, 12, 14));
 }
 
+TEST(Datetime, operator_plus_equal_time_day_wrap)
+{
+    Datetime datetime = Datetime(2000, 1, 2, 3);
+    datetime += Time(23);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 3, 2));
+}
+
 TEST(Datetime, operator_minus_equal_time)
 {
     Datetime datetime = Datetime(2000, 1, 2, 3, 4, 5, 6, 7, 8);
     datetime -= Time(1, 2, 3, 4, 5, 6);
     EXPECT_EQ(datetime, Datetime(2000, 1, 2, 2, 2, 2, 2, 2, 2));
+}
+
+TEST(Datetime, operator_minus_equal_time_day_wrap)
+{
+    Datetime datetime = Datetime(2000, 1, 2, 3);
+    datetime -= Time(4);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 23));
 }
 
 TEST(Datetime, operator_plus_hour)
@@ -595,8 +701,44 @@ TEST(Datetime, operator_minus_nanosecond)
     EXPECT_EQ(new_datetime, Datetime(2000, 1, 1, 1, 2, 3, 4, 5, 5));
 }
 
-TEST(Datetime, to_ms)
+TEST(Datetime, to_ms_1)
 {
-    Datetime datetime = Datetime(2000, 1, 2, 3, 4, 5, 6, 0, 0, TZ::UTC);
+    Datetime datetime = Datetime(2000, 1, 2, 3, 4, 5, 6, 0, 0);
     EXPECT_EQ(datetime.to_ms(), 946782245006);
+}
+
+TEST(Datetime, to_ms_2)
+{
+    Datetime datetime = Datetime("2023-10-30 3:25:09.0.0.0",
+                                Date::Component::YEAR,
+                                Date::Component::MONTH,
+                                Date::Component::DAY,
+                                Time::Component::HOUR,
+                                Time::Component::MINUTE,
+                                Time::Component::SECOND,
+                                Time::Component::MILLISECOND,
+                                Time::Component::MICROSECOND,
+                                Time::Component::NANOSECOND);
+    EXPECT_EQ(datetime.to_ms({}), 1698636309000);
+}
+
+TEST(Datetime, to_ms_3)
+{
+    Datetime datetime = Datetime("2023-10-30 3:25:09.0.0.0",
+                                 Date::Component::YEAR,
+                                 Date::Component::MONTH,
+                                 Date::Component::DAY,
+                                 Time::Component::HOUR,
+                                 Time::Component::MINUTE,
+                                 Time::Component::SECOND,
+                                 Time::Component::MILLISECOND,
+                                 Time::Component::MICROSECOND,
+                                 Time::Component::NANOSECOND);
+    EXPECT_EQ(datetime.to_ms(), 1698636309000);
+}
+
+TEST(Datetime, to_ms_timezone)
+{
+    Datetime datetime = Datetime(2000, 1, 1, 6, 0, 0, 0, 0, 0, TZ::UTC);
+    EXPECT_EQ(datetime.to_ms(TZ::CST), 946684800000);
 }

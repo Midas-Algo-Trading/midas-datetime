@@ -15,7 +15,7 @@ struct Second : TimeComponent
      *
      * @param second number of seconds.
      */
-    explicit Second(uint32_t second) :
+    explicit Second(int64_t second) :
         TimeComponent(second) {}
 };
 

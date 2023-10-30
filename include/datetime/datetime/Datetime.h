@@ -70,18 +70,23 @@ public:
      * Constructs a datetime object from a millisecond unix timestamp.
      *
      * @param timestamp millisecond unix timestamp.
-     * @param timezone timezone that 'Datetime' will be set to.
+     * @param to_timezone timezone that 'Datetime' will be set to.
+     * @param from_timezone timezone of 'timestamp'.
      *
      * @return the datetime object converted from the 'timestamp'.
      */
-    static Datetime from_ms(size_t timestamp, Timezone timezone = Time::default_timezone);
+    static Datetime from_ms(size_t timestamp,
+                            Timezone to_timezone = default_timezone,
+                            Timezone from_timezone = TZ::UTC);
 
     /**
      * Converts 'this' to UNIX ms timestamp.
      *
+     * @param timezone the timezone to convert the ms timestamp to.
+     *
      * @return 'this' as a UNIX ms timestamp.
      */
-    size_t to_ms() const;
+    size_t to_ms(std::optional<Timezone> timezone = {}) const;
 
     /**
      * Creates a 'Datetime' from a std::string.
@@ -149,7 +154,7 @@ public:
      *
      * @return 'true' if 'other' is greater than this 'Datetime', 'false' otherwise.
      */
-    bool operator>(const Datetime& other) const;
+    bool operator>(Datetime other) const;
 
     /**
      * Checks if 'other' is greater than or equal to this 'Datetime'.
@@ -158,7 +163,7 @@ public:
      *
      * @return 'true' if 'other' is greater than or equal to this 'Datetime', 'false' otherwise.
      */
-    bool operator>=(const Datetime& other) const;
+    bool operator>=(Datetime other) const;
 
     /**
      * Checks if 'other' is less than this 'Datetime'.
@@ -167,7 +172,7 @@ public:
      *
      * @return 'true' if 'other' is less than this 'Datetime', 'false' otherwise.
      */
-    bool operator<(const Datetime& other) const;
+    bool operator<(Datetime other) const;
 
     /**
      * Checks if 'other' is less than or equal to this 'Datetime'.
@@ -176,7 +181,7 @@ public:
      *
      * @return 'true' if 'other' is less than or equal to this 'Datetime', 'false' otherwise.
      */
-    bool operator<=(const Datetime& other) const;
+    bool operator<=(Datetime other) const;
 
     /**
      * Checks if 'other' is equal to this 'Datetime'.
@@ -185,7 +190,7 @@ public:
      *
      * @return 'true' if 'other' is equal to this 'Datetime', 'false' otherwise.
      */
-    bool operator==(const Datetime& other) const;
+    bool operator==(Datetime other) const;
 
     /**
      * Checks if 'other' is not equal to this 'Datetime'.
@@ -194,7 +199,7 @@ public:
      *
      * @return 'true' if 'other' is not equal to this 'Datetime', 'false' otherwise.
      */
-    bool operator!=(const Datetime& other) const;
+    bool operator!=(Datetime other) const;
 
     /**
      * Adds a day to this 'Datetime'.
@@ -217,7 +222,7 @@ public:
      *
      * @return reference to this modified 'Datetime'.
      */
-    Datetime& operator+=(const Time& time) override;
+    Datetime& operator+=(Time time) override;
 
     /**
      * Subtracts 'time' to this 'Datetime'.
@@ -226,7 +231,7 @@ public:
      *
      * @return reference to this modified 'Datetime'.
      */
-    Datetime& operator-=(const Time& time) override;
+    Datetime& operator-=(Time time) override;
 
     /**
      * Adds 'days' to this 'Datetime'.
@@ -482,7 +487,7 @@ public:
      *
      * @return new 'Datetime' object of this 'Datetime' added with 'other' 'Datetime'.
      */
-    friend Datetime operator+(Datetime datetime, const Time& other);
+    friend Datetime operator+(Datetime datetime, Time other);
 
     /**
      * Subtracts this 'Datetime' and 'other' 'Datetime'.
@@ -492,7 +497,7 @@ public:
      *
      * @return new 'Datetime' object of this 'Datetime' subtracted with 'other' 'Datetime'.
      */
-    friend Datetime operator-(Datetime datetime, const Time& other);
+    friend Datetime operator-(Datetime datetime, Time other);
 
     /**
      * Outputs 'datetime' into 'os'.
@@ -511,7 +516,22 @@ private:
      *
      * @param hours_to_add number of hours to add.
      */
-    void add_hours(int hours_to_add) override;
+    void add_hours(int64_t hours_to_add) override;
+
+    /**
+     * Milliseconds in a day.
+     */
+    static const size_t MILLISECONDS_PER_DAY;
+
+    /**
+     * Milliseconds in a year that is not a leap year.
+     */
+    static const size_t MILLISECONDS_PER_NON_LEAP_YEAR;
+
+    /**
+     * Milliseconds in a year that is a leap year.
+     */
+    static const size_t MILLISECONDS_PER_LEAP_YEAR;
 };
 
 #endif //DATETIME_DATETIME_H

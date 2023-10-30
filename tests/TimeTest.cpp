@@ -235,20 +235,6 @@ TEST(Time, set_default_timezone)
         Time::default_timezone = original_default_timezone;
 }
 
-TEST(Time, get_hour_at_timezone_basic)
-{
-        Time::set_default_timezone(TZ::EST);
-        Time time = Time(1);
-        EXPECT_EQ(time.get_hour_at_timezone(TZ::UTC), 6);
-}
-
-TEST(Time, get_hour_at_timezone_wrap)
-{
-        Time::set_default_timezone(TZ::EST);
-        Time time = Time(19);
-        EXPECT_EQ(time.get_hour_at_timezone(TZ::UTC), 0);
-}
-
 TEST(Time, ostream)
 {
         Time time = Time(1, 2, 3, 4, 5, 6);

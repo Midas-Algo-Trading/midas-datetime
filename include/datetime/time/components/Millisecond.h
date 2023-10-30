@@ -15,7 +15,7 @@ struct Millisecond : TimeComponent
      *
      * @param millisecond number of milliseconds.
      */
-    explicit Millisecond(uint32_t millisecond) :
+    explicit Millisecond(int64_t millisecond) :
         TimeComponent(millisecond) {}
 };
 
