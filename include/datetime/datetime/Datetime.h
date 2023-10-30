@@ -145,7 +145,7 @@ public:
      *
      * @return resulting std::string.
      */
-    std::string to_string() const override;
+    std::string to_string(char separate_components = ' ', char separate_time = ':') const override;
 
     /**
      * Checks if 'other' is greater than this 'Datetime'.
