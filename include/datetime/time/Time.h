@@ -2,15 +2,17 @@
 #define TIME_TIME_H
 
 #include <iostream>
-#include "datetime/time/components/Hour.h"
-#include "datetime/time/components/Minute.h"
-#include "datetime/time/components/Second.h"
-#include "datetime/time/components/Microsecond.h"
-#include "datetime/time/components/Nanosecond.h"
+#include "datetime/time/components/Hours.h"
+#include "datetime/time/components/Minutes.h"
+#include "datetime/time/components/Seconds.h"
+#include "datetime/time/components/Microseconds.h"
+#include "datetime/time/components/Nanoseconds.h"
 #include "datetime/time/Timezone.h"
-#include "datetime/time/components/Millisecond.h"
+#include "datetime/time/components/Milliseconds.h"
 #include "stringhelpers/stringhelpers.h"
 #include "../../../util/macros.h"
+
+class TimeDelta;
 
 /**
  * Time with components: 'hour', 'minute', 'second', 'millisecond', 'microsecond',
@@ -20,32 +22,32 @@ class Time
 {
 public:
     /**
-     * Hour of a day.
+     * Hours of a day.
      */
     uint8_t hour = 0;
 
     /**
-     * Minute of a day.
+     * Minutes of a day.
      */
     uint8_t minute = 0;
 
     /**
-     * Second of a day.
+     * Seconds of a day.
      */
     uint8_t second = 0;
 
     /**
-     * Millisecond of a day.
+     * Milliseconds of a day.
      */
     uint16_t millisecond = 0;
 
     /**
-     * Microsecond of a day.
+     * Microseconds of a day.
      */
     uint16_t microsecond = 0;
 
     /**
-     * Nanosecond of a day.
+     * Nanoseconds of a day.
      */
     uint16_t nanosecond = 0;
 
@@ -65,13 +67,13 @@ public:
      * Creates a 'Time' whose components match the values of 'hour', 'minute',
      * 'second', 'millisecond', 'microsecond', 'nanosecond', and 'timezone'.
      *
-     * @param hour hour the 'Time' will be set to.
-     * @param minute minute the 'Time' will be set to.
-     * @param second second the 'Time' will be set to.
-     * @param millisecond millisecond the 'Time' will be set to.
-     * @param microsecond microsecond the 'Time' will be set to.
-     * @param nanosecond nanosecond the 'Time' will be set to.
-     * @param timezone timezone the 'Time' will be set to.
+     * @param hour hour the 'Time' will be set to. (default 0)
+     * @param minute minute the 'Time' will be set to. (default 0)
+     * @param second second the 'Time' will be set to. (default 0)
+     * @param millisecond millisecond the 'Time' will be set to. (default 0)
+     * @param microsecond microsecond the 'Time' will be set to. (default 0)
+     * @param nanosecond nanosecond the 'Time' will be set to. (default 0)
+     * @param timezone timezone the 'Time' will be set to. (default default_timezone)
      */
     explicit Time(uint8_t hour = 0, uint8_t minute = 0, uint8_t second = 0, uint16_t millisecond = 0,
                   uint16_t microsecond = 0, uint16_t nanosecond = 0, Timezone timezone = default_timezone);
@@ -104,42 +106,24 @@ public:
     enum Component { HOUR, MINUTE, SECOND, MILLISECOND, MICROSECOND, NANOSECOND};
 
     /**
-     * Adds 'other' to 'time'.
+     * Adds 'time' and 'other'.
      *
-     * @param time the first time to be added.
-     * @param other the second time to be added.
+     * @param time 'Time' to add.
+     * @param other other 'Time' to add.
      *
-     * @return new 'Time' object of 'time' added to 'other'.
+     * @return 'TimeDelta' of 'time' and 'other' added. Accounts for day changes.
      */
-    friend Time operator+(Time time, Time other);
+    friend TimeDelta operator+(Time time, Time other);
 
     /**
      * Subtracts 'other' from 'time'.
      *
-     * @param time the base 'Time'.
-     * @param other the 'Time' to be subtracted.
+     * @param time 'Time' that 'other' subtracts from.
+     * @param other 'Time' to subtract from 'time'.
      *
-     * @return new 'Time' object of 'other' subtracted from 'time'.
+     * @return 'TimeDelta' of 'other' subtracted from 'this'. Accounts for day changes.
      */
-    friend Time operator-(Time time, Time other);
-
-    /**
-     * Adds 'other' to this 'Time'.
-     *
-     * @param other the other 'Time' added to this 'Time'.
-     *
-     * @return reference to this modified 'Time'.
-     */
-    virtual Time& operator+=(Time other);
-
-    /**
-     * Subtracts 'other' to this 'Time'.
-     *
-     * @param other the other 'Time' Subtracted from this 'Time'.
-     *
-     * @return reference to this modified 'Time'.
-     */
-    virtual Time& operator-=(Time other);
+    friend TimeDelta operator-(Time time, Time other);
 
     /**
      * Adds 'hours' to this 'Time'.
@@ -148,7 +132,7 @@ public:
      *
      * @return reference to this modified 'Time'.
      */
-    virtual Time& operator+=(const Hour& hours);
+    virtual Time& operator+=(const Hours& hours);
 
     /**
      * Subtracts 'hours' from this 'Time'.
@@ -157,7 +141,7 @@ public:
      *
      * @return reference to this modified 'Time'.
      */
-    virtual Time& operator-=(const Hour& hours);
+    virtual Time& operator-=(const Hours& hours);
 
     /**
      * Adds 'minutes' to this 'Time'.
@@ -166,7 +150,7 @@ public:
      *
      * @return reference to this modified 'Time'.
      */
-    virtual Time& operator+=(const Minute& minutes);
+    virtual Time& operator+=(const Minutes& minutes);
 
     /**
      * Subtracts 'minutes' from this 'Time'.
@@ -175,7 +159,7 @@ public:
      *
      * @return reference to this modified 'Time'.
      */
-    virtual Time& operator-=(const Minute& minutes);
+    virtual Time& operator-=(const Minutes& minutes);
 
     /**
      * Adds 'seconds' to this 'Time'.
@@ -184,7 +168,7 @@ public:
      *
      * @return reference to this modified 'Time'.
      */
-    virtual Time& operator+=(const Second& seconds);
+    virtual Time& operator+=(const Seconds& seconds);
 
     /**
      * Subtracts 'seconds' from this 'Time'.
@@ -193,7 +177,7 @@ public:
      *
      * @return reference to this modified 'Time'.
      */
-    virtual Time& operator-=(const Second& seconds);
+    virtual Time& operator-=(const Seconds& seconds);
 
     /**
      * Adds 'milliseconds' to this 'Time'.
@@ -202,7 +186,7 @@ public:
      *
      * @return reference to this modified 'Time'.
      */
-    virtual Time& operator+=(const Millisecond& milliseconds);
+    virtual Time& operator+=(const Milliseconds& milliseconds);
 
     /**
      * Subtracts 'milliseconds' from this 'Time'.
@@ -211,7 +195,7 @@ public:
      *
      * @return reference to this modified 'Time'.
      */
-    virtual Time& operator-=(const Millisecond& milliseconds);
+    virtual Time& operator-=(const Milliseconds& milliseconds);
 
     /**
       * Adds 'microseconds' to this 'Time'.
@@ -220,7 +204,7 @@ public:
       *
       * @return reference to this modified 'Time'.
       */
-    virtual Time& operator+=(const Microsecond& microseconds);
+    virtual Time& operator+=(const Microseconds& microseconds);
 
     /**
      * Subtracts 'microseconds' from this 'Time'.
@@ -229,7 +213,7 @@ public:
      *
      * @return reference to this modified 'Time'.
      */
-    virtual Time& operator-=(const Microsecond& microseconds);
+    virtual Time& operator-=(const Microseconds& microseconds);
 
     /**
      * Adds 'nanoseconds' to this 'Time'.
@@ -238,7 +222,7 @@ public:
      *
      * @return reference to this modified 'Time'.
      */
-    virtual Time& operator+=(const Nanosecond& nanoseconds);
+    virtual Time& operator+=(const Nanoseconds& nanoseconds);
 
     /**
      * Subtracts 'nanoseconds' from this 'Time'.
@@ -247,60 +231,59 @@ public:
      *
      * @return reference to this modified 'Time'.
      */
-    virtual Time& operator-=(const Nanosecond& nanoseconds);
+    virtual Time& operator-=(const Nanoseconds& nanoseconds);
 
     /**
-     * Checks if 'other' is greater than this 'Time'.
+     * Checks if 'this' is greater than 'other'.
      *
-     * @param other 'Time' to check if greater than this 'Time'.
+     * @param other 'Time' to compare to.
      *
-     * @return 'true' if 'other' is greater than this 'Time', 'false' otherwise.
+     * @return 'true' if 'this' is greater than 'other', 'false' otherwise.
      */
     bool operator>(Time other) const;
-
     /**
-     * Checks if 'other' is greater than or equal to this 'Time'.
+     * Checks if 'this' is greater than or equal to 'other'.
      *
-     * @param other 'Time' to check if greater than or equal to this 'Time'.
+     * @param other 'Time' to compare to.
      *
-     * @return 'true' if 'other' is greater than or equal to this 'Time', 'false' otherwise.
+     * @return 'true' if 'this' is greater than or equal to 'other', 'false' otherwise.
      */
     bool operator>=(Time other) const;
 
     /**
-     * Checks if 'other' is less than this 'Time'.
+     * Checks if 'this' is less than 'other'.
      *
-     * @param other 'Time' to check if less than this 'Time'.
+     * @param other 'Time' to compare to.
      *
-     * @return 'true' if 'other' is less than this 'Time', 'false' otherwise.
+     * @return 'true' if 'this' is less than 'other', 'false' otherwise.
      */
     bool operator<(Time other) const;
 
     /**
-       * Checks if 'other' is less than or equal to this 'Time'.
-       *
-       * @param other 'Time' to check if less than or equal to this 'Time'.
-       *
-       * @return 'true' if 'other' is less than or equal to this 'Time', 'false' otherwise.
-       */
+     * Checks if 'this' is less than or equal to 'other'.
+     *
+     * @param other 'Time' to compare to.
+     *
+     * @return 'true' if 'this' is less than or equal to 'other', 'false' otherwise.
+     */
     bool operator<=(Time other) const;
 
     /**
-      * Checks if 'other' is equal to this 'Time'.
-      *
-      * @param other 'Time' to check if equal to this 'Time'.
-      *
-      * @return 'true' if 'other' is equal to this 'Time', 'false' otherwise.
-      */
+     * Checks if 'this' is equal to 'other'.
+     *
+     * @param other 'Time' to compare to.
+     *
+     * @return 'true' if 'this' is equal to 'other', 'false' otherwise.
+     */
     bool operator==(Time other) const;
 
     /**
-      * Checks if 'other' is not equal to this 'Time'.
-      *
-      * @param other 'Time' to check if not equal to this 'Time'.
-      *
-      * @return 'true' if 'other' is not equal to this 'Time', 'false' otherwise.
-      */
+     * Checks if 'this' is not equal to 'other'.
+     *
+     * @param other 'Time' to compare to.
+     *
+     * @return 'true' if 'this' is not equal to 'other', 'false' otherwise.
+     */
     bool operator!=(Time other) const;
 
     /**
@@ -311,7 +294,7 @@ public:
      *
      * @return a new 'Time' with 'hours' added.
      */
-    friend Time operator+(Time time, const Hour& hours);
+    friend Time operator+(Time time, const Hours& hours);
 
     /**
      * Subtracts 'hours' from 'time'.
@@ -321,7 +304,7 @@ public:
      *
      * @return a new 'Time' with 'hours' subtracted.
      */
-    friend Time operator-(Time time, const Hour& hours);
+    friend Time operator-(Time time, const Hours& hours);
 
     /**
      * Adds 'minutes' to 'time'.
@@ -331,7 +314,7 @@ public:
      *
      * @return a new 'Time' with 'minutes' added.
      */
-    friend Time operator+(Time time, const Minute& minutes);
+    friend Time operator+(Time time, const Minutes& minutes);
 
     /**
      * Subtracts 'minutes' from 'time'.
@@ -341,7 +324,7 @@ public:
      *
      * @return a new 'Time' with 'minutes' subtracted.
      */
-    friend Time operator-(Time time, const Minute& minutes);
+    friend Time operator-(Time time, const Minutes& minutes);
 
     /**
      * Adds 'seconds' to 'time'.
@@ -351,7 +334,7 @@ public:
      *
      * @return a new 'Time' with 'seconds' added.
      */
-    friend Time operator+(Time time, const Second& seconds);
+    friend Time operator+(Time time, const Seconds& seconds);
 
     /**
      * Subtracts 'seconds' from 'time'.
@@ -361,7 +344,7 @@ public:
      *
      * @return a new 'Time' with 'seconds' subtracted.
      */
-    friend Time operator-(Time time, const Second& seconds);
+    friend Time operator-(Time time, const Seconds& seconds);
 
     /**
      * Adds 'milliseconds' to 'time'.
@@ -371,7 +354,7 @@ public:
      *
      * @return a new 'Time' with 'milliseconds' added.
      */
-    friend Time operator+(Time time, const Millisecond& milliseconds);
+    friend Time operator+(Time time, const Milliseconds& milliseconds);
 
     /**
      * Subtracts 'milliseconds' from 'time'.
@@ -381,7 +364,7 @@ public:
      *
      * @return a new 'Time' with 'milliseconds' subtracted.
      */
-    friend Time operator-(Time time, const Millisecond& milliseconds);
+    friend Time operator-(Time time, const Milliseconds& milliseconds);
 
     /**
     * Adds 'microseconds' to 'time'.
@@ -391,7 +374,7 @@ public:
     *
     * @return a new 'Time' with 'microseconds' added.
     */
-    friend Time operator+(Time time, const Microsecond& microseconds);
+    friend Time operator+(Time time, const Microseconds& microseconds);
 
     /**
      * Subtracts 'microseconds' from 'time'.
@@ -401,7 +384,7 @@ public:
      *
      * @return a new 'Time' with 'microseconds' subtracted.
      */
-    friend Time operator-(Time time, const Microsecond& microseconds);
+    friend Time operator-(Time time, const Microseconds& microseconds);
 
     /**
      * Adds 'nanoseconds' to 'time'.
@@ -411,7 +394,7 @@ public:
      *
      * @return a new 'Time' with 'nanoseconds' added.
      */
-    friend Time operator+(Time time, const Nanosecond& nanoseconds);
+    friend Time operator+(Time time, const Nanoseconds& nanoseconds);
 
     /**
      * Subtracts 'nanoseconds' from 'time'.
@@ -421,7 +404,7 @@ public:
      *
      * @return a new 'Time' with 'nanoseconds' subtracted.
      */
-    friend Time operator-(Time time, const Nanosecond& nanoseconds);
+    friend Time operator-(Time time, const Nanoseconds& nanoseconds);
 
     /**
      * Sets the 'timezone' of this 'Time'.
@@ -497,12 +480,15 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Time& time);
 
 protected:
+
     /**
      * Adds hours to this 'Time'.
      *
      * @param hours_to_add number of hours to add.
+     *
+     * @return the number of days changed by the hours added.
      */
-    virtual void add_hours(int64_t hours_to_add);
+    virtual int64_t add_hours(int64_t hours_to_add);
 
     /**
      * Adds minutes to this 'Time'.
@@ -573,8 +559,6 @@ protected:
      * @return total nanoseconds of the day.
      */
     int64_t total_nanoseconds() const;
-
-    // Following int64_t values are not unsigned ints to avoid numerous narrowing conversions.
 
     /**
      * Minutes in a hour.

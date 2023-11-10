@@ -35,21 +35,21 @@ public:
     /**
      * Creates a 'Datetime' based on the given arguments.
      *
-     * @param year year value that 'Datetime' will be set to.
-     * @param month month value that 'Datetime' will be set to.
-     * @param day day value that 'Datetime' will be set to.
-     * @param hour hour value that 'Datetime' will be set to.
-     * @param minute minute value that 'Datetime' will be set to.
-     * @param second second value that 'Datetime' will be set to.
-     * @param millisecond millisecond value that 'Datetime' will be set to.
-     * @param microsecond microsecond value that 'Datetime' will be set to.
-     * @param nanosecond nanosecond value that 'Datetime' will be set to.
-     * @param timezone timezone that 'Datetime' will be set to.
+     * @param year year value that 'Datetime' will be set to. (default Date::EPOCH.year)
+     * @param month month value that 'Datetime' will be set to. (default Date::EPOCH.month)
+     * @param day day value that 'Datetime' will be set to. (default Date::EPOCH.day)
+     * @param hour hour value that 'Datetime' will be set to. (default 0)
+     * @param minute minute value that 'Datetime' will be set to. (default 0)
+     * @param second second value that 'Datetime' will be set to. (default 0)
+     * @param millisecond millisecond value that 'Datetime' will be set to. (default 0)
+     * @param microsecond microsecond value that 'Datetime' will be set to. (default 0)
+     * @param nanosecond nanosecond value that 'Datetime' will be set to. (default 0)
+     * @param timezone timezone that 'Datetime' will be set to. (default Time::default_timezone)
      */
-    explicit Datetime(uint16_t year = 1900, uint8_t month = 1, uint8_t day = 1, uint8_t hour = 0, uint8_t minute = 0,
+    explicit Datetime(uint16_t year = EPOCH.year, uint8_t month = EPOCH.month,
+                      uint8_t day = EPOCH.day, uint8_t hour = 0, uint8_t minute = 0,
                       uint8_t second = 0, uint16_t millisecond = 0, uint16_t microsecond = 0,
-                      uint16_t nanosecond = 0,
-                      Timezone timezone = Time::default_timezone)
+                      uint16_t nanosecond = 0, Timezone timezone = Time::default_timezone)
         :
         Date(year, month, day),
         Time(hour, minute, second, millisecond, microsecond, nanosecond, timezone) {}
@@ -148,56 +148,56 @@ public:
     std::string to_string(char separate_components = ' ', char separate_time = ':') const override;
 
     /**
-     * Checks if 'other' is greater than this 'Datetime'.
+     * Checks if 'this' is greater than 'other'.
      *
-     * @param other 'Datetime' to check if greater than this 'Datetime'.
+     * @param other 'Datetime' to compare to.
      *
-     * @return 'true' if 'other' is greater than this 'Datetime', 'false' otherwise.
+     * @return 'true' if 'this' is greater than this 'other', 'false' otherwise.
      */
     bool operator>(Datetime other) const;
 
     /**
-     * Checks if 'other' is greater than or equal to this 'Datetime'.
+     * Checks if 'this' is greater than or equal to 'other'.
      *
-     * @param other 'Datetime' to check if greater than or equal to this 'Datetime'.
+     * @param other 'Datetime' to compare to.
      *
-     * @return 'true' if 'other' is greater than or equal to this 'Datetime', 'false' otherwise.
+     * @return 'true' if 'this' is greater than or equal to this 'other', 'false' otherwise.
      */
     bool operator>=(Datetime other) const;
 
     /**
-     * Checks if 'other' is less than this 'Datetime'.
+     * Checks if 'this' is less than 'other'.
      *
-     * @param other 'Datetime' to check if less than this 'Datetime'.
+     * @param other 'Datetime' to compare to.
      *
-     * @return 'true' if 'other' is less than this 'Datetime', 'false' otherwise.
+     * @return 'true' if 'this' is less than this 'other', 'false' otherwise.
      */
     bool operator<(Datetime other) const;
 
     /**
-     * Checks if 'other' is less than or equal to this 'Datetime'.
+     * Checks if 'this' is less than or equal to 'other'.
      *
-     * @param other Datetime' to check if less than or equal to this 'Datetime'.
+     * @param other 'Datetime' to compare to.
      *
-     * @return 'true' if 'other' is less than or equal to this 'Datetime', 'false' otherwise.
+     * @return 'true' if 'this' is less than or equal to 'other', 'false' otherwise.
      */
     bool operator<=(Datetime other) const;
 
     /**
-     * Checks if 'other' is equal to this 'Datetime'.
+     * Checks if 'this' is equal to 'other'.
      *
-     * @param other 'Datetime' to check if equal to this 'Datetime'.
+     * @param other 'Datetime' to compare to.
      *
-     * @return 'true' if 'other' is equal to this 'Datetime', 'false' otherwise.
+     * @return 'true' if 'this' is equal to 'other', 'false' otherwise.
      */
     bool operator==(Datetime other) const;
 
     /**
-     * Checks if 'other' is not equal to this 'Datetime'.
+     * Checks if 'this' is not equal to 'other'.
      *
-     * @param other 'Datetime' to check if not equal to this 'Datetime'.
+     * @param other 'Datetime' to compare to.
      *
-     * @return 'true' if 'other' is not equal to this 'Datetime', 'false' otherwise.
+     * @return 'true' if 'this' is not equal to 'other', 'false' otherwise.
      */
     bool operator!=(Datetime other) const;
 
@@ -222,7 +222,7 @@ public:
      *
      * @return reference to this modified 'Datetime'.
      */
-    Datetime& operator+=(Time time) override;
+    Datetime& operator+=(Time time);
 
     /**
      * Subtracts 'time' to this 'Datetime'.
@@ -231,7 +231,45 @@ public:
      *
      * @return reference to this modified 'Datetime'.
      */
-    Datetime& operator-=(Time time) override;
+    Datetime& operator-=(Time time);
+
+    /**
+     * Adds 'time_delta' to 'datetime'.
+     *
+     * @param datetime the 'Datetime' to have 'time_delta' added to.
+     * @param time_delta the 'TimeDelta' to add to 'datetime'.
+     *
+     * @return 'datetime' with 'time_delta' added.
+     */
+    friend Datetime operator+(Datetime datetime, TimeDelta time_delta);
+
+    /**
+     * Subtracts 'time_delta' from 'datetime'.
+     *
+     * @param datetime the 'Datetime' to have 'time_delta' subtracted from.
+     * @param time_delta the 'TimeDelta' to subtract from 'datetime'.
+     *
+     * @return 'datetime' with 'time_delta' subtracted.
+     */
+    friend Datetime operator-(Datetime datetime, TimeDelta time_delta);
+
+    /**
+     * Adds 'time_delta' to 'this'.
+     *
+     * @param time_delta the 'TimeDelta' to add to 'this'.
+     *
+     * @return 'this' with 'time_delta' added.
+     */
+    Datetime& operator+=(TimeDelta time_delta);
+
+    /**
+     * Subtracts 'time_delta' from 'this'.
+     *
+     * @param time_delta the 'TimeDelta' to subtract from 'this'.
+     *
+     * @return 'this' with 'time_delta' subtracted.
+     */
+    Datetime& operator-=(TimeDelta time_delta);
 
     /**
      * Adds 'days' to this 'Datetime'.
@@ -258,7 +296,7 @@ public:
      *
      * @return A reference to this modified 'Datetime'.
      */
-    Datetime& operator+=(const Hour& hours) override;
+    Datetime& operator+=(const Hours& hours) override;
 
     /**
      * Subtracts 'hours' from this 'Datetime'.
@@ -267,7 +305,7 @@ public:
      *
      * @return A reference to this modified 'Datetime'.
      */
-    Datetime& operator-=(const Hour& hours) override;
+    Datetime& operator-=(const Hours& hours) override;
 
     /**
      * Adds 'minutes' to this 'Datetime'.
@@ -276,7 +314,7 @@ public:
      *
      * @return A reference to this modified 'Datetime'.
      */
-    Datetime& operator+=(const Minute& minutes) override;
+    Datetime& operator+=(const Minutes& minutes) override;
 
     /**
      * Subtracts 'minutes' from this 'Datetime'.
@@ -285,7 +323,7 @@ public:
      *
      * @return A reference to this modified 'Datetime'.
      */
-    Datetime& operator-=(const Minute& minutes) override;
+    Datetime& operator-=(const Minutes& minutes) override;
 
     /**
      * Adds 'seconds' to this 'Datetime'.
@@ -294,7 +332,7 @@ public:
      *
      * @return A reference to this modified 'Datetime'.
      */
-    Datetime& operator+=(const Second& seconds) override;
+    Datetime& operator+=(const Seconds& seconds) override;
 
     /**
      * Subtracts 'seconds' from this 'Datetime'.
@@ -303,7 +341,7 @@ public:
      *
      * @return A reference to this modified 'Datetime'.
      */
-    Datetime& operator-=(const Second& seconds) override;
+    Datetime& operator-=(const Seconds& seconds) override;
 
     /**
      * Adds 'milliseconds' to this 'Datetime'.
@@ -312,7 +350,7 @@ public:
      *
      * @return A reference to this modified 'Datetime'.
      */
-    Datetime& operator+=(const Millisecond& milliseconds) override;
+    Datetime& operator+=(const Milliseconds& milliseconds) override;
 
     /**
      * Subtracts 'milliseconds' from this 'Datetime'.
@@ -321,7 +359,7 @@ public:
      *
      * @return A reference to this modified 'Datetime'.
      */
-    Datetime& operator-=(const Millisecond& milliseconds) override;
+    Datetime& operator-=(const Milliseconds& milliseconds) override;
 
     /**
      * Adds 'microseconds' to this 'Datetime'.
@@ -330,7 +368,7 @@ public:
      *
      * @return A reference to this modified 'Datetime'.
      */
-    Datetime& operator+=(const Microsecond& microseconds) override;
+    Datetime& operator+=(const Microseconds& microseconds) override;
 
     /**
      * Subtracts 'microseconds' from this 'Datetime'.
@@ -339,7 +377,7 @@ public:
      *
      * @return A reference to this modified 'Datetime'.
      */
-    Datetime& operator-=(const Microsecond& microseconds) override;
+    Datetime& operator-=(const Microseconds& microseconds) override;
 
     /**
      * Adds 'nanoseconds' to this 'Datetime'.
@@ -348,7 +386,7 @@ public:
      *
      * @return A reference to this modified 'Datetime'.
      */
-    Datetime& operator+=(const Nanosecond& nanoseconds) override;
+    Datetime& operator+=(const Nanoseconds& nanoseconds) override;
 
     /**
      * Subtracts 'nanoseconds' from this 'Datetime'.
@@ -357,7 +395,7 @@ public:
      *
      * @return A reference to this modified 'Datetime'.
      */
-    Datetime& operator-=(const Nanosecond& nanoseconds) override;
+    Datetime& operator-=(const Nanoseconds& nanoseconds) override;
 
     /**
      * Adds 'hours' to 'datetime'.
@@ -367,7 +405,7 @@ public:
      *
      * @return a new 'Datetime' with 'hours' added.
      */
-    friend Datetime operator+(Datetime datetime, const Hour& hours);
+    friend Datetime operator+(Datetime datetime, const Hours& hours);
 
     /**
      * Subtracts 'hours' from 'datetime'.
@@ -377,7 +415,7 @@ public:
      *
      * @return a new 'Datetime' with 'hours' subtracted.
      */
-    friend Datetime operator-(Datetime datetime, const Hour& hours);
+    friend Datetime operator-(Datetime datetime, const Hours& hours);
 
     /**
      * Adds 'minutes' to 'datetime'.
@@ -387,7 +425,7 @@ public:
      *
      * @return a new 'Datetime' with 'minutes' added.
      */
-    friend Datetime operator+(Datetime datetime, const Minute& minutes);
+    friend Datetime operator+(Datetime datetime, const Minutes& minutes);
 
     /**
      * Subtracts 'minutes' from 'datetime'.
@@ -397,7 +435,7 @@ public:
      *
      * @return a new 'Datetime' with 'minutes' subtracted.
      */
-    friend Datetime operator-(Datetime datetime, const Minute& minutes);
+    friend Datetime operator-(Datetime datetime, const Minutes& minutes);
 
     /**
      * Adds 'seconds' to 'datetime'.
@@ -407,7 +445,7 @@ public:
      *
      * @return a new 'Datetime' with 'seconds' added.
      */
-    friend Datetime operator+(Datetime datetime, const Second& seconds);
+    friend Datetime operator+(Datetime datetime, const Seconds& seconds);
 
     /**
      * Subtracts 'seconds' from 'datetime'.
@@ -417,7 +455,7 @@ public:
      *
      * @return a new 'Datetime' with 'seconds' subtracted.
      */
-    friend Datetime operator-(Datetime datetime, const Second& seconds);
+    friend Datetime operator-(Datetime datetime, const Seconds& seconds);
 
     /**
       * Adds 'milliseconds' to 'datetime'.
@@ -427,7 +465,7 @@ public:
       *
       * @return a new 'Datetime' with 'milliseconds' added.
       */
-    friend Datetime operator+(Datetime datetime, const Millisecond& milliseconds);
+    friend Datetime operator+(Datetime datetime, const Milliseconds& milliseconds);
 
     /**
      * Subtracts 'milliseconds' from 'datetime'.
@@ -437,7 +475,7 @@ public:
      *
      * @return a new 'Datetime' with 'milliseconds' subtracted.
      */
-    friend Datetime operator-(Datetime datetime, const Millisecond& milliseconds);
+    friend Datetime operator-(Datetime datetime, const Milliseconds& milliseconds);
 
     /**
     * Adds 'microseconds' to 'datetime'.
@@ -447,7 +485,7 @@ public:
     *
     * @return a new 'Datetime' with 'microseconds' added.
     */
-    friend Datetime operator+(Datetime datetime, const Microsecond& microseconds);
+    friend Datetime operator+(Datetime datetime, const Microseconds& microseconds);
 
     /**
      * Subtracts 'microseconds' from 'datetime'.
@@ -457,7 +495,7 @@ public:
      *
      * @return a new 'Datetime' with 'microseconds' subtracted.
      */
-    friend Datetime operator-(Datetime datetime, const Microsecond& microseconds);
+    friend Datetime operator-(Datetime datetime, const Microseconds& microseconds);
 
     /**
      * Adds 'nanoseconds' to 'datetime'.
@@ -467,7 +505,7 @@ public:
      *
      * @return a new 'Datetime' with 'nanoseconds' added.
      */
-    friend Datetime operator+(Datetime datetime, const Nanosecond& nanoseconds);
+    friend Datetime operator+(Datetime datetime, const Nanoseconds& nanoseconds);
 
     /**
     * Subtracts 'nanoseconds' from 'datetime'.
@@ -477,7 +515,7 @@ public:
     *
     * @return a new 'Datetime' with 'nanoseconds' subtracted.
     */
-    friend Datetime operator-(Datetime datetime, const Nanosecond& nanoseconds);
+    friend Datetime operator-(Datetime datetime, const Nanoseconds& nanoseconds);
 
     /**
      * Adds this 'Datetime' and 'other' 'Datetime'.
@@ -515,8 +553,10 @@ private:
      * Adds hours to this 'Datetime'.
      *
      * @param hours_to_add number of hours to add.
+     *
+     * @return the number of days changed by the hours added.
      */
-    void add_hours(int64_t hours_to_add) override;
+    int64_t add_hours(int64_t hours_to_add) override;
 
     /**
      * Milliseconds in a day.

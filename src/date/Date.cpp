@@ -2,6 +2,7 @@
 #include "../../util/exceptions/not_implemented_error.h"
 #include <chrono>
 #include <iostream>
+#include "datetime/timedelta/TimeDelta.h"
 
 Date Date::today(uint8_t day_offset, Timezone timezone)
 {
@@ -41,13 +42,19 @@ Date Date::today(uint8_t day_offset, Timezone timezone)
 
 Date& Date::operator+=(const Day& days)
 {
-    add_days(days.value);
+    if (days.value < 0)
+        subtract_days(-days.value);
+    else
+        add_days(days.value);
     return *this;
 }
 
 Date& Date::operator-=(const Day& days)
 {
-    subtract_days(days.value);
+    if (days.value < 0)
+        add_days(-days.value);
+    else
+        subtract_days(days.value);
     return *this;
 }
 
@@ -202,10 +209,6 @@ std::ostream& operator<<(std::ostream& os, const Date& date)
 
 Date::DayOfWeek Date::day_of_week() const
 {
-    // Checks
-    if (year < 1901)
-        throw not_implemented_error("Year must greater than 1901");
-
     int _year = year;
     int _month = month;
 
@@ -293,7 +296,7 @@ bool Date::is_valid_year() const
 {
     // Even though year would technically be valid, we don't expect to have a date passed
     // these values.
-    return year <= 2100 && year >= 1900;
+    return year <= 2100 && year >= EPOCH.year;
 }
 
 bool Date::is_valid_month() const
@@ -324,3 +327,36 @@ Date Date::tomorrow(Timezone timezone)
 {
     return Date::today(1, timezone);
 }
+
+size_t Date::get_total_days() const
+{
+    size_t ret = 0;
+
+    // Years.
+    for (uint16_t y = EPOCH.year; y < year; ++y)
+    {
+        ret += (is_leap_year(y) ? DAYS_PER_LEAP_YEAR : DAYS_PER_NON_LEAP_YEAR);
+    }
+
+    // Months.
+    for (uint8_t m = 1; m < month; ++m)
+    {
+        ret += max_days_in_month(m, year);
+    }
+
+    // Days.
+    ret += day - 1;
+
+    return ret;
+}
+
+TimeDelta operator-(Date date, Date other)
+{
+    return TimeDelta(static_cast<int64_t>(date.get_total_days() - other.get_total_days()));
+}
+
+const uint16_t Date::DAYS_PER_NON_LEAP_YEAR = 365;
+
+const uint16_t Date::DAYS_PER_LEAP_YEAR = 366;
+
+const Date Date::EPOCH = Date(1970, 1, 1);

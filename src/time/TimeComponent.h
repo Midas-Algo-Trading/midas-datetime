@@ -1,8 +1,8 @@
 #ifndef DATETIME_TIMECOMPONENT_H
 #define DATETIME_TIMECOMPONENT_H
 
-#include "datetime/Component.h"
-#include "../../../../util/macros.h"
+#include "../Component.h"
+#include "../../util/macros.h"
 #include "fmt/format.h"
 
 /**

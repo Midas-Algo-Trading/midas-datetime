@@ -2,6 +2,7 @@
 #include "fmt/format.h"
 #include <chrono>
 #include <iostream>
+#include "datetime/timedelta/TimeDelta.h"
 
 Timezone Time::default_timezone = TZ::EST;
 
@@ -53,73 +54,73 @@ std::ostream& operator<<(std::ostream& os, const Time& time)
     return os << time.to_string();
 }
 
-Time& Time::operator+=(const Hour& hours)
+Time& Time::operator+=(const Hours& hours)
 {
     add_hours(hours.value);
     return *this;
 }
 
-Time& Time::operator-=(const Hour& hours)
+Time& Time::operator-=(const Hours& hours)
 {
     add_hours(-hours.value);
     return *this;
 }
 
-Time& Time::operator+=(const Minute& minutes)
+Time& Time::operator+=(const Minutes& minutes)
 {
     add_minutes(minutes.value);
     return *this;
 }
 
-Time& Time::operator-=(const Minute& minutes)
+Time& Time::operator-=(const Minutes& minutes)
 {
     add_minutes(-minutes.value);
     return *this;
 }
 
-Time& Time::operator+=(const Second& seconds)
+Time& Time::operator+=(const Seconds& seconds)
 {
     add_seconds(seconds.value);
     return *this;
 }
 
-Time& Time::operator-=(const Second& seconds)
+Time& Time::operator-=(const Seconds& seconds)
 {
     add_seconds(-seconds.value);
     return *this;
 }
 
-Time& Time::operator+=(const Millisecond& milliseconds)
+Time& Time::operator+=(const Milliseconds& milliseconds)
 {
     add_milliseconds(milliseconds.value);
     return *this;
 }
 
-Time& Time::operator-=(const Millisecond& milliseconds)
+Time& Time::operator-=(const Milliseconds& milliseconds)
 {
     add_milliseconds(-milliseconds.value);
     return *this;
 }
 
-Time& Time::operator+=(const Microsecond& microseconds)
+Time& Time::operator+=(const Microseconds& microseconds)
 {
     add_microseconds(microseconds.value);
     return *this;
 }
 
-Time& Time::operator-=(const Microsecond& microseconds)
+Time& Time::operator-=(const Microseconds& microseconds)
 {
     add_microseconds(-microseconds.value);
     return *this;
 }
 
-Time& Time::operator+=(const Nanosecond& nanoseconds)
+Time& Time::operator+=(const Nanoseconds& nanoseconds)
 {
     add_nanoseconds(nanoseconds.value);
     return *this;
 }
 
-Time& Time::operator-=(const Nanosecond& nanoseconds)
+Time& Time::operator-=(const Nanoseconds& nanoseconds)
 {
     add_nanoseconds(-nanoseconds.value);
     return *this;
@@ -146,14 +147,17 @@ const size_t Time::NANOSECONDS_PER_MILLISECOND = MICROSECONDS_PER_MILLISECOND
 
 const int Time::HOURS_PER_DAY = 24;
 
-void Time::add_hours(int64_t hours_to_add)
+int64_t Time::add_hours(int64_t hours_to_add)
 {
-    int new_hour = static_cast<int>((static_cast<int64_t>(hour) + hours_to_add) % HOURS_PER_DAY);
-
-    if (new_hour < 0)
-        throw std::out_of_range("Time cannot be negative");
-
-    hour = static_cast<uint8_t>(new_hour);
+    int64_t hours = static_cast<int64_t>(hour) + hours_to_add;
+    hour = static_cast<uint8_t>(hours % HOURS_PER_DAY);
+    if (hours < 0)
+    {
+        hour += HOURS_PER_DAY;
+        return (hours - 23) / HOURS_PER_DAY;
+    }
+    else
+        return static_cast<int64_t>(hours) / HOURS_PER_DAY;
 }
 
 void Time::add_minutes(int64_t minutes_to_add)
@@ -242,7 +246,7 @@ void Time::set_default_timezone(Timezone timezone)
 
 void Time::set_timezone(Timezone new_timezone)
 {
-    (*this) += Hour(timezone.get_utc_offset_diff(new_timezone));
+    (*this) += Hours(timezone.get_utc_offset_diff(new_timezone));
     timezone = new_timezone;
 }
 
@@ -544,126 +548,102 @@ bool Time::is_valid_nanosecond() const
     return nanosecond < NANOSECONDS_PER_MICROSECOND && nanosecond >= 0;
 }
 
-Time operator+(Time time, Time other)
-{
-    other.set_timezone(time.timezone);
-
-    time += Nanosecond(other.nanosecond);
-    time += Microsecond(other.microsecond);
-    time += Millisecond(other.millisecond);
-    time += Second(other.second);
-    time += Minute(other.minute);
-    time += Hour(other.hour);
-    return time;
-}
-
-Time operator-(Time time, Time other)
-{
-    other.set_timezone(time.timezone);
-
-    time -= Hour(other.hour);
-    time -= Minute(other.minute);
-    time -= Second(other.second);
-    time -= Millisecond(other.millisecond);
-    time -= Microsecond(other.microsecond);
-    time -= Nanosecond(other.nanosecond);
-    return time;
-}
-
-Time& Time::operator+=(Time other)
-{
-    other.set_timezone(timezone);
-
-    (*this) += Nanosecond(other.nanosecond);
-    (*this) += Microsecond(other.microsecond);
-    (*this) += Millisecond(other.millisecond);
-    (*this) += Second(other.second);
-    (*this) += Minute(other.minute);
-    (*this) += Hour(other.hour);
-    return (*this);
-}
-
-Time &Time::operator-=(Time other)
-{
-    other.set_timezone(timezone);
-
-    (*this) -= Hour(other.hour);
-    (*this) -= Minute(other.minute);
-    (*this) -= Second(other.second);
-    (*this) -= Millisecond(other.millisecond);
-    (*this) -= Microsecond(other.microsecond);
-    (*this) -= Nanosecond(other.nanosecond);
-    return (*this);
-}
-
-Time operator+(Time time, const Hour& hours)
+Time operator+(Time time, const Hours& hours)
 {
     time += hours;
     return time;
 }
 
-Time operator-(Time time, const Hour& hours)
+Time operator-(Time time, const Hours& hours)
 {
     time -= hours;
     return time;
 }
 
-Time operator+(Time time, const Minute& minutes)
+Time operator+(Time time, const Minutes& minutes)
 {
     time += minutes;
     return time;
 }
 
-Time operator-(Time time, const Minute& minutes)
+Time operator-(Time time, const Minutes& minutes)
 {
     time -= minutes;
     return time;
 }
 
-Time operator+(Time time, const Second& seconds)
+Time operator+(Time time, const Seconds& seconds)
 {
     time += seconds;
     return time;
 }
 
-Time operator-(Time time, const Second& seconds)
+Time operator-(Time time, const Seconds& seconds)
 {
     time -= seconds;
     return time;
 }
 
-Time operator+(Time time, const Millisecond& milliseconds)
+Time operator+(Time time, const Milliseconds& milliseconds)
 {
     time += milliseconds;
     return time;
 }
 
-Time operator-(Time time, const Millisecond& milliseconds)
+Time operator-(Time time, const Milliseconds& milliseconds)
 {
     time -= milliseconds;
     return time;
 }
 
-Time operator+(Time time, const Microsecond& microseconds)
+Time operator+(Time time, const Microseconds& microseconds)
 {
     time += microseconds;
     return time;
 }
 
-Time operator-(Time time, const Microsecond& microseconds)
+Time operator-(Time time, const Microseconds& microseconds)
 {
     time -= microseconds;
     return time;
 }
 
-Time operator+(Time time, const Nanosecond& nanoseconds)
+Time operator+(Time time, const Nanoseconds& nanoseconds)
 {
     time += nanoseconds;
     return time;
 }
 
-Time operator-(Time time, const Nanosecond& nanoseconds)
+Time operator-(Time time, const Nanoseconds& nanoseconds)
 {
     time -= nanoseconds;
     return time;
+}
+
+TimeDelta operator+(Time time, Time other)
+{
+    other.set_timezone(time.timezone);
+
+    time += Nanoseconds(other.nanosecond);
+    time += Microseconds(other.microsecond);
+    time += Milliseconds(other.millisecond);
+    time += Seconds(other.second);
+    time += Minutes(other.minute);
+    int64_t day_change = time.add_hours(other.hour);
+
+    return TimeDelta(day_change, time);
+}
+
+TimeDelta operator-(Time time, Time other)
+{
+    other.set_timezone(time.timezone);
+
+    time -= Nanoseconds(other.nanosecond);
+    time -= Microseconds(other.microsecond);
+    time -= Milliseconds(other.millisecond);
+    time -= Seconds(other.second);
+    time -= Minutes(other.minute);
+    int64_t day_change = time.add_hours(-other.hour);
+
+    return TimeDelta(day_change, time);
 }

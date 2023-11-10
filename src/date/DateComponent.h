@@ -1,7 +1,7 @@
 #ifndef INCLUDE_DATETIME_DATECOMPONENT_H
 #define INCLUDE_DATETIME_DATECOMPONENT_H
 
-#include "datetime/Component.h"
+#include "../Component.h"
 
 /**
  * Component for 'Date'.

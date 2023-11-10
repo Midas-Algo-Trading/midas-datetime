@@ -1,9 +1,8 @@
 #include "gtest/gtest.h"
 
-#define private public
 #include "datetime/time/Time.h"
-#include "../src/time/Time.cpp"
 #include "datetime/time/TimeRange.h"
+#include "datetime/timedelta/TimeDelta.h"
 
 TEST(Time, constructor_sets_members)
 {
@@ -39,41 +38,35 @@ TEST(Time, now_sets_timezone)
 TEST(Time, operator_plusequal_hour_basic)
 {
         Time time = Time(1);
-        time += Hour(1);
+        time += Hours(1);
         EXPECT_EQ(time.hour, 2);
 }
 
 TEST(Time, operator_plusequal_hour_wraps)
 {
         Time time = Time(22);
-        time += Hour(4);
+        time += Hours(4);
         EXPECT_EQ(time.hour, 2);
 }
 
 TEST(Time, operator_minusequal_hour_basic)
 {
         Time time = Time(3);
-        time -= Hour(1);
+        time -= Hours(1);
         EXPECT_EQ(time.hour, 2);
-}
-
-TEST(Time, operator_minusequal_hour_throws_out_of_range)
-{
-        Time time = Time(0);
-        EXPECT_THROW(time -= Hour(1), std::out_of_range);
 }
 
 TEST(Time, operator_plusequal_minute_basic)
 {
         Time time = Time(1, 1);
-        time += Minute(1);
+        time += Minutes(1);
         EXPECT_EQ(time.minute, 2);
 }
 
 TEST(Time, operator_plusequal_minute_adds_hour)
 {
         Time time = Time(1, 58);
-        time += Minute(4);
+        time += Minutes(4);
         EXPECT_EQ(time.hour, 2);
         EXPECT_EQ(time.minute, 2);
 }
@@ -81,14 +74,14 @@ TEST(Time, operator_plusequal_minute_adds_hour)
 TEST(Time, operator_minusequal_minute_basic)
 {
         Time time = Time(1, 3);
-        time -= Minute(1);
+        time -= Minutes(1);
         EXPECT_EQ(time.minute, 2);
 }
 
 TEST(Time, operator_minusequal_minute_subtracts_hour)
 {
         Time time = Time(1, 1);
-        time -= Minute(2);
+        time -= Minutes(2);
         EXPECT_EQ(time.hour, 0);
         EXPECT_EQ(time.minute, 59);
 }
@@ -96,14 +89,14 @@ TEST(Time, operator_minusequal_minute_subtracts_hour)
 TEST(Time, operator_plusequal_second_basic)
 {
         Time time = Time(1, 1, 1);
-        time += Second(1);
+        time += Seconds(1);
         EXPECT_EQ(time.second, 2);
 }
 
 TEST(Time, operator_plusequal_second_adds_minute)
 {
         Time time = Time(1, 1, 58);
-        time += Second(4);
+        time += Seconds(4);
         EXPECT_EQ(time.minute, 2);
         EXPECT_EQ(time.second, 2);
 }
@@ -111,14 +104,14 @@ TEST(Time, operator_plusequal_second_adds_minute)
 TEST(Time, operator_minusequal_second_basic)
 {
         Time time = Time(1, 1, 3);
-        time -= Second(1);
+        time -= Seconds(1);
         EXPECT_EQ(time.second, 2);
 }
 
 TEST(Time, operator_minusequal_second_subtracts_minute)
 {
         Time time = Time(1, 1, 1);
-        time -= Second(2);
+        time -= Seconds(2);
         EXPECT_EQ(time.minute, 0);
         EXPECT_EQ(time.second, 59);
 }
@@ -126,14 +119,14 @@ TEST(Time, operator_minusequal_second_subtracts_minute)
 TEST(Time, operator_plusequal_millisecond_basic)
 {
         Time time = Time(1, 1, 1, 1);
-        time += Millisecond(1);
+        time += Milliseconds(1);
         EXPECT_EQ(time.millisecond, 2);
 }
 
 TEST(Time, operator_plusequal_millisecond_adds_minute)
 {
         Time time = Time(1, 1, 1, 999);
-        time += Millisecond(3);
+        time += Milliseconds(3);
         EXPECT_EQ(time.second, 2);
         EXPECT_EQ(time.millisecond, 2);
 }
@@ -141,14 +134,14 @@ TEST(Time, operator_plusequal_millisecond_adds_minute)
 TEST(Time, operator_minusequal_millisecond_basic)
 {
         Time time = Time(1, 1, 1, 3);
-        time -= Millisecond(1);
+        time -= Milliseconds(1);
         EXPECT_EQ(time.millisecond, 2);
 }
 
 TEST(Time, operator_minusequal_millisecond_subtracts_second)
 {
         Time time = Time(1, 1, 1, 1);
-        time -= Millisecond(2);
+        time -= Milliseconds(2);
         EXPECT_EQ(time.second, 0);
         EXPECT_EQ(time.millisecond, 999);
 }
@@ -156,14 +149,14 @@ TEST(Time, operator_minusequal_millisecond_subtracts_second)
 TEST(Time, operator_plusequal_microsecond_basic)
 {
         Time time = Time(1, 1, 1, 1, 1);
-        time += Microsecond(1);
+        time += Microseconds(1);
         EXPECT_EQ(time.microsecond, 2);
 }
 
 TEST(Time, operator_plusequal_microsecond_adds_millisecond)
 {
         Time time = Time(1, 1, 1, 1, 999);
-        time += Microsecond(3);
+        time += Microseconds(3);
         EXPECT_EQ(time.millisecond, 2);
         EXPECT_EQ(time.microsecond, 2);
 }
@@ -171,14 +164,14 @@ TEST(Time, operator_plusequal_microsecond_adds_millisecond)
 TEST(Time, operator_minusequal_microsecond_basic)
 {
         Time time = Time(1, 1, 1, 1, 3);
-        time -= Microsecond(1);
+        time -= Microseconds(1);
         EXPECT_EQ(time.microsecond, 2);
 }
 
 TEST(Time, operator_minusequal_microsecond_subtracts_millisecond)
 {
         Time time = Time(1, 1, 1, 1, 1);
-        time -= Microsecond(2);
+        time -= Microseconds(2);
         EXPECT_EQ(time.millisecond, 0);
         EXPECT_EQ(time.microsecond, 999);
 }
@@ -186,14 +179,14 @@ TEST(Time, operator_minusequal_microsecond_subtracts_millisecond)
 TEST(Time, operator_plusequal_nanosecond_basic)
 {
         Time time = Time(1, 1, 1, 1, 1, 1);
-        time += Nanosecond(1);
+        time += Nanoseconds(1);
         EXPECT_EQ(time.nanosecond, 2);
 }
 
 TEST(Time, operator_plusequal_nanoecond_adds_minute)
 {
         Time time = Time(1, 1, 1, 1, 1, 999);
-        time += Nanosecond(3);
+        time += Nanoseconds(3);
         EXPECT_EQ(time.microsecond, 2);
         EXPECT_EQ(time.nanosecond, 2);
 }
@@ -201,14 +194,14 @@ TEST(Time, operator_plusequal_nanoecond_adds_minute)
 TEST(Time, operator_minusequal_nanosecond_basic)
 {
         Time time = Time(1, 1, 1, 1, 1, 3);
-        time -= Nanosecond(1);
+        time -= Nanoseconds(1);
         EXPECT_EQ(time.nanosecond, 2);
 }
 
 TEST(Time, operator_minusequal_nanosecond_subtracts_microsecond)
 {
         Time time = Time(1, 1, 1, 1, 1, 1);
-        time -= Nanosecond(2);
+        time -= Nanoseconds(2);
         EXPECT_EQ(time.microsecond, 0);
         EXPECT_EQ(time.nanosecond, 999);
 }
@@ -638,110 +631,108 @@ TEST(Time, constructor_string_TimeComponents_throws_invalid_argument_on_out_of_r
 
 TEST(Time, operator_plus_time)
 {
-    Time time = Time(1, 2, 3, 4, 5, 6) + Time(2, 3, 4, 5, 6, 7);
-    EXPECT_EQ(time, Time(3, 5, 7, 9, 11, 13));
+    TimeDelta time_delta = Time(1, 2, 3, 4, 5, 6) + Time(2, 3, 4, 5, 6, 7);
+    EXPECT_EQ(time_delta, TimeDelta(0, 3, 5, 7, 9, 11, 13));
+}
+
+TEST(Time, operator_plus_time_day_wrap)
+{
+    TimeDelta time_delta = Time(23) + Time(1);
+    EXPECT_EQ(time_delta, TimeDelta(1));
 }
 
 TEST(Time, operator_minus_time)
 {
-    Time time = Time(3, 5, 7, 9, 11, 13) - Time(2, 3, 4, 5, 6, 7);
-    EXPECT_EQ(time, Time(1, 2, 3, 4, 5, 6));
+    TimeDelta time_delta = Time(3, 5, 7, 9, 11, 13) - Time(2, 3, 4, 5, 6, 7);
+    EXPECT_EQ(time_delta, TimeDelta(0, 1, 2, 3, 4, 5, 6));
 }
 
-TEST(Time, operator_plus_equal_time)
+TEST(Time, operator_minus_time_day_wrap)
 {
-    Time time = Time(1, 2, 3, 4, 5, 6);
-    time += Time(2, 3, 4, 5, 6, 7);
-    EXPECT_EQ(time, Time(3, 5, 7, 9, 11, 13));
-}
-
-TEST(Time, operator_minus_equal_time)
-{
-    Time time = Time(3, 5, 7, 9, 11, 13);
-    time -= Time(2, 3, 4, 5, 6, 7);
-    EXPECT_EQ(time, Time(1, 2, 3, 4, 5, 6));
+    TimeDelta time_delta = Time() - Time(1);
+    EXPECT_EQ(time_delta, TimeDelta(-1, 23));
 }
 
 TEST(Time, operator_plus_hour)
 {
     Time time = Time(1, 2, 3, 4, 5, 6);
-    Time new_time = time + Hour(1);
+    Time new_time = time + Hours(1);
     EXPECT_EQ(new_time, Time(2, 2, 3, 4, 5, 6));
 }
 
 TEST(Time, operator_plus_minute)
 {
     Time time = Time(1, 2, 3, 4, 5, 6);
-    Time new_time = time + Minute(1);
+    Time new_time = time + Minutes(1);
     EXPECT_EQ(new_time, Time(1, 3, 3, 4, 5, 6));
 }
 
 TEST(Time, operator_plus_second)
 {
     Time time = Time(1, 2, 3, 4, 5, 6);
-    Time new_time = time + Second(1);
+    Time new_time = time + Seconds(1);
     EXPECT_EQ(new_time, Time(1, 2, 4, 4, 5, 6));
 }
 
 TEST(Time, operator_plus_millisecond)
 {
     Time time = Time(1, 2, 3, 4, 5, 6);
-    Time new_time = time + Millisecond(1);
+    Time new_time = time + Milliseconds(1);
     EXPECT_EQ(new_time, Time(1, 2, 3, 5, 5, 6));
 }
 
 TEST(Time, operator_plus_microsecond)
 {
     Time time = Time(1, 2, 3, 4, 5, 6);
-    Time new_time = time + Microsecond(1);
+    Time new_time = time + Microseconds(1);
     EXPECT_EQ(new_time, Time(1, 2, 3, 4, 6, 6));
 }
 
 TEST(Time, operator_plus_nanosecond)
 {
     Time time = Time(1, 2, 3, 4, 5, 6);
-    Time new_time = time + Nanosecond(1);
+    Time new_time = time + Nanoseconds(1);
     EXPECT_EQ(new_time, Time(1, 2, 3, 4, 5, 7));
 }
 
 TEST(Time, operator_minus_hour)
 {
     Time time = Time(2, 2, 3, 4, 5, 6);
-    Time new_time = time - Hour(1);
+    Time new_time = time - Hours(1);
     EXPECT_EQ(new_time, Time(1, 2, 3, 4, 5, 6));
 }
 
 TEST(Time, operator_minus_minute)
 {
     Time time = Time(1, 2, 3, 4, 5, 6);
-    Time new_time = time - Minute(1);
+    Time new_time = time - Minutes(1);
     EXPECT_EQ(new_time, Time(1, 1, 3, 4, 5, 6));
 }
 
 TEST(Time, operator_minus_second)
 {
     Time time = Time(1, 2, 3, 4, 5, 6);
-    Time new_time = time - Second(1);
+    Time new_time = time - Seconds(1);
     EXPECT_EQ(new_time, Time(1, 2, 2, 4, 5, 6));
 }
 
 TEST(Time, operator_minus_millisecond)
 {
     Time time = Time(1, 2, 3, 4, 5, 6);
-    Time new_time = time - Millisecond(1);
+    Time new_time = time - Milliseconds(1);
     EXPECT_EQ(new_time, Time(1, 2, 3, 3, 5, 6));
 }
 
 TEST(Time, operator_minus_microsecond)
 {
     Time time = Time(1, 2, 3, 4, 5, 6);
-    Time new_time = time - Microsecond(1);
+    Time new_time = time - Microseconds(1);
     EXPECT_EQ(new_time, Time(1, 2, 3, 4, 4, 6));
 }
 
 TEST(Time, operator_minus_nanosecond)
 {
     Time time = Time(1, 2, 3, 4, 5, 6);
-    Time new_time = time - Nanosecond(1);
+    Time new_time = time - Nanoseconds(1);
     EXPECT_EQ(new_time, Time(1, 2, 3, 4, 5, 5));
 }

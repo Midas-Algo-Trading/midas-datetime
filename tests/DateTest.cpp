@@ -1,8 +1,8 @@
 #include "gtest/gtest.h"
 
-#define private public
+#include "datetime/date/Date.h"
 #include "datetime/date/components/Day.h"
-#include "../src/date/Date.cpp"
+#include "datetime/timedelta/TimeDelta.h"
 #include "datetime/date/DateRange.h"
 
 TEST(Date, ostream)
@@ -53,7 +53,7 @@ TEST(Date, today_sets_local_date)
 
 TEST(Date, operator_plusequal_adds_day_basic)
 {
-        Date date = Date(1900, 1, 1);
+        Date date = Date(1970, 1, 1);
         date += Day(1);
         int new_day = date.day;
         EXPECT_EQ(new_day, 2);
@@ -61,7 +61,7 @@ TEST(Date, operator_plusequal_adds_day_basic)
 
 TEST(Date, operator_plusequal_adds_day_new_month)
 {
-        Date date = Date(1900, 1, 31);
+        Date date = Date(1970, 1, 31);
         date += Day(1);
         EXPECT_EQ(date.month, 2);
         EXPECT_EQ(date.day, 1);
@@ -69,7 +69,7 @@ TEST(Date, operator_plusequal_adds_day_new_month)
 
 TEST(Date, operator_plusequal_adds_2_new_months)
 {
-        Date date = Date(1900, 3, 31);
+        Date date = Date(1970, 3, 31);
         date += Day(31);
         EXPECT_EQ(date.month, 5);
         EXPECT_EQ(date.day, 1);
@@ -77,23 +77,23 @@ TEST(Date, operator_plusequal_adds_2_new_months)
 
 TEST(Date, operator_plusequal_adds_new_year)
 {
-        Date date = Date(1900, 1, 1);
+        Date date = Date(1970, 1, 1);
         date += Day(365);
-        EXPECT_EQ(date.year, 1901);
+        EXPECT_EQ(date.year, 1971);
         EXPECT_EQ(date.month, 1);
         EXPECT_EQ(date.day, 1);
 }
 
 TEST(Date, operator_minusequal_subtracts_day_basic)
 {
-        Date date = Date(1900, 1, 2);
+        Date date = Date(1970, 1, 2);
         date -= Day(1);
         EXPECT_EQ(date.day, 1);
 }
 
 TEST(Date, operator_minusequal_subtracts_month)
 {
-        Date date = Date(1900, 2, 1);
+        Date date = Date(1970, 2, 1);
         date -= Day(1);
         EXPECT_EQ(date.month, 1);
         EXPECT_EQ(date.day, 31);
@@ -101,7 +101,7 @@ TEST(Date, operator_minusequal_subtracts_month)
 
 TEST(Date, operator_minusequal_subtracts_2_months)
 {
-        Date date = Date(1900, 5, 1);
+        Date date = Date(1970, 5, 1);
         date -= Day(31);
         EXPECT_EQ(date.month, 3);
         EXPECT_EQ(date.day, 31);
@@ -109,110 +109,110 @@ TEST(Date, operator_minusequal_subtracts_2_months)
 
 TEST(Date, operator_minusqual_subtracts_year)
 {
-        Date date = Date(1900, 1, 1);
+        Date date = Date(1970, 1, 1);
         date -= Day(365);
-        EXPECT_EQ(date.year, 1899);
+        EXPECT_EQ(date.year, 1969);
         EXPECT_EQ(date.month, 1);
         EXPECT_EQ(date.day, 1);
 }
 
 TEST(Date, operator_increment)
 {
-        Date date = Date(1900, 1, 1);
+        Date date = Date(1970, 1, 1);
         ++date;
         ASSERT_EQ(date.day, 2);
 }
 
 TEST(Date, operator_decrement)
 {
-        Date date = Date(1900, 1, 2);
+        Date date = Date(1970, 1, 2);
         --date;
         ASSERT_EQ(date.day, 1);
 }
 
 TEST(Date, operator_greater_than)
 {
-        Date date_greater = Date(1901, 1, 1);
-        Date date_lesser = Date(1900, 1, 1);
+        Date date_greater = Date(1971, 1, 1);
+        Date date_lesser = Date(1970, 1, 1);
         EXPECT_GT(date_greater, date_lesser);
 
-        date_greater = Date(1900, 2, 1);
-        date_lesser = Date(1900, 1, 1);
+        date_greater = Date(1970, 2, 1);
+        date_lesser = Date(1970, 1, 1);
         EXPECT_GT(date_greater, date_lesser);
 
-        date_greater = Date(1900, 1, 2);
-        date_lesser = Date(1900, 1, 1);
+        date_greater = Date(1970, 1, 2);
+        date_lesser = Date(1970, 1, 1);
         EXPECT_GT(date_greater, date_lesser);
 }
 
 TEST(Date, operator_greater_than_or_equal_to)
 {
-        Date date_greater = Date(1901, 1, 1);
-        Date date_lesser = Date(1900, 1, 1);
+        Date date_greater = Date(1971, 1, 1);
+        Date date_lesser = Date(1970, 1, 1);
         EXPECT_GE(date_greater, date_lesser);
 
-        date_greater = Date(1900, 2, 1);
-        date_lesser = Date(1900, 1, 1);
+        date_greater = Date(1970, 2, 1);
+        date_lesser = Date(1970, 1, 1);
         EXPECT_GE(date_greater, date_lesser);
 
-        date_greater = Date(1900, 1, 2);
-        date_lesser = Date(1900, 1, 1);
+        date_greater = Date(1970, 1, 2);
+        date_lesser = Date(1970, 1, 1);
         EXPECT_GE(date_greater, date_lesser);
 
-        date_lesser = Date(1900, 1, 2);
+        date_lesser = Date(1970, 1, 2);
         EXPECT_GE(date_greater, date_lesser);
 }
 
 TEST(Date, operator_lessr_than)
 {
-        Date date_greater = Date(1901, 1, 1);
-        Date date_lesser = Date(1900, 1, 1);
+        Date date_greater = Date(1971, 1, 1);
+        Date date_lesser = Date(1970, 1, 1);
         EXPECT_LT(date_lesser, date_greater);
 
-        date_greater = Date(1900, 2, 1);
-        date_lesser = Date(1900, 1, 1);
+        date_greater = Date(1970, 2, 1);
+        date_lesser = Date(1970, 1, 1);
         EXPECT_LT(date_lesser, date_greater);
 
-        date_greater = Date(1900, 1, 2);
-        date_lesser = Date(1900, 1, 1);
+        date_greater = Date(1970, 1, 2);
+        date_lesser = Date(1970, 1, 1);
         EXPECT_LT(date_lesser, date_greater);
 }
 
 TEST(Date, operator_less_than_or_equal_to)
 {
-        Date date_greater = Date(1901, 1, 1);
-        Date date_lesser = Date(1900, 1, 1);
+        Date date_greater = Date(1971, 1, 1);
+        Date date_lesser = Date(1970, 1, 1);
         EXPECT_LE(date_lesser, date_greater);
 
-        date_greater = Date(1900, 2, 1);
-        date_lesser = Date(1900, 1, 1);
+        date_greater = Date(1970, 2, 1);
+        date_lesser = Date(1970, 1, 1);
         EXPECT_LE(date_lesser, date_greater);
 
-        date_greater = Date(1900, 1, 2);
-        date_lesser = Date(1900, 1, 1);
+        date_greater = Date(1970, 1, 2);
+        date_lesser = Date(1970, 1, 1);
         EXPECT_LE(date_lesser, date_greater);
 
-        date_lesser = Date(1900, 1, 2);
+        date_lesser = Date(1970, 1, 2);
         EXPECT_LE(date_lesser, date_greater);
 }
 
 TEST(Date, operator_equal_to)
 {
-        Date date1 = Date(1900, 1, 1);
-        Date date2 = Date(1900, 1, 1);
+        Date date1 = Date(1970, 1, 1);
+        Date date2 = Date(1970, 1, 1);
         EXPECT_EQ(date1, date2);
 }
 
 TEST(Date, operator_not_equal_to)
 {
-        Date date1 = Date(1900, 1, 1);
-        Date date2 = Date(1901, 1, 1);
+        Date date1 = Date(1970, 1, 1);
+        Date date2 = Date(1971, 1, 1);
         EXPECT_NE(date1, date2);
 
-        date2 = Date(1900, 2, 1);
+        date2 = Date(1970, 2, 1);
         EXPECT_NE(date1, date2);
 
-        date2 = Date(1900, 1, 2);
+        date2 = Date(1970, 1, 2);
         EXPECT_NE(date1, date2);
 }
 
@@ -220,7 +220,7 @@ TEST(Date, is_leap_year)
 {
         Date date = Date(2004, 1, 1);
         EXPECT_TRUE(Date::is_leap_year(date.year));
-        date = Date(1900, 1, 1);
+        date = Date(1970, 1, 1);
         EXPECT_FALSE(Date::is_leap_year(date.year));
         date = Date(2000, 1, 1);
         EXPECT_TRUE(Date::is_leap_year(date.year));
@@ -243,15 +243,9 @@ TEST(Date, max_days_in_month)
         EXPECT_EQ(Date::max_days_in_month(11), 30);
         EXPECT_EQ(Date::max_days_in_month(12), 31);
 }
-
-TEST(Date, months_per_year)
-{
-        ASSERT_EQ(Date::MONTHS_PER_YEAR, 12);
-}
-
 TEST(DateRange, constructor_sets_variables)
 {
-        Date start = Date(1900, 1, 1);
+        Date start = Date(1970, 1, 1);
         Date end = Date(2000, 1, 1);
         DateRange date_range = DateRange(start, end);
         EXPECT_EQ(date_range.start, start);
@@ -260,89 +254,82 @@ TEST(DateRange, constructor_sets_variables)
 
 TEST(Date, day_of_week)
 {
-        Date date = Date(1906, 1, 1);
+        Date date = Date(1970, 1, 5);
         EXPECT_EQ(date.day_of_week(), Date::DayOfWeek::MONDAY);
 
-        date = Date(1915, 1, 5);
+        date = Date(1975, 3, 4);
         EXPECT_EQ(date.day_of_week(), Date::DayOfWeek::TUESDAY);
 
-        date = Date(1930, 2, 5);
+        date = Date(1980, 4, 2);
         EXPECT_EQ(date.day_of_week(), Date::DayOfWeek::WEDNESDAY);
 
-        date = Date(1955, 5, 5);
+        date = Date(1985, 5, 2);
         EXPECT_EQ(date.day_of_week(), Date::DayOfWeek::THURSDAY);
 
-        date = Date(1970, 12, 4);
+        date = Date(1990, 7, 6);
         EXPECT_EQ(date.day_of_week(), Date::DayOfWeek::FRIDAY);
 
-        date = Date(2000, 2, 5);
+        date = Date(1995, 8, 5);
         EXPECT_EQ(date.day_of_week(), Date::DayOfWeek::SATURDAY);
 
-        date = Date(2010, 8, 1);
+        date = Date(2000, 10, 1);
         EXPECT_EQ(date.day_of_week(), Date::DayOfWeek::SUNDAY);
 }
 
 TEST(Date, is_weekday)
 {
-        Date date = Date(1906, 1, 1);
+        Date date = Date(1970, 1, 5);
         EXPECT_TRUE(date.is_weekday());
 
-        date = Date(1915, 1, 5);
+        date = Date(1980, 3, 4);
         EXPECT_TRUE(date.is_weekday());
 
-        date = Date(1930, 2, 5);
+        date = Date(1990, 4, 4);
         EXPECT_TRUE(date.is_weekday());
 
-        date = Date(1955, 5, 5);
+        date = Date(2000, 7, 6);
         EXPECT_TRUE(date.is_weekday());
 
-        date = Date(1970, 12, 4);
+        date = Date(2010, 9, 3);
         EXPECT_TRUE(date.is_weekday());
 }
 
 TEST(Date, is_weekend)
 {
-        Date date = Date(2000, 2, 5);
+        Date date = Date(2000, 1, 1);
         EXPECT_TRUE(date.is_weekend());
 
-        date = Date(2010, 8, 1);
+        date = Date(2010, 12, 5);
         EXPECT_TRUE(date.is_weekend());
 }
 
 TEST(DateRange, constructor_start_greater_than_end_throws_illegal_argument)
 {
         Date start = Date(2000, 1, 1);
-        Date end = Date(1900, 1, 1);
+        Date end = Date(1970, 1, 1);
         EXPECT_THROW(DateRange(start, end), std::invalid_argument);
 }
 
 TEST(DateRange, in_range)
 {
-        Date start = Date(1925, 1, 1);
+        Date start = Date(1975, 1, 1);
         Date end = Date(2000, 1, 1);
         DateRange date_range = DateRange(start, end);
 
-        Date date = Date(1950, 1, 1);
+        Date date = Date(1990, 1, 1);
         EXPECT_TRUE(date_range.in_range(date));
 
-        date = Date(1925, 1, 1);
+        date = Date(1975, 1, 1);
         EXPECT_TRUE(date_range.in_range(date));
 
         date = Date(2000, 1, 1);
         EXPECT_TRUE(date_range.in_range(date));
 
-        date = Date(1900, 1, 1);
+        date = Date(1970, 1, 1);
         EXPECT_FALSE(date_range.in_range(date));
 
         date = Date(2100, 1, 1);
         EXPECT_FALSE(date_range.in_range(date));
-}
-
-
-TEST(Date, day_of_week_year_cannot_be_before_1901)
-{
-        Date date = Date(1900, 1, 1);
-        ASSERT_THROW(date.day_of_week(), not_implemented_error);
 }
 
 TEST(Date, to_string)

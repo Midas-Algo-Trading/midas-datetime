@@ -1,4 +1,7 @@
+#include <utility>
+
 #include "datetime/datetime/Datetime.h"
+#include "datetime/timedelta/TimeDelta.h"
 
 Datetime Datetime::now(uint8_t  day_offset, uint8_t hour_offset, uint8_t minute_offset,
                        uint8_t second_offset, uint16_t millisecond_offset,
@@ -9,22 +12,16 @@ Datetime Datetime::now(uint8_t  day_offset, uint8_t hour_offset, uint8_t minute_
                               microsecond_offset, nanosecond_offset, timezone));
 }
 
-void Datetime::add_hours(int64_t hours_to_add)
+int64_t Datetime::add_hours(int64_t hours_to_add)
 {
-    int64_t hours = static_cast<int64_t>(hour) + hours_to_add;
-    int64_t day_change = static_cast<int64_t>(hours) / HOURS_PER_DAY;
-    int new_hour = static_cast<int>(hours % HOURS_PER_DAY);
-    if (new_hour < 0)
-    {
-        new_hour += HOURS_PER_DAY;
-        day_change--;
-    }
-    hour = new_hour;
+    int64_t day_change = Time::add_hours(hours_to_add);
 
     if (day_change > 0)
         add_days(day_change);
     if (day_change < 0)
         subtract_days(-day_change);
+
+    return day_change;
 }
 
 Date Datetime::date() const
@@ -96,73 +93,73 @@ Datetime &Datetime::operator-=(const Day& days)
     return *this;
 }
 
-Datetime &Datetime::operator+=(const Hour& hours)
+Datetime &Datetime::operator+=(const Hours& hours)
 {
     Time::operator+=(hours);
     return *this;
 }
 
-Datetime &Datetime::operator-=(const Hour& hours)
+Datetime &Datetime::operator-=(const Hours& hours)
 {
     Time::operator-=(hours);
     return *this;
 }
 
-Datetime &Datetime::operator+=(const Minute& minutes)
+Datetime &Datetime::operator+=(const Minutes& minutes)
 {
     Time::operator+=(minutes);
     return *this;
 }
 
-Datetime &Datetime::operator-=(const Minute& minutes)
+Datetime &Datetime::operator-=(const Minutes& minutes)
 {
     Time::operator-=(minutes);
     return *this;
 }
 
-Datetime &Datetime::operator+=(const Second& seconds)
+Datetime &Datetime::operator+=(const Seconds& seconds)
 {
     Time::operator+=(seconds);
     return *this;
 }
 
-Datetime &Datetime::operator-=(const Second& seconds)
+Datetime &Datetime::operator-=(const Seconds& seconds)
 {
     Time::operator-=(seconds);
     return *this;
 }
 
-Datetime &Datetime::operator+=(const Millisecond& milliseconds)
+Datetime &Datetime::operator+=(const Milliseconds& milliseconds)
 {
     Time::operator+=(milliseconds);
     return *this;
 }
 
-Datetime &Datetime::operator-=(const Millisecond& milliseconds)
+Datetime &Datetime::operator-=(const Milliseconds& milliseconds)
 {
     Time::operator-=(milliseconds);
     return *this;
 }
 
-Datetime &Datetime::operator+=(const Microsecond& microseconds)
+Datetime &Datetime::operator+=(const Microseconds& microseconds)
 {
     Time::operator+=(microseconds);
     return *this;
 }
 
-Datetime &Datetime::operator-=(const Microsecond& microseconds)
+Datetime &Datetime::operator-=(const Microseconds& microseconds)
 {
     Time::operator-=(microseconds);
     return *this;
 }
 
-Datetime &Datetime::operator+=(const Nanosecond& nanoseconds)
+Datetime &Datetime::operator+=(const Nanoseconds& nanoseconds)
 {
     Time::operator+=(nanoseconds);
     return *this;
 }
 
-Datetime &Datetime::operator-=(const Nanosecond& nanoseconds)
+Datetime &Datetime::operator-=(const Nanoseconds& nanoseconds)
 {
     Time::operator-=(nanoseconds);
     return *this;
@@ -216,19 +213,19 @@ Datetime Datetime::from_ms(size_t timestamp, Timezone to_timezone, Timezone from
     uint8_t day = timestamp / MILLISECONDS_PER_DAY;
     timestamp %= MILLISECONDS_PER_DAY;
 
-    // Hour.
+    // Hours.
     uint8_t hour = timestamp / MILLISECONDS_PER_HOUR;
     timestamp %= MILLISECONDS_PER_HOUR;
 
-    // Minute.
+    // Minutes.
     uint8_t minute = timestamp / MILLISECONDS_PER_MINUTE;
     timestamp %= MILLISECONDS_PER_MINUTE;
 
-    // Second.
+    // Seconds.
     uint8_t second = timestamp / MILLISECONDS_PER_SECOND;
     timestamp %= MILLISECONDS_PER_SECOND;
 
-    // Millisecond.
+    // Milliseconds.
     uint16_t millisecond = timestamp;
 
 
@@ -240,73 +237,73 @@ Datetime Datetime::from_ms(size_t timestamp, Timezone to_timezone, Timezone from
     return ret;
 }
 
-Datetime operator+(Datetime datetime, const Hour& hours)
+Datetime operator+(Datetime datetime, const Hours& hours)
 {
     datetime += hours;
     return datetime;
 }
 
-Datetime operator-(Datetime datetime, const Hour& hours)
+Datetime operator-(Datetime datetime, const Hours& hours)
 {
     datetime -= hours;
     return datetime;
 }
 
-Datetime operator+(Datetime datetime, const Minute& minutes)
+Datetime operator+(Datetime datetime, const Minutes& minutes)
 {
     datetime += minutes;
     return datetime;
 }
 
-Datetime operator-(Datetime datetime, const Minute& minutes)
+Datetime operator-(Datetime datetime, const Minutes& minutes)
 {
     datetime -= minutes;
     return datetime;
 }
 
-Datetime operator+(Datetime datetime, const Second& seconds)
+Datetime operator+(Datetime datetime, const Seconds& seconds)
 {
     datetime += seconds;
     return datetime;
 }
 
-Datetime operator-(Datetime datetime, const Second& seconds)
+Datetime operator-(Datetime datetime, const Seconds& seconds)
 {
     datetime -= seconds;
     return datetime;
 }
 
-Datetime operator+(Datetime datetime, const Millisecond& milliseconds)
+Datetime operator+(Datetime datetime, const Milliseconds& milliseconds)
 {
     datetime += milliseconds;
     return datetime;
 }
 
-Datetime operator-(Datetime datetime, const Millisecond& milliseconds)
+Datetime operator-(Datetime datetime, const Milliseconds& milliseconds)
 {
     datetime -= milliseconds;
     return datetime;
 }
 
-Datetime operator+(Datetime datetime, const Microsecond& microseconds)
+Datetime operator+(Datetime datetime, const Microseconds& microseconds)
 {
     datetime += microseconds;
     return datetime;
 }
 
-Datetime operator-(Datetime datetime, const Microsecond& microseconds)
+Datetime operator-(Datetime datetime, const Microseconds& microseconds)
 {
     datetime -= microseconds;
     return datetime;
 }
 
-Datetime operator+(Datetime datetime, const Nanosecond& nanoseconds)
+Datetime operator+(Datetime datetime, const Nanoseconds& nanoseconds)
 {
     datetime += nanoseconds;
     return datetime;
 }
 
-Datetime operator-(Datetime datetime, const Nanosecond& nanoseconds)
+Datetime operator-(Datetime datetime, const Nanoseconds& nanoseconds)
 {
     datetime -= nanoseconds;
     return datetime;
@@ -328,13 +325,27 @@ Datetime operator-(Datetime datetime, Time other)
 
 Datetime& Datetime::operator+=(Time time)
 {
-    Time::operator+=(std::move(time));
+    TimeDelta time_delta = this->time() + std::move(time);
+    nanosecond = time_delta.nanosecond;
+    microsecond = time_delta.microsecond;
+    millisecond = time_delta.millisecond;
+    second = time_delta.second;
+    minute = time_delta.minute;
+    hour = time_delta.hour;
+    (*this) += Day(time_delta.days);
     return *this;
 }
 
-Datetime &Datetime::operator-=(Time time)
+Datetime& Datetime::operator-=(Time time)
 {
-    Time::operator-=(std::move(time));
+    TimeDelta time_delta = this->time() - std::move(time);
+    nanosecond = time_delta.nanosecond;
+    microsecond = time_delta.microsecond;
+    millisecond = time_delta.millisecond;
+    second = time_delta.second;
+    minute = time_delta.minute;
+    hour = time_delta.hour;
+    (*this) -= Day(-time_delta.days);
     return *this;
 }
 
@@ -362,16 +373,16 @@ size_t Datetime::to_ms(std::optional<Timezone> timezone) const
     // Days.
     ret += (day - 1) * MILLISECONDS_PER_DAY;
 
-    // Hour.
+    // Hours.
     ret += datetime.hour * MILLISECONDS_PER_HOUR;
 
-    // Minute.
+    // Minutes.
     ret += datetime.minute * MILLISECONDS_PER_MINUTE;
 
-    // Second.
+    // Seconds.
     ret += datetime.second * MILLISECONDS_PER_SECOND;
 
-    // Millisecond.
+    // Milliseconds.
     ret += datetime.millisecond;
 
     return ret;
@@ -380,3 +391,29 @@ size_t Datetime::to_ms(std::optional<Timezone> timezone) const
 const size_t Datetime::MILLISECONDS_PER_DAY = MILLISECONDS_PER_HOUR * 24;
 const size_t Datetime::MILLISECONDS_PER_NON_LEAP_YEAR = MILLISECONDS_PER_DAY * 365;
 const size_t Datetime::MILLISECONDS_PER_LEAP_YEAR = MILLISECONDS_PER_NON_LEAP_YEAR + MILLISECONDS_PER_DAY;
+
+Datetime& Datetime::operator+=(TimeDelta time_delta)
+{
+    (*this) += Day(time_delta.days);
+    (*this) += time_delta.time();
+    return *this;
+}
+
+Datetime& Datetime::operator-=(TimeDelta time_delta)
+{
+    (*this) -= Day(time_delta.days);
+    (*this) -= time_delta.time();
+    return *this;
+}
+
+Datetime operator+(Datetime datetime, TimeDelta time_delta)
+{
+    datetime += std::move(time_delta);
+    return datetime;
+}
+
+Datetime operator-(Datetime datetime, TimeDelta time_delta)
+{
+    datetime -= std::move(time_delta);
+    return datetime;
+}

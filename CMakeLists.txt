@@ -13,27 +13,29 @@ endif()
 
     add_library(${PROJECT_NAME}
         include/datetime/time/Time.h
-        include/datetime/time/components/Hour.h
-        include/datetime/Component.h
-        include/datetime/time/components/Minute.h
-        include/datetime/time/components/Second.h
-        include/datetime/time/components/Microsecond.h
-        include/datetime/time/components/Nanosecond.h
+            include/datetime/time/components/Hours.h
+            include/datetime/time/components/Minutes.h
+            include/datetime/time/components/Seconds.h
+            include/datetime/time/components/Microseconds.h
+            include/datetime/time/components/Nanoseconds.h
         include/datetime/date/Date.h
         include/datetime/date/components/Day.h
         include/datetime/time/Timezone.h
-        include/datetime/time/components/Millisecond.h
+            include/datetime/time/components/Milliseconds.h
         include/datetime/time/TimeRange.h
-        include/datetime/Range.h
         util/exceptions/not_implemented_error.h
         include/datetime/date/DateRange.h
         include/datetime/datetime/Datetime.h
         include/datetime/datetime/DatetimeRange.h
-        include/datetime/time/components/TimeComponent.h
+        include/datetime/timedelta/TimeDelta.h
 
+        src/Component.h
+        src/Range.h
+        src/time/TimeComponent.h
+        src/time/Time.cpp
         src/date/Date.cpp
         src/datetime/Datetime.cpp
-        src/time/Time.cpp)
+        src/timedelta/TimeDelta.cpp)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
         libs/stringhelpers/include)

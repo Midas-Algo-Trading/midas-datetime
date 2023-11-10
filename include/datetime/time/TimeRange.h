@@ -1,8 +1,8 @@
 #ifndef TIMETIME_TIMERANGE_H
 #define TIMETIME_TIMERANGE_H
 
+#include "../../../src/Range.h"
 #include "datetime/time/Time.h"
-#include "datetime/Range.h"
 
 /**
  * Range of 'Times'.

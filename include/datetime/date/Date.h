@@ -8,6 +8,8 @@
 #include "../../../util/macros.h"
 #include "stringhelpers/stringhelpers.h"
 
+class TimeDelta;
+
 /**
  * Date with components: 'year', 'month', and 'day'.
  */
@@ -17,15 +19,15 @@ public:
     /**
      * Year of the date.
      */
-    uint16_t year = 1900;
+    uint16_t year;
     /**
      * Month of the date.
      */
-    uint8_t month = 1;
+    uint8_t month;
     /**
      * Day of the date.
      */
-    uint8_t day = 1;
+    uint8_t day;
 
     /**
      * Components of a date.
@@ -44,11 +46,11 @@ public:
     /**
      * Creates a 'Date' whose components match the values of 'year', 'month', and 'day'.
      *
-     * @param year Year the 'Date' will be set to.
-     * @param month Month the 'Date' will be set to.
-     * @param day Day the 'Date' will be set to.
+     * @param year Year the 'Date' will be set to (default EPOCH.year).
+     * @param month Month the 'Date' will be set to (default EPOCH.month).
+     * @param day Day the 'Date' will be set to (default EPOCH.day).
      */
-    explicit Date(uint16_t year= 1900, uint8_t month = 1, uint8_t day = 1);
+    explicit Date(uint16_t year = EPOCH.year, uint8_t month = EPOCH.month, uint8_t day = EPOCH.day);
 
     /**
      * Creates a 'Date' from a std::string.
@@ -209,45 +211,55 @@ public:
     virtual Date& operator--();
 
     /**
-     * Checks if 'other' is greater than this 'Date'.
+     * Subtracts 'other' from 'date'.
      *
-     * @param other 'Date' to check if greater than this 'Date'.
+     * @param date 'Date' 'other' is subtracting from.
+     * @param other 'Date' to subtract from 'date'.
      *
-     * @return 'true' if 'other' is greater than this 'Date', 'false' otherwise.
+     * @return 'TimeDelta' of the difference in days between 'date' and 'other'.
+     */
+    friend TimeDelta operator-(Date date, Date other);
+
+    /**
+     * Checks if 'this' is greater than 'other'.
+     *
+     * @param other 'Date' to compare to.
+     *
+     * @return 'true' if 'this' is greater than 'other', 'false' otherwise.
      */
     bool operator>(const Date& other) const;
 
     /**
-     * Checks if 'other' is greater than or equal to this 'Date'.
+     * Checks if 'this' is greater than or equal to 'other'.
      *
-     * @param other 'Date' to check if greater than or equal to this 'Date'.
+     * @param other 'Date' to compare to.
      *
-     * @return 'true' if 'other' is greater than or equal to this 'Date', 'false' otherwise.
+     * @return 'true' if 'this' is greater than or equal to 'other', 'false' otherwise.
      */
     bool operator>=(const Date& other) const;
 
     /**
-     * Checks if 'other' is less than this 'Date'.
+     * Checks if 'this' is less than 'other'.
      *
-     * @param other 'Date' to check if less than this 'Date'.
+     * @param other 'Date' to compare to.
      *
-     * @return 'true' if 'other' is less than this 'Date', 'false' otherwise.
+     * @return 'true' if 'this' is less than 'other', 'false' otherwise.
      */
     bool operator<(const Date& other) const;
 
     /**
-     * Checks if 'other' is less than or equal to this 'Date'.
+     * Checks if 'this' is less than or equal to 'other'.
      *
-     * @param other 'Date' to check if less than or equal to this 'Date'.
+     * @param other 'Date' to compare to.
      *
-     * @return 'true' if 'other' is less than or equal to this 'Date', 'false' otherwise.
+     * @return 'true' if 'this' is less than or equal to than 'other', 'false' otherwise.
      */
     bool operator<=(const Date& other) const;
 
     /**
      * Checks if 'other' is equal to this 'Date'.
      *
-     * @param other 'Date' to check if equal to this 'Date'.
+     * @param other 'Date' to compare to.
      *
      * @return 'true' if 'other' is equal to this 'Date', 'false' otherwise.
      */
@@ -256,7 +268,7 @@ public:
     /**
      * Checks if 'other' is not equal to this 'Date'.
      *
-     * @param other 'Date' to check if not equal to this 'Date'.
+     * @param other 'Date' to compare to.
      *
      * @return 'true' if 'other' is not equal to this 'Date', 'false' otherwise.
      */
@@ -272,7 +284,13 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const Date& date);
 
+    /**
+     * Universal starting date for all dates.
+     */
+    static const Date EPOCH;
+
 protected:
+
     /**
      * Adds days to this 'Date'.
      *
@@ -287,7 +305,18 @@ protected:
      */
     void subtract_days(size_t days_to_subtract);
 
+    /**
+     * Number of days in a non-leap year.
+     */
+    static const uint16_t DAYS_PER_NON_LEAP_YEAR;
+
+    /**
+     * Number of days in a leap year.
+     */
+    static const uint16_t DAYS_PER_LEAP_YEAR;
+
 private:
+
     /**
      * Number of months in a year.
      */
@@ -305,7 +334,7 @@ private:
     /**
      * Checks if 'year' is valid.
      *
-     * Checks if 'year' is less than or equal to 2100 and greater than or equal to 1900.
+     * Checks if 'year' is less than or equal to 2100 and greater than or equal than the EPOCH year.
      *
      * @return 'true' if 'year' is valid, 'false' otherwise.
      */
@@ -329,6 +358,13 @@ private:
      * @return 'true' if 'day' is valid, 'false' otherwise.
      */
     bool is_valid_day() const;
+
+    /**
+     * Gets the total elapsed days of 'this' since 'EPOCH'.
+     *
+     * @return total elapsed days of 'this' since 'EPOCH'.
+     */
+    size_t get_total_days() const;
 };
 
 template<typename... DateComponents>
