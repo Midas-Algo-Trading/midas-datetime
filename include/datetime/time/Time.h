@@ -11,45 +11,17 @@
 #include "datetime/time/components/Milliseconds.h"
 #include "stringhelpers/stringhelpers.h"
 #include "../../../util/macros.h"
+#include "../../../src/time/BasicTime.h"
+#include "datetime/timedelta/TimeDelta.h"
 
-class TimeDelta;
 
 /**
  * Time with components: 'hour', 'minute', 'second', 'millisecond', 'microsecond',
  * and 'nanosecond'.
  */
-class Time
+class Time : public BasicTime
 {
 public:
-    /**
-     * Hours of a day.
-     */
-    uint8_t hour = 0;
-
-    /**
-     * Minutes of a day.
-     */
-    uint8_t minute = 0;
-
-    /**
-     * Seconds of a day.
-     */
-    uint8_t second = 0;
-
-    /**
-     * Milliseconds of a day.
-     */
-    uint16_t millisecond = 0;
-
-    /**
-     * Microseconds of a day.
-     */
-    uint16_t microsecond = 0;
-
-    /**
-     * Nanoseconds of a day.
-     */
-    uint16_t nanosecond = 0;
 
     /**
      * 'Timezone' of the 'Time'.
@@ -88,6 +60,14 @@ public:
      */
     template<typename... TimeComponents>
     explicit Time(std::string_view string, TimeComponents... time_components);
+
+    /**
+     * Creates a 'Time' object from a 'TimeDelta'.
+     *
+     * @param time_delta 'TimeDelta' whose time components will used for 'Times' components.
+     * @param timezone timezone the 'Time' will be set to. (default default_timezone)
+     */
+    Time(TimeDelta& time_delta, Timezone timezone = default_timezone);
 
     /**
      * Creates a 'Time' whose components' values match the current time.
@@ -241,6 +221,7 @@ public:
      * @return 'true' if 'this' is greater than 'other', 'false' otherwise.
      */
     bool operator>(Time other) const;
+
     /**
      * Checks if 'this' is greater than or equal to 'other'.
      *
@@ -447,22 +428,6 @@ public:
      * @param to finish the rounding down of this 'Time's' components at this 'Component'.
      */
     Time& floor(Component to);
-
-    /**
-     * Represents this 'Time' as a std::string.
-     *
-     * Represents this 'Time' as a std::string with format %-H:%M:%S.%ms.%f.%ns
-     *
-     * @example
-     * Time time = Datetime(1, 2, 3, 4, 5, 6);
-     * std::string time_string = date.to_string();
-     * std::cout << time_string;
-     *
-     * // output: 1:02:04.4.5.6
-     *
-     * @return resulting std::string.
-     */
-    virtual std::string to_string(char separate_time = ':', char separate_seconds = '.') const;
 
     /**
      * Hours in a day.

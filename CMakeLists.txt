@@ -35,7 +35,7 @@ endif()
         src/time/Time.cpp
         src/date/Date.cpp
         src/datetime/Datetime.cpp
-        src/timedelta/TimeDelta.cpp)
+        src/timedelta/TimeDelta.cpp src/time/BasicTime.cpp src/time/BasicTime.h)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
         libs/stringhelpers/include)

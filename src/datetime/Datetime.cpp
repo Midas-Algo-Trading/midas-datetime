@@ -395,14 +395,14 @@ const size_t Datetime::MILLISECONDS_PER_LEAP_YEAR = MILLISECONDS_PER_NON_LEAP_YE
 Datetime& Datetime::operator+=(TimeDelta time_delta)
 {
     (*this) += Day(time_delta.days);
-    (*this) += time_delta.time();
+    (*this) += Time(time_delta, timezone);
     return *this;
 }
 
 Datetime& Datetime::operator-=(TimeDelta time_delta)
 {
     (*this) -= Day(time_delta.days);
-    (*this) -= time_delta.time();
+    (*this) -= Time(time_delta, timezone);
     return *this;
 }
 
@@ -423,7 +423,6 @@ TimeDelta operator-(Datetime datetime, Datetime other)
     TimeDelta date_delta = datetime.date() - other.date();
     TimeDelta time_delta = datetime.time() - other.time();
     return TimeDelta(date_delta.days, time_delta.hour, time_delta.minute, time_delta.second,
-                     time_delta.millisecond, time_delta.microsecond, time_delta.nanosecond,
-                     time_delta.timezone);
+                     time_delta.millisecond, time_delta.microsecond, time_delta.nanosecond);
 }
 

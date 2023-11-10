@@ -106,7 +106,7 @@ TEST(TimeDelta, timedelta_days_hour_minute_second_millisecond_microsecond_nanose
 
 TEST(TimeDelta, timedelta_days_time)
 {
-    TimeDelta time_delta = TimeDelta(1, Time(2, 3, 4, 5, 6, 7));
+    TimeDelta time_delta = TimeDelta(1, 2, 3, 4, 5, 6, 7);
     EXPECT_EQ(time_delta.days, 1);
     EXPECT_EQ(time_delta.hour, 2);
     EXPECT_EQ(time_delta.minute, 3);
@@ -114,18 +114,6 @@ TEST(TimeDelta, timedelta_days_time)
     EXPECT_EQ(time_delta.millisecond, 5);
     EXPECT_EQ(time_delta.microsecond, 6);
     EXPECT_EQ(time_delta.nanosecond, 7);
-}
-
-TEST(TimeDelta, time)
-{
-    TimeDelta time_delta = TimeDelta(0, 1, 2, 3, 4, 5, 6);
-    Time time = time_delta.time();
-    EXPECT_EQ(time.hour, 1);
-    EXPECT_EQ(time.minute, 2);
-    EXPECT_EQ(time.second, 3);
-    EXPECT_EQ(time.millisecond, 4);
-    EXPECT_EQ(time.microsecond, 5);
-    EXPECT_EQ(time.nanosecond, 6);
 }
 
 TEST(TimeDelta, operator_greater_than_timedelta)

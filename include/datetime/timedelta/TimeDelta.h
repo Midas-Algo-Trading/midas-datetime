@@ -1,15 +1,14 @@
 #ifndef DATETIME_TIMEDELTA_H
 #define DATETIME_TIMEDELTA_H
 
-
 #include <utility>
-
-#include "datetime/time/Time.h"
+#include <ostream>
+#include "../../../src/time/BasicTime.h"
 
 /**
  * Stores addition/subtraction operations result between 2 date/time/datetime objects.
  */
-class TimeDelta : public Time
+class TimeDelta : public BasicTime
 {
 public:
 
@@ -31,25 +30,8 @@ public:
      * @param timezone timezone the of the delta. (default default_timezone)
      */
     TimeDelta(int64_t days = 0, uint8_t hour = 0, uint8_t minute = 0, uint8_t second = 0,
-              uint16_t millisecond = 0, uint16_t microsecond = 0, uint16_t nanosecond = 0,
-              Timezone timezone = default_timezone) :
-        days(days), Time(hour, minute, second, millisecond, microsecond, nanosecond, timezone) {}
-
-    /**
-     * Creates a 'TimeDelta' object.
-     *
-     * @param days days of the delta.
-     * @param time time components of the delta will be set to the components of this.
-     */
-    TimeDelta(int64_t days, Time time) :
-        days(days), Time(std::move(time)) {}
-
-    /**
-     * Creates a 'Time' object using the time components of 'this'.
-     *
-     * @return 'Time' object with components matching 'this'.
-     */
-    Time time() const;
+              uint16_t millisecond = 0, uint16_t microsecond = 0, uint16_t nanosecond = 0) :
+        days(days), BasicTime(hour, minute, second, millisecond, microsecond, nanosecond) {}
 
     /**
      * Outputs 'time_delta' into 'os'.
