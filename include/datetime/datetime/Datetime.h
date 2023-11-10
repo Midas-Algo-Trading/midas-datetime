@@ -528,6 +528,16 @@ public:
     friend Datetime operator+(Datetime datetime, Time other);
 
     /**
+     * Subtracts 'other' from 'datetime'.
+     *
+     * @param datetime 'Datetime' 'other' is subtracting from.
+     * @param other 'Datetime' subtracting from 'datetime'.
+     *
+     * @return 'TimeDelta' of the 'other' subtracted from 'datetime'.
+     */
+    friend TimeDelta operator-(Datetime datetime, Datetime other);
+
+    /**
      * Subtracts this 'Datetime' and 'other' 'Datetime'.
      *
      * @param datetime the base 'Datetime' to subtract 'other' from.

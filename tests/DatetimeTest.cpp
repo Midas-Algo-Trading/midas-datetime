@@ -840,3 +840,21 @@ TEST(Datetime, operator_minusequal_datetime_time_delta_with_time)
         Datetime datetime = Datetime(2000, 1, 2, 1) -= TimeDelta(1, 1);
         EXPECT_EQ(datetime, Datetime(2000, 1, 1));
 }
+
+TEST(Datetime, operator_minus_datetime_datetime)
+{
+    TimeDelta time_delta = Datetime(2000, 1, 2) - Datetime(2000, 1, 1);
+    EXPECT_EQ(time_delta, TimeDelta(1));
+}
+
+TEST(Datetime, operator_minus_datetime_datetime_month)
+{
+    TimeDelta time_delta = Datetime(2000, 2, 1) - Datetime(2000, 1, 1);
+    EXPECT_EQ(time_delta, TimeDelta(31));
+}
+
+TEST(Datetime, operator_minus_datetime_datetime_year)
+{
+    TimeDelta time_delta = Datetime(2000, 1, 1) - Datetime(1999, 1, 1);
+    EXPECT_EQ(time_delta, TimeDelta(365));
+}
