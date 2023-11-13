@@ -536,12 +536,12 @@ TimeDelta operator-(Time time, Time other)
 {
     other.set_timezone(time.timezone);
 
-    time -= Nanoseconds(other.nanosecond);
-    time -= Microseconds(other.microsecond);
-    time -= Milliseconds(other.millisecond);
-    time -= Seconds(other.second);
-    time -= Minutes(other.minute);
     int64_t day_change = time.add_hours(-other.hour);
+    time -= Minutes(other.minute);
+    time -= Seconds(other.second);
+    time -= Milliseconds(other.millisecond);
+    time -= Microseconds(other.microsecond);
+    time -= Nanoseconds(other.nanosecond);
 
     return TimeDelta(day_change, time.hour, time.minute, time.second, time.millisecond,
                      time.microsecond, time.nanosecond);

@@ -737,3 +737,9 @@ TEST(Time, operator_minus_nanosecond)
     Time new_time = time - Nanoseconds(1);
     EXPECT_EQ(new_time, Time(1, 2, 3, 4, 5, 5));
 }
+
+TEST(Time, operator_minus_day_wrap)
+{
+    TimeDelta time_delta = Time() - Time(23, 59, 10);
+    EXPECT_EQ(time_delta, TimeDelta(-1, 0, 0, 50));
+}
