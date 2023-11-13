@@ -19,15 +19,15 @@ public:
     /**
      * Year of the date.
      */
-    uint16_t year;
+    uint16_t year = EPOCH.year;
     /**
      * Month of the date.
      */
-    uint8_t month;
+    uint8_t month = EPOCH.month;
     /**
      * Day of the date.
      */
-    uint8_t day;
+    uint8_t day = EPOCH.day;
 
     /**
      * Components of a date.
@@ -372,7 +372,7 @@ Date::Date(std::string_view string, DateComponents... date_components)
 {
     std::vector<std::string> date_components_strs = strh::split_alphabetical(string);
 
-    ASSERT(date_components_strs.size() == sizeof...(date_components),
+    ASSERT(date_components_strs.size() >= sizeof...(date_components),
            std::invalid_argument(fmt::format("components: '{}' with size '{}' does not match date "
                                              "strings: '{}' with size '{}'",
                                              strh::from_parameter_pack(date_components...),

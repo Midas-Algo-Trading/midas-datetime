@@ -594,16 +594,17 @@ TEST(Time, to_string)
 
 TEST(Time, string_TimeComponents_basic)
 {
-    Time time = Time("1:02:30.4.5.6",
+    Time time = Time("1:02:30.4.5.6-07:00",
                      Time::Component::HOUR, Time::Component::MINUTE, Time::Component::SECOND,
                      Time::Component::MILLISECOND, Time::Component::MICROSECOND,
-                     Time::Component::NANOSECOND);
+                     Time::Component::NANOSECOND, Time::Component::TIMEZONE);
     EXPECT_EQ(time.hour, 1);
     EXPECT_EQ(time.minute, 2);
     EXPECT_EQ(time.second, 30);
     EXPECT_EQ(time.millisecond, 4);
     EXPECT_EQ(time.microsecond, 5);
     EXPECT_EQ(time.nanosecond, 6);
+    EXPECT_EQ(time.timezone.utc_offset, 7);
 }
 
 TEST(Time, string_TimeComponents_skip)
@@ -620,7 +621,7 @@ TEST(Time, constructor_int_int_int_int_int_int_throws_invalid_argument)
 
 TEST(Time, constructor_string_TimeComponents_throws_invalid_argument_on_wrong_time_components)
 {
-    EXPECT_THROW(Time("1:2:3", Time::Component::HOUR, Time::Component::MINUTE),
+    EXPECT_THROW(Time("1", Time::Component::HOUR, Time::Component::MINUTE),
                  std::invalid_argument);
 }
 

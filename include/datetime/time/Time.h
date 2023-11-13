@@ -83,7 +83,7 @@ public:
     /**
      * Components of a time.
      */
-    enum Component { HOUR, MINUTE, SECOND, MILLISECOND, MICROSECOND, NANOSECOND};
+    enum Component { HOUR, MINUTE, SECOND, MILLISECOND, MICROSECOND, NANOSECOND, TIMEZONE};
 
     /**
      * Adds 'time' and 'other'.
@@ -670,7 +670,7 @@ Time::Time(std::string_view string, TimeComponent... time_components)
 {
     std::vector<std::string> time_components_strs = strh::split_alphabetical(string);
 
-    ASSERT(time_components_strs.size() == sizeof...(time_components),
+    ASSERT(time_components_strs.size() >= sizeof...(time_components),
            std::invalid_argument(fmt::format("components: '{}' with size '{}' does not match date "
                                              "strings: '{}' with size '{}'",
                                              strh::from_parameter_pack(time_components...),
@@ -707,6 +707,9 @@ Time::Time(std::string_view string, TimeComponent... time_components)
             break;
         case Time::Component::NANOSECOND:
             nanosecond = std::stoi(time_components_strs[idx]);
+            break;
+        case Time::Component::TIMEZONE:
+            timezone = Timezone(time_components_strs[idx][1] - '0');
             break;
         }
     };

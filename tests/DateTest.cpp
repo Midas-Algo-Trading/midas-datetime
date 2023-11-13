@@ -355,7 +355,7 @@ TEST(Date, constructor_string_DateComponents_basic)
 
 TEST(Date, constructor_string_DateComponents_throws_invalid_argument_on_wrong_date_components)
 {
-        EXPECT_THROW(Date("2000-01-20", Date::Component::YEAR, Date::Component::MONTH),
+        EXPECT_THROW(Date("2000", Date::Component::YEAR, Date::Component::MONTH),
                      std::invalid_argument);
 }
 
