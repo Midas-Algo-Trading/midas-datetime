@@ -22,7 +22,7 @@ Date Date::today(uint8_t day_offset, Timezone timezone)
     {
         Date today = Date(year, month, day);
         int hour = Time::now().hour + TZ::LOCAL.get_utc_offset_diff(timezone);
-        if (hour > Time::HOURS_PER_DAY)
+        if (hour >= Time::HOURS_PER_DAY)
             today.add_days(1);
         else if (hour < 0)
             today.subtract_days(1);
