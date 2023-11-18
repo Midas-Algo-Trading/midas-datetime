@@ -34,6 +34,13 @@ public:
         days(days), BasicTime(hour, minute, second, millisecond, microsecond, nanosecond) {}
 
     /**
+     * Sets 'days' to the absolute value of 'days'.
+     *
+     * @return 'this' with 'days' equal to the absolute value of 'days'.
+     */
+    TimeDelta& abs();
+
+    /**
      * Outputs 'time_delta' into 'os'.
      *
      * @param os 'std::ostream' to insert 'time_delta' into.

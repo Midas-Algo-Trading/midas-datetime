@@ -385,3 +385,15 @@ TEST(TimeDelta, total_nanoseconds_neg_day)
     TimeDelta time_delta = TimeDelta(-1, 2, 3, 4, 5, 6, 7);
     ASSERT_EQ(time_delta.total_nanoseconds(), -79015994993993);
 }
+
+TEST(TimeDelta, abs_pos)
+{
+    TimeDelta time_delta = TimeDelta(1);
+    ASSERT_EQ(time_delta.abs().days, 1);
+}
+
+TEST(TimeDelta, abs_neg)
+{
+    TimeDelta time_delta = TimeDelta(-1);
+    ASSERT_EQ(time_delta.abs().days, 1);
+}

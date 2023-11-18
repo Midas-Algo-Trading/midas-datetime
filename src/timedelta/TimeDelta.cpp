@@ -69,3 +69,9 @@ int64_t TimeDelta::total_nanoseconds() const
 {
     return BasicTime::total_nanoseconds() + days * HOURS_PER_DAY * NANOSECONDS_PER_HOUR;
 }
+
+TimeDelta &TimeDelta::abs()
+{
+    days = std::abs(days);
+    return *this;
+}
