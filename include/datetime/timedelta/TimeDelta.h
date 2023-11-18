@@ -96,6 +96,48 @@ public:
      * @return 'true' if 'this' is less than 'other', 'false' otherwise.
      */
     bool operator<(TimeDelta other) const;
+
+    /**
+     * Gets the total hours.
+     *
+     * @return total hours.
+     */
+    int total_hours() const;
+
+    /**
+     * Gets the total minutes.
+     *
+     * @return total minutes.
+     */
+    int total_minutes() const override;
+
+    /**
+     * Gets the total seconds.
+     *
+     * @return total seconds.
+     */
+    int total_seconds() const override;
+
+    /**
+     * Gets the total milliseconds.
+     *
+     * @return total milliseconds.
+     */
+    int64_t total_milliseconds() const override;
+
+    /**
+     * Gets the total microseconds.
+     *
+     * @return total microseconds.
+     */
+    int64_t total_microseconds() const override;
+
+    /**
+     * Gets the total nanoseconds.
+     *
+     * @return total nanoseconds.
+     */
+    int64_t total_nanoseconds() const override;
 };
 
 

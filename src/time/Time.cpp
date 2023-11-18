@@ -126,27 +126,6 @@ Time& Time::operator-=(const Nanoseconds& nanoseconds)
     return *this;
 }
 
-const size_t Time::MINUTES_PER_HOUR = 60;
-const size_t Time::SECONDS_PER_MINUTE = 60;
-const size_t Time::SECONDS_PER_HOUR = MINUTES_PER_HOUR * SECONDS_PER_MINUTE;
-const size_t Time::MILLISECONDS_PER_SECOND = 1'000;
-const size_t Time::MILLISECONDS_PER_HOUR = SECONDS_PER_HOUR * MILLISECONDS_PER_SECOND;
-const size_t Time::MILLISECONDS_PER_MINUTE = SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND;
-const size_t Time::MICROSECONDS_PER_MILLISECOND = 1'000;
-const size_t Time::MICROSECONDS_PER_HOUR = MILLISECONDS_PER_HOUR * MICROSECONDS_PER_MILLISECOND;
-const size_t Time::MICROSECONDS_PER_MINUTE = MILLISECONDS_PER_MINUTE
-                                             * MICROSECONDS_PER_MILLISECOND;
-const size_t Time::MICROSECONDS_PER_SECOND = MILLISECONDS_PER_SECOND
-                                             * MICROSECONDS_PER_MILLISECOND;
-const size_t Time::NANOSECONDS_PER_MICROSECOND = 1'000;
-const size_t Time::NANOSECONDS_PER_HOUR = MICROSECONDS_PER_HOUR * NANOSECONDS_PER_MICROSECOND;
-const size_t Time::NANOSECONDS_PER_MINUTE = MICROSECONDS_PER_MINUTE * NANOSECONDS_PER_MICROSECOND;
-const size_t Time::NANOSECONDS_PER_SECOND = MICROSECONDS_PER_SECOND * NANOSECONDS_PER_MICROSECOND;
-const size_t Time::NANOSECONDS_PER_MILLISECOND = MICROSECONDS_PER_MILLISECOND
-                                                 * NANOSECONDS_PER_MICROSECOND;
-
-const int Time::HOURS_PER_DAY = 24;
-
 int64_t Time::add_hours(int64_t hours_to_add)
 {
     int64_t hours = static_cast<int64_t>(hour) + hours_to_add;
@@ -357,56 +336,6 @@ Time& Time::floor(Time::Component to)
         return *this;
     minute = 0;
     return *this;
-}
-
-int Time::total_minutes() const
-{
-    return static_cast<int>(
-            hour * MINUTES_PER_HOUR
-            + minute
-    );
-}
-
-int Time::total_seconds() const
-{
-    return static_cast<int>(
-            hour * SECONDS_PER_HOUR
-            + minute * SECONDS_PER_MINUTE
-            + second
-    );
-}
-
-int64_t Time::total_milliseconds() const
-{
-    return static_cast<int64_t>(
-            hour * MILLISECONDS_PER_HOUR
-            + minute * MILLISECONDS_PER_MINUTE
-            + second * MILLISECONDS_PER_SECOND
-            + millisecond
-    );
-}
-
-int64_t Time::total_microseconds() const
-{
-    return static_cast<int64_t>(
-            hour * MICROSECONDS_PER_HOUR
-            + minute * MICROSECONDS_PER_MINUTE
-            + second * MICROSECONDS_PER_SECOND
-            + millisecond * MICROSECONDS_PER_MILLISECOND
-            + microsecond
-    );
-}
-
-int64_t Time::total_nanoseconds() const
-{
-    return static_cast<int64_t>(
-            hour * NANOSECONDS_PER_HOUR
-            + minute * NANOSECONDS_PER_MINUTE
-            + second * NANOSECONDS_PER_SECOND
-            + millisecond * NANOSECONDS_PER_MILLISECOND
-            + microsecond * NANOSECONDS_PER_MICROSECOND
-            + nanosecond
-    );
 }
 
 bool Time::is_valid_time() const

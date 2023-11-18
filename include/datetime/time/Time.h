@@ -430,11 +430,6 @@ public:
     Time& floor(Component to);
 
     /**
-     * Hours in a day.
-     */
-    static const int HOURS_PER_DAY;
-
-    /**
      * Outputs 'time' into 'os'.
      *
      * @param os std::ostream' to insert 'time' into.
@@ -489,116 +484,6 @@ protected:
       * @param nanoseconds_to_add number of nanoseconds to add.
       */
     virtual void add_nanoseconds(int64_t nanoseconds_to_add);
-
-    /**
-     * Gets the total minutes of the day.
-     *
-     * @return total minutes of the day.
-     */
-    int total_minutes() const;
-
-    /**
-     * Gets the total seconds of the day.
-     *
-     * @return total seconds of the day.
-     */
-    int total_seconds() const;
-
-    /**
-     * Gets the total milliseconds of the day.
-     *
-     * @return total milliseconds of the day.
-     */
-    int64_t total_milliseconds() const;
-
-    /**
-     * Gets the total microseconds of the day.
-     *
-     * @return total microseconds of the day.
-     */
-    int64_t total_microseconds() const;
-
-    /**
-     * Gets the total nanoseconds of the day.
-     *
-     * @return total nanoseconds of the day.
-     */
-    int64_t total_nanoseconds() const;
-
-    /**
-     * Minutes in a hour.
-     */
-    static const size_t MINUTES_PER_HOUR;
-
-    /**
-     * Seconds in a minute.
-     */
-    static const size_t SECONDS_PER_MINUTE;
-
-    /**
-     * Seconds in a hour.
-     */
-    static const size_t SECONDS_PER_HOUR;
-
-    /**
-     * Milliseconds in a second.
-     */
-    static const size_t MILLISECONDS_PER_SECOND;
-
-    /**
-     * Milliseconds in a minute.
-     */
-    static const size_t MILLISECONDS_PER_MINUTE;
-
-    /**
-     * Milliseconds in a minute.
-     */
-    static const size_t MILLISECONDS_PER_HOUR;
-
-    /**
-     * Microseconds in a millisecond.
-     */
-    static const size_t MICROSECONDS_PER_MILLISECOND;
-
-    /**
-     * Microseconds in a hour.
-     */
-    static const size_t MICROSECONDS_PER_HOUR;
-
-    /**
-     * Microseconds in a minute.
-     */
-    static const size_t MICROSECONDS_PER_MINUTE;
-
-    /**
-     * Microseconds in a second.
-     */
-    static const size_t MICROSECONDS_PER_SECOND;
-
-    /**
-     * Nanoseconds in a microsecond.
-     */
-    static const size_t NANOSECONDS_PER_MICROSECOND;
-
-    /**
-     * Nanoseconds in a hour.
-     */
-    static const size_t NANOSECONDS_PER_HOUR;
-
-    /**
-     * Nanoseconds in a minute.
-     */
-    static const size_t NANOSECONDS_PER_MINUTE;
-
-    /**
-     * Nanoseconds in a second.
-     */
-    static const size_t NANOSECONDS_PER_SECOND;
-
-    /**
-     * Nanoseconds in a millisecond.
-     */
-    static const size_t NANOSECONDS_PER_MILLISECOND;
 
 private:
 

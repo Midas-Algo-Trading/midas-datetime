@@ -582,6 +582,18 @@ private:
      * Milliseconds in a year that is a leap year.
      */
     static const size_t MILLISECONDS_PER_LEAP_YEAR;
+
+    // These methods are no longer intuitive, so hide from user.
+
+    int total_minutes() const override;
+
+    int total_seconds() const override;
+
+    int64_t total_milliseconds() const override;
+
+    int64_t total_microseconds() const override;
+
+    int64_t total_nanoseconds() const override;
 };
 
 #endif //DATETIME_DATETIME_H

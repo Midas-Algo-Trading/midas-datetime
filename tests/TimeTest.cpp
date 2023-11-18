@@ -592,6 +592,13 @@ TEST(Time, to_string)
     EXPECT_EQ(time.to_string(), "1:02:30.4.5.6");
 }
 
+TEST(Time, to_string_do_not_include_0s)
+{
+    Time time = Time(1, 2, 30, 4);
+    EXPECT_EQ(time.to_string(false), "1:02:30.4");
+}
+
+
 TEST(Time, string_TimeComponents_basic)
 {
     Time time = Time("1:02:30.4.5.6-07:00",

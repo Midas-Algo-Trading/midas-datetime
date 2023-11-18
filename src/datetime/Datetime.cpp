@@ -426,3 +426,28 @@ TimeDelta operator-(Datetime datetime, Datetime other)
                      time_delta.millisecond, time_delta.microsecond, time_delta.nanosecond);
 }
 
+int Datetime::total_minutes() const
+{
+    return BasicTime::total_minutes();
+}
+
+int Datetime::total_seconds() const
+{
+    return BasicTime::total_seconds();
+}
+
+int64_t Datetime::total_milliseconds() const
+{
+    return BasicTime::total_milliseconds();
+}
+
+int64_t Datetime::total_microseconds() const
+{
+    return BasicTime::total_microseconds();
+}
+
+int64_t Datetime::total_nanoseconds() const
+{
+    return BasicTime::total_nanoseconds();
+}
+

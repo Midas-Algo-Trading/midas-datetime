@@ -311,3 +311,77 @@ TEST(TimeDelta, operator_less_than_or_equal_to_timedelta)
     time_delta_lesser = TimeDelta(1, 1, 1, 1, 1, 1, 1);
     EXPECT_LE(time_delta_lesser, time_delta_greater);
 }
+
+TEST(TimeDelta, total_hours_pos)
+{
+    TimeDelta time_delta = TimeDelta(1, 2, 3, 4, 5, 6, 7);
+    ASSERT_EQ(time_delta.total_hours(), 26);
+}
+
+TEST(TimeDelta, total_minutes_pos)
+{
+    TimeDelta time_delta = TimeDelta(1, 2, 3, 4, 5, 6, 7);
+    ASSERT_EQ(time_delta.total_minutes(), 1563);
+}
+
+TEST(TimeDelta, total_seconds_pos)
+{
+    TimeDelta time_delta = TimeDelta(1, 2, 3, 4, 5, 6, 7);
+    ASSERT_EQ(time_delta.total_seconds(), 93784);
+}
+
+TEST(TimeDelta, total_milliseconds_pos)
+{
+    TimeDelta time_delta = TimeDelta(1, 2, 3, 4, 5, 6, 7);
+    ASSERT_EQ(time_delta.total_milliseconds(), 93784005);
+}
+
+TEST(TimeDelta, total_microseconds_pos)
+{
+    TimeDelta time_delta = TimeDelta(1, 2, 3, 4, 5, 6, 7);
+    ASSERT_EQ(time_delta.total_microseconds(), 93784005006);
+}
+
+
+TEST(TimeDelta, total_nanoseconds_pos)
+{
+    TimeDelta time_delta = TimeDelta(1, 2, 3, 4, 5, 6, 7);
+    ASSERT_EQ(time_delta.total_nanoseconds(), 93784005006007);
+}
+
+TEST(TimeDelta, total_hours_neg_day)
+{
+    TimeDelta time_delta = TimeDelta(-1, 2, 3, 4, 5, 6, 7);
+    ASSERT_EQ(time_delta.total_hours(), -22);
+}
+
+TEST(TimeDelta, total_minutes_neg_day)
+{
+    TimeDelta time_delta = TimeDelta(-1, 2, 3, 4, 5, 6, 7);
+    ASSERT_EQ(time_delta.total_minutes(), -1317);
+}
+
+TEST(TimeDelta, total_seconds_neg_day)
+{
+    TimeDelta time_delta = TimeDelta(-1, 2, 3, 4, 5, 6, 7);
+    ASSERT_EQ(time_delta.total_seconds(), -79016);
+}
+
+TEST(TimeDelta, total_milliseconds_neg_day)
+{
+    TimeDelta time_delta = TimeDelta(-1, 2, 3, 4, 5, 6, 7);
+    ASSERT_EQ(time_delta.total_milliseconds(), -79015995);
+}
+
+TEST(TimeDelta, total_microseconds_neg_day)
+{
+    TimeDelta time_delta = TimeDelta(-1, 2, 3, 4, 5, 6, 7);
+    ASSERT_EQ(time_delta.total_microseconds(), -79015994994);
+}
+
+
+TEST(TimeDelta, total_nanoseconds_neg_day)
+{
+    TimeDelta time_delta = TimeDelta(-1, 2, 3, 4, 5, 6, 7);
+    ASSERT_EQ(time_delta.total_nanoseconds(), -79015994993993);
+}
