@@ -31,7 +31,7 @@ endif()
 
         src/Component.h
         src/Range.h
-        src/time/TimeComponent.h
+            include/datetime/time/components/TimeComponent.h
         src/time/Time.cpp
         src/date/Date.cpp
         src/datetime/Datetime.cpp

@@ -1,8 +1,8 @@
 #ifndef DATETIME_TIMECOMPONENT_H
 #define DATETIME_TIMECOMPONENT_H
 
-#include "../Component.h"
-#include "../../util/macros.h"
+#include "../../../../src/Component.h"
+#include "../../../../util/macros.h"
 #include "fmt/format.h"
 
 /**
@@ -17,6 +17,8 @@ struct TimeComponent : Component
      */
     explicit TimeComponent(int64_t value) :
         Component(value) {}
+
+    virtual ~TimeComponent() = default;
 };
 
 #endif //DATETIME_TIMECOMPONENT_H

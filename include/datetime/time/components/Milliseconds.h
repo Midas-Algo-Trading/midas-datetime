@@ -1,7 +1,7 @@
 #ifndef DATETIME_MILLISECONDS_H
 #define DATETIME_MILLISECONDS_H
 
-#include "../../../../src/time/TimeComponent.h"
+#include "TimeComponent.h"
 
 /**
  * Number of milliseconds.

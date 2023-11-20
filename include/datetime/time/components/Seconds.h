@@ -1,7 +1,7 @@
 #ifndef DATETIME_SECONDS_H
 #define DATETIME_SECONDS_H
 
-#include "../../../../src/time/TimeComponent.h"
+#include "TimeComponent.h"
 
 /**
  * Number of seconds.
