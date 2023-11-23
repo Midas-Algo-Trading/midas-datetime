@@ -40,9 +40,6 @@ Time Time::now(uint8_t hour_offset, uint8_t minute_offset, uint8_t second_offset
                      nanosecond + nanosecond_offset,
                      TZ::LOCAL); // Gets the time in local time, so Timezone must be TZ::LOCAL
 
-    ASSERT(time.is_valid_time(),
-           std::invalid_argument(fmt::format("Time '{}' is invalid", time.to_string())));
-
     time.set_timezone(timezone); // Set the local time to 'timezone'.
 
 

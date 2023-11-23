@@ -86,7 +86,7 @@ namespace TZ
     /**
      * The Pacific Standard Time (PST) timezone.
      */
-    const Timezone PST = Timezone(7);
+    const Timezone PST = Timezone(8);
 
     /**
      * The Pacific Daylight Time (PDT) timezone.
