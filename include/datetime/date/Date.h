@@ -86,7 +86,7 @@ public:
      *
      * @return a 'Date' that matches today's date.
      */
-    static Date today(uint8_t day_offset = 0, Timezone timezone = TZ::LOCAL);
+    static Date today(uint8_t day_offset = 0, Timezone timezone =  Time::default_timezone);
 
     /**
      * Creates a 'Date' that matches tomorrow's date.
@@ -95,7 +95,7 @@ public:
      *
      * @return a 'Date' that matches tomorrow's date.
      */
-    static Date tomorrow(Timezone timezone = TZ::LOCAL);
+    static Date tomorrow(Timezone timezone =  Time::default_timezone);
 
     /**
      * Gets the 'DayOfWeek' of this 'Date'.
