@@ -858,3 +858,8 @@ TEST(Datetime, operator_minus_datetime_datetime_year)
     TimeDelta time_delta = Datetime(2000, 1, 1) - Datetime(1999, 1, 1);
     EXPECT_EQ(time_delta, TimeDelta(365));
 }
+
+TEST(Datetime, hash)
+{
+    size_t hashed = std::hash<Date>{}(Date());
+}

@@ -399,3 +399,8 @@ TEST(Date, tomorrow)
     Date tomorrow = Date::tomorrow();
     EXPECT_EQ(tomorrow - Day(1), today);
 }
+
+TEST(Date, hash)
+{
+    size_t hashed = std::hash<Date>{}(Date());
+}

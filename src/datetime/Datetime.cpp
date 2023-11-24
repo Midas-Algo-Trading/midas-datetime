@@ -451,3 +451,8 @@ int64_t Datetime::total_nanoseconds() const
     return BasicTime::total_nanoseconds();
 }
 
+size_t Datetime::hash() const
+{
+    return std::hash<std::string>{}(to_string());
+}
+

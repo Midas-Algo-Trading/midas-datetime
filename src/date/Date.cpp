@@ -360,3 +360,8 @@ const uint16_t Date::DAYS_PER_NON_LEAP_YEAR = 365;
 const uint16_t Date::DAYS_PER_LEAP_YEAR = 366;
 
 const Date Date::EPOCH = Date(1970, 1, 1);
+
+size_t Date::hash() const
+{
+    return std::hash<std::string>{}(to_string());
+}

@@ -289,6 +289,13 @@ public:
      */
     static const Date EPOCH;
 
+    /**
+     * Creates a hash of 'this'.
+     *
+     * @return hash of 'this'.
+     */
+    virtual size_t hash() const;
+
 protected:
 
     /**
@@ -408,6 +415,18 @@ Date::Date(std::string_view string, DateComponents... date_components)
 
     ASSERT(is_valid_date(),
            std::invalid_argument(fmt::format("'{}' is an invalid date", Date::to_string())));
+}
+
+namespace std
+{
+template<>
+struct hash<Date>
+{
+    size_t operator()(const Date& date) const
+    {
+        return date.hash();
+    }
+};
 }
 
 #endif //DATETIME_DATE_H

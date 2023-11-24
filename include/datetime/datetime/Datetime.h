@@ -557,6 +557,13 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const Datetime& datetime);
 
+    /**
+     * Creates a hash of 'this'.
+     *
+     * @return hash of 'this'.
+     */
+    size_t hash() const;
+
 private:
 
     /**
@@ -595,5 +602,17 @@ private:
 
     int64_t total_nanoseconds() const override;
 };
+
+namespace std
+{
+template<>
+struct hash<Datetime>
+{
+    size_t operator()(const Datetime& datetime) const
+    {
+        return datetime.hash();
+    }
+};
+}
 
 #endif //DATETIME_DATETIME_H

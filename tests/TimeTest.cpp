@@ -750,3 +750,8 @@ TEST(Time, operator_minus_day_wrap)
     TimeDelta time_delta = Time() - Time(23, 59, 10);
     EXPECT_EQ(time_delta, TimeDelta(-1, 0, 0, 50));
 }
+
+TEST(Time, hash)
+{
+    size_t hashed = std::hash<Time>{}(Time());
+}

@@ -439,6 +439,13 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const Time& time);
 
+    /**
+     * Creates a hash of 'this'.
+     *
+     * @return hash of 'this'.
+     */
+    size_t hash() const;
+
 protected:
 
     /**
@@ -606,5 +613,16 @@ Time::Time(std::string_view string, TimeComponent... time_components)
            std::invalid_argument(fmt::format("Time '{}' is invalid", Time::to_string())));
 }
 
+namespace std
+{
+template<>
+struct hash<Time>
+{
+    size_t operator()(const Time& time) const
+    {
+        return time.hash();
+    }
+};
+}
 
 #endif //TIME_TIME_H
