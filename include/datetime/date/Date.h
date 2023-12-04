@@ -98,6 +98,17 @@ public:
     static Date tomorrow(Timezone timezone =  Time::default_timezone);
 
     /**
+     * Gets the dates within a range.
+     *
+     * @param start starting date of the range.
+     * @param end ending date of the range.
+     * @param increment days to increment between each date in the range.
+     *
+     * @return range of dates within 'start' to 'end'.
+     */
+    static std::vector<Date> range(Date start, Date end, Day increment = Day(1));
+
+    /**
      * Gets the 'DayOfWeek' of this 'Date'.
      *
      * @return 'DayOfWeek' of 'Date'.

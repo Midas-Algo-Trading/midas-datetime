@@ -81,6 +81,72 @@ public:
                     nanosecond_offset = 0, Timezone timezone = default_timezone);
 
     /**
+     * Gets the times within a range.
+     *
+     * @param start starting time of the range.
+     * @param end ending time of the range.
+     * @param increment hours to increment between each time in the range.
+     *
+     * @return range of time within 'start' to 'end'.
+     */
+    static std::vector<Time> range(Time start, Time end, Hours increment = Hours(1));
+
+    /**
+     * Gets the times within a range.
+     *
+     * @param start starting time of the range.
+     * @param end ending time of the range.
+     * @param increment minutes to increment between each time in the range.
+     *
+     * @return range of time within 'start' to 'end'.
+     */
+    static std::vector<Time> range(Time start, Time end, Minutes increment = Minutes(1));
+
+    /**
+     * Gets the times within a range.
+     *
+     * @param start starting time of the range.
+     * @param end ending time of the range.
+     * @param increment seconds to increment between each time in the range.
+     *
+     * @return range of time within 'start' to 'end'.
+     */
+    static std::vector<Time> range(Time start, Time end, Seconds increment = Seconds(1));
+
+    /**
+     * Gets the times within a range.
+     *
+     * @param start starting time of the range.
+     * @param end ending time of the range.
+     * @param increment milliseconds to increment between each time in the range.
+     *
+     * @return range of time within 'start' to 'end'.
+     */
+    static std::vector<Time> range(Time start, Time end, Milliseconds increment = Milliseconds(1));
+
+    /**
+     * Gets the times within a range.
+     *
+     * @param start starting time of the range.
+     * @param end ending time of the range.
+     * @param increment microseconds to increment between each time in the range.
+     *
+     * @return range of time within 'start' to 'end'.
+     */
+    static std::vector<Time> range(Time start, Time end, Microseconds increment = Microseconds(1));
+
+    /**
+     * Gets the times within a range.
+     *
+     * @param start starting time of the range.
+     * @param end ending time of the range.
+     * @param increment nanoseconds to increment between each time in the range.
+     *
+     * @return range of time within 'start' to 'end'.
+     */
+    static std::vector<Time> range(Time start, Time end, Nanoseconds increment = Nanoseconds(1));
+
+    /**
      * Components of a time.
      */
     enum Component { HOUR, MINUTE, SECOND, MILLISECOND, MICROSECOND, NANOSECOND, TIMEZONE};
@@ -493,6 +559,20 @@ protected:
     virtual void add_nanoseconds(int64_t nanoseconds_to_add);
 
 private:
+
+    /**
+     * Gets the times within a range.
+     *
+     * @param start starting time of the range.
+     * @param end ending time of the range.
+     * @param increment function which increments the current time during the loop getting each
+     * consecutive time between 'start' and 'end'.
+     *
+     * @return range of times within 'start' to 'end'.
+     */
+    template<typename Func>
+    requires std::is_invocable_v<Func, Time&>
+    static std::vector<Time> range(Time& start, Time& end, Func increment);
 
     /**
      * Checks if this 'Time's' components are all valid.

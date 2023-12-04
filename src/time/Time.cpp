@@ -517,3 +517,71 @@ size_t Time::hash() const
 {
     return std::hash<std::string>{}(to_string());
 }
+
+std::vector<Time> Time::range(Time start, Time end, Hours increment)
+{
+    return range(start, end,
+                 [&increment](Time& time)
+                 {
+                     time += increment;
+                 });
+}
+
+std::vector<Time> Time::range(Time start, Time end, Minutes increment)
+{
+    return range(start, end,
+                 [&increment](Time& time)
+                 {
+                     time += increment;
+                 });
+}
+
+std::vector<Time> Time::range(Time start, Time end, Seconds increment)
+{
+    return range(start, end,
+                 [&increment](Time& time)
+                 {
+                     time += increment;
+                 });
+}
+
+std::vector<Time> Time::range(Time start, Time end, Milliseconds increment)
+{
+    return range(start, end,
+                 [&increment](Time& time)
+                 {
+                     time += increment;
+                 });
+}
+
+std::vector<Time> Time::range(Time start, Time end, Microseconds increment)
+{
+    return range(start, end,
+                 [&increment](Time& time)
+                 {
+                     time += increment;
+                 });
+}
+
+std::vector<Time> Time::range(Time start, Time end, Nanoseconds increment)
+{
+    return range(start, end,
+                 [&increment](Time& time)
+                 {
+                     time += increment;
+                 });
+}
+
+template<typename Func>
+requires std::is_invocable_v<Func, Time&>
+std::vector<Time> Time::range(Time& start, Time& end, Func increment)
+{
+    std::vector<Time> ret;
+    Time current_time = std::move(start);
+    while (current_time <= end)
+    {
+        ret.push_back(current_time);
+        increment(current_time);
+    }
+    return ret;
+}

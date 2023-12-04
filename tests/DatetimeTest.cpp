@@ -863,3 +863,149 @@ TEST(Datetime, hash)
 {
     size_t hashed = std::hash<Date>{}(Date());
 }
+
+TEST(Datetime, increment_days)
+{
+    std::vector<Datetime> actual = Datetime::range(Datetime(2022, 12, 30),
+                                                   Datetime(2023, 1, 1),
+                                                   Day(1));
+    std::vector<Datetime> expected = {Datetime(2022, 12, 30),
+                                      Datetime(2022, 12, 31),
+                                      Datetime(2023, 1, 1)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Datetime, increment_2_days)
+{
+    std::vector<Datetime> actual = Datetime::range(Datetime(2022, 12, 30),
+                                                   Datetime(2023, 1, 1),
+                                                   Day(2));
+    std::vector<Datetime> expected = {Datetime(2022, 12, 30),
+                                      Datetime(2023, 1, 1)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Datetime, increment_hours)
+{
+    std::vector<Datetime> actual = Datetime::range(Datetime(2022, 12, 31, 22),
+                                                   Datetime(2023, 1, 1, 0),
+                                                   Hours(1));
+    std::vector<Datetime> expected = {Datetime(2022, 12, 31, 22),
+                                      Datetime(2022, 12, 31, 23),
+                                      Datetime(2023, 1, 1, 0)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Datetime, increment_2_hours)
+{
+    std::vector<Datetime> actual = Datetime::range(Datetime(2022, 12, 31, 22),
+                                                   Datetime(2023, 1, 1, 1),
+                                                   Hours(2));
+    std::vector<Datetime> expected = {Datetime(2022, 12, 31, 22), Datetime(2023, 1, 1, 0)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Datetime, increment_minutes)
+{
+    std::vector<Datetime> actual = Datetime::range(Datetime(2022, 12, 31, 23, 58),
+                                                   Datetime(2023, 1, 1),
+                                                   Minutes(1));
+    std::vector<Datetime> expected = {Datetime(2022, 12, 31, 23, 58),
+                                      Datetime(2022, 12, 31, 23, 59),
+                                      Datetime(2023, 1, 1)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Datetime, increment_2_minutes)
+{
+    std::vector<Datetime> actual = Datetime::range(Datetime(2022, 12, 31, 23, 58),
+                                                   Datetime(2023, 1, 1),
+                                                   Minutes(2));
+    std::vector<Datetime> expected = {Datetime(2022, 12, 31, 23, 58), Datetime(2023, 1, 1)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Datetime, increment_seconds)
+{
+    std::vector<Datetime> actual = Datetime::range(Datetime(2022, 12, 31, 23, 59, 58),
+                                                   Datetime(2023, 1, 1),
+                                                   Seconds(1));
+    std::vector<Datetime> expected = {Datetime(2022, 12, 31, 23, 59, 58),
+                                      Datetime(2022, 12, 31, 23, 59, 59),
+                                      Datetime(2023, 1, 1)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Datetime, increment_2_seconds)
+{
+    std::vector<Datetime> actual = Datetime::range(Datetime(2022, 12, 31, 23, 59, 58),
+                                                   Datetime(2023, 1, 1),
+                                                   Seconds(2));
+    std::vector<Datetime> expected = {Datetime(2022, 12, 31, 23, 59, 58), Datetime(2023, 1, 1)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Datetime, increment_milliseconds)
+{
+    std::vector<Datetime> actual = Datetime::range(Datetime(2022, 12, 31, 23, 59, 59, 998),
+                                                   Datetime(2023, 1, 1),
+                                                   Milliseconds(1));
+    std::vector<Datetime> expected = {Datetime(2022, 12, 31, 23, 59, 59, 998),
+                                      Datetime(2022, 12, 31, 23, 59, 59, 999),
+                                      Datetime(2023, 1, 1)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Datetime, increment_2_milliseconds)
+{
+    std::vector<Datetime> actual = Datetime::range(Datetime(2022, 12, 31, 23, 59, 59, 998),
+                                                   Datetime(2023, 1, 1),
+                                                   Milliseconds(2));
+    std::vector<Datetime> expected = {Datetime(2022, 12, 31, 23, 59, 59, 998),
+                                      Datetime(2023, 1, 1)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Datetime, increment_microseconds)
+{
+    std::vector<Datetime> actual = Datetime::range(Datetime(2022, 12, 31, 23, 59, 59, 999, 998),
+                                                   Datetime(2023, 1, 1),
+                                                   Microseconds(1));
+    std::vector<Datetime> expected = {Datetime(2022, 12, 31, 23, 59, 59, 999, 998),
+                                      Datetime(2022, 12, 31, 23, 59, 59, 999, 999),
+                                      Datetime(2023, 1, 1)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Datetime, increment_2_microseconds)
+{
+    std::vector<Datetime> actual = Datetime::range(Datetime(2022, 12, 31, 23, 59, 59, 999, 998),
+                                                   Datetime(2023, 1, 1),
+                                                   Microseconds(2));
+    std::vector<Datetime> expected = {Datetime(2022, 12, 31, 23, 59, 59, 999, 998),
+                                      Datetime(2023, 1, 1)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Datetime, increment_nanoseconds)
+{
+    std::vector<Datetime> actual = Datetime::range(Datetime(2022, 12, 31, 23, 59, 59, 999, 999,
+                                                            998),
+                                                   Datetime(2023, 1, 1),
+                                                   Nanoseconds(1));
+    std::vector<Datetime> expected = {Datetime(2022, 12, 31, 23, 59, 59, 999, 999, 998),
+                                      Datetime(2022, 12, 31, 23, 59, 59, 999, 999, 999),
+                                      Datetime(2023, 1, 1)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Datetime, increment_2_nanoseconds)
+{
+    std::vector<Datetime> actual = Datetime::range(Datetime(2022, 12, 31, 23, 59, 59, 999, 999,
+                                                            998),
+                                                   Datetime(2023, 1, 1),
+                                                   Nanoseconds(2));
+    std::vector<Datetime> expected = {Datetime(2022, 12, 31, 23, 59, 59, 999, 999, 998),
+                                      Datetime(2023, 1, 1)};
+    EXPECT_EQ(actual, expected);
+}

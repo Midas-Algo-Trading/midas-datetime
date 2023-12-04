@@ -404,3 +404,24 @@ TEST(Date, hash)
 {
     size_t hashed = std::hash<Date>{}(Date());
 }
+
+TEST(Date, range)
+{
+    std::vector<Date> actual = Date::range(Date(2022, 12, 30), Date(2023, 1, 1), Day(1));
+    std::vector<Date> expected = {Date(2022, 12, 30), Date(2022, 12, 31), Date(2023, 1, 1)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Date, range_increment_by_2)
+{
+    std::vector<Date> actual = Date::range(Date(2022, 12, 30), Date(2023, 1, 1), Day(2));
+    std::vector<Date> expected = {Date(2022, 12, 30), Date(2023, 1, 1)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Date, range_start_greater_than_end)
+{
+    std::vector<Date> actual = Date::range(Date(2023, 1, 1), Date(2022, 12, 30), Day(2));
+    std::vector<Date> expected;
+    EXPECT_EQ(actual, expected);
+}

@@ -115,6 +115,84 @@ public:
              std::forward<TimeComponents>(time_components)...) {}
 
     /**
+    * Gets the datetimes within a range.
+    *
+    * @param start starting datetime of the range.
+    * @param end ending datetime of the range.
+    * @param increment days to increment between each datetime in the range.
+    *
+    * @return range of datetimes within 'start' to 'end'.
+    */
+    static std::vector<Datetime> range(Datetime start, Datetime end, Day increment);
+
+    /**
+    * Gets the datetimes within a range.
+    *
+    * @param start starting datetime of the range.
+    * @param end ending datetime of the range.
+    * @param increment hours to increment between each datetime in the range.
+    *
+    * @return range of datetimes within 'start' to 'end'.
+    */
+    static std::vector<Datetime> range(Datetime start, Datetime end, Hours increment);
+
+    /**
+    * Gets the datetimes within a range.
+    *
+    * @param start starting datetime of the range.
+    * @param end ending datetime of the range.
+    * @param increment minutes to increment between each datetime in the range.
+    *
+    * @return range of datetimes within 'start' to 'end'.
+    */
+    static std::vector<Datetime> range(Datetime start, Datetime end, Minutes increment);
+
+    /**
+    * Gets the datetimes within a range.
+    *
+    * @param start starting datetime of the range.
+    * @param end ending datetime of the range.
+    * @param increment seconds to increment between each datetime in the range.
+    *
+    * @return range of datetimes within 'start' to 'end'.
+    */
+    static std::vector<Datetime> range(Datetime start, Datetime end, Seconds increment);
+
+    /**
+    * Gets the datetimes within a range.
+    *
+    * @param start starting datetime of the range.
+    * @param end ending datetime of the range.
+    * @param increment milliseconds to increment between each datetime in the range.
+    *
+    * @return range of datetimes within 'start' to 'end'.
+    */
+    static std::vector<Datetime> range(Datetime start, Datetime end, Milliseconds increment);
+
+    /**
+    * Gets the datetimes within a range.
+    *
+    * @param start starting datetime of the range.
+    * @param end ending datetime of the range.
+    * @param increment microseconds to increment between each datetime in the range.
+    *
+    * @return range of datetimes within 'start' to 'end'.
+    */
+    static std::vector<Datetime> range(Datetime start, Datetime end, Microseconds increment);
+
+    /**
+    * Gets the datetimes within a range.
+    *
+    * @param start starting datetime of the range.
+    * @param end ending datetime of the range.
+    * @param increment nanoseconds to increment between each datetime in the range.
+    *
+    * @return range of datetimes within 'start' to 'end'.
+    */
+    static std::vector<Datetime> range(Datetime start, Datetime end, Nanoseconds increment);
+
+
+    /**
      * Creates a new 'Date' whose components' values match the date values of this
      * 'Datetime'.
      *
@@ -565,6 +643,10 @@ public:
     size_t hash() const;
 
 private:
+
+    template<typename Func>
+    requires std::is_invocable_v<Func, Datetime&>
+    static std::vector<Datetime> range(Datetime& start, Datetime& end, Func increment);
 
     /**
      * Adds hours to this 'Datetime'.

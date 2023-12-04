@@ -755,3 +755,95 @@ TEST(Time, hash)
 {
     size_t hashed = std::hash<Time>{}(Time());
 }
+
+TEST(Time, increment_hours)
+{
+    std::vector<Time> actual = Time::range(Time(1), Time(3), Hours(1));
+    std::vector<Time> expected = {Time(1), Time(2), Time(3)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Time, increment_2_hours)
+{
+    std::vector<Time> actual = Time::range(Time(1), Time(4), Hours(2));
+    std::vector<Time> expected = {Time(1), Time(3)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Time, increment_minutes)
+{
+    std::vector<Time> actual = Time::range(Time(1, 1), Time(1, 3), Minutes(1));
+    std::vector<Time> expected = {Time(1, 1), Time(1, 2), Time(1, 3)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Time, increment_2_minutes)
+{
+    std::vector<Time> actual = Time::range(Time(1, 1), Time(1, 4), Minutes(2));
+    std::vector<Time> expected = {Time(1, 1), Time(1, 3)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Time, increment_seconds)
+{
+    std::vector<Time> actual = Time::range(Time(1, 1, 1), Time(1, 1, 3), Seconds(1));
+    std::vector<Time> expected = {Time(1, 1, 1), Time(1, 1, 2), Time(1, 1, 3)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Time, increment_2_seconds)
+{
+    std::vector<Time> actual = Time::range(Time(1, 1, 1), Time(1, 1, 4), Seconds(2));
+    std::vector<Time> expected = {Time(1, 1, 1), Time(1, 1, 3)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Time, increment_millisecond)
+{
+    std::vector<Time> actual = Time::range(Time(1, 1, 1, 1), Time(1, 1, 1, 3), Milliseconds(1));
+    std::vector<Time> expected = {Time(1, 1, 1, 1), Time(1, 1, 1, 2), Time(1, 1, 1, 3)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Time, increment_2_millisecond)
+{
+    std::vector<Time> actual = Time::range(Time(1, 1, 1, 1), Time(1, 1, 1, 4), Milliseconds(2));
+    std::vector<Time> expected = {Time(1, 1, 1, 1), Time(1, 1, 1, 3)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Time, increment_microsecond)
+{
+    std::vector<Time> actual = Time::range(Time(1, 1, 1, 1, 1), 
+                                           Time(1, 1, 1, 1, 3), 
+                                           Microseconds(1));
+    std::vector<Time> expected = {Time(1, 1, 1, 1, 1), Time(1, 1, 1, 1, 2), Time(1, 1, 1, 1, 3)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Time, increment_2_microsecond)
+{
+    std::vector<Time> actual = Time::range(Time(1, 1, 1, 1, 1), 
+                                           Time(1, 1, 1, 1, 4), 
+                                           Microseconds(2));
+    std::vector<Time> expected = {Time(1, 1, 1, 1, 1), Time(1, 1, 1, 1, 3)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Time, increment_nanosecond)
+{
+    std::vector<Time> actual = Time::range(Time(1, 1, 1, 1, 1, 1),
+                                           Time(1, 1, 1, 1, 1, 3),
+                                           Nanoseconds(1));
+    std::vector<Time> expected = {Time(1, 1, 1, 1, 1, 1), Time(1, 1, 1, 1, 1, 2), Time(1, 1, 1, 1, 1, 3)};
+    EXPECT_EQ(actual, expected);
+}
+
+TEST(Time, increment_2_nanosecond)
+{
+    std::vector<Time> actual = Time::range(Time(1, 1, 1, 1, 1, 1),
+                                           Time(1, 1, 1, 1, 1, 4),
+                                           Nanoseconds(2));
+    std::vector<Time> expected = {Time(1, 1, 1, 1, 1, 1), Time(1, 1, 1, 1, 1, 3)};
+    EXPECT_EQ(actual, expected);
+}

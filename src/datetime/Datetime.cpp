@@ -456,3 +456,80 @@ size_t Datetime::hash() const
     return std::hash<std::string>{}(to_string());
 }
 
+std::vector<Datetime> Datetime::range(Datetime start, Datetime end, Day increment)
+{
+    return range(start, end,
+                 [&increment](Datetime& datetime)
+                 {
+                     datetime += increment;
+                 });
+}
+
+std::vector<Datetime> Datetime::range(Datetime start, Datetime end, Hours increment)
+{
+    return range(start, end,
+                 [&increment](Datetime& datetime)
+                 {
+                     datetime += increment;
+                 });
+}
+
+std::vector<Datetime> Datetime::range(Datetime start, Datetime end, Minutes increment)
+{
+    return range(start, end,
+                 [&increment](Datetime& datetime)
+                 {
+                     datetime += increment;
+                 });
+}
+
+std::vector<Datetime> Datetime::range(Datetime start, Datetime end, Seconds increment)
+{
+    return range(start, end,
+                 [&increment](Datetime& datetime)
+                 {
+                     datetime += increment;
+                 });
+}
+
+std::vector<Datetime> Datetime::range(Datetime start, Datetime end, Milliseconds increment)
+{
+    return range(start, end,
+                 [&increment](Datetime& datetime)
+                 {
+                     datetime += increment;
+                 });
+}
+
+std::vector<Datetime> Datetime::range(Datetime start, Datetime end, Microseconds increment)
+{
+    return range(start, end,
+                 [&increment](Datetime& datetime)
+                 {
+                     datetime += increment;
+                 });
+}
+
+std::vector<Datetime> Datetime::range(Datetime start, Datetime end, Nanoseconds increment)
+{
+    return range(start, end,
+                 [&increment](Datetime& datetime)
+                 {
+                     datetime += increment;
+                 });
+}
+
+template<typename Func>
+requires std::is_invocable_v<Func, Datetime&>
+std::vector<Datetime> Datetime::range(Datetime& start, Datetime& end, Func increment)
+{
+    std::vector<Datetime> ret;
+    Datetime current_datetime = std::move(start);
+    while (current_datetime <= end)
+    {
+        ret.push_back(current_datetime);
+        increment(current_datetime);
+    }
+    return ret;
+}
+

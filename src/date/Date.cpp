@@ -1,7 +1,7 @@
 #include "datetime/date/Date.h"
 #include "../../util/exceptions/not_implemented_error.h"
 #include <chrono>
-#include <iostream>
+#include <utility>
 #include "datetime/timedelta/TimeDelta.h"
 
 Date Date::today(uint8_t day_offset, Timezone timezone)
@@ -363,4 +363,16 @@ const Date Date::EPOCH = Date(1970, 1, 1);
 size_t Date::hash() const
 {
     return std::hash<std::string>{}(to_string());
+}
+
+std::vector<Date> Date::range(Date start, Date end, Day increment)
+{
+    std::vector<Date> ret;
+    Date current_date = std::move(start);
+    while (current_date <= end)
+    {
+        ret.push_back(current_date);
+        current_date += increment;
+    }
+    return ret;
 }
