@@ -17,27 +17,26 @@ Date Date::today(uint8_t day_offset, Timezone timezone)
     int month = now_tm->tm_mon + 1;
     int day = now_tm->tm_mday;
 
+    Date ret = Date(year, month, day);
+
     // Adjust date for non-local timezone
     if (timezone != TZ::LOCAL)
     {
-        Date today = Date(year, month, day);
         int hour = Time::now().hour + TZ::LOCAL.get_utc_offset_diff(timezone);
         if (hour >= Time::HOURS_PER_DAY)
-            today.add_days(1);
+            ret.add_days(1);
         else if (hour < 0)
-            today.subtract_days(1);
-        return today;
+            ret.subtract_days(1);
     }
 
     // Create date
-    Date date = Date(year, month, day);
-    date += Day(day_offset);
+    ret += Day(day_offset);
 
     // Check if date is valid
-    ASSERT(date.is_valid_date(),
-           std::invalid_argument(fmt::format("{} is an invalid date", date.to_string())));
+    ASSERT(ret.is_valid_date(),
+           std::invalid_argument(fmt::format("{} is an invalid date", ret.to_string())));
 
-    return date;
+    return ret;
 }
 
 Date& Date::operator+=(const Day& days)
