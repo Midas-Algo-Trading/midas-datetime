@@ -81,13 +81,13 @@ bool Datetime::operator!=(Datetime other) const
     return Date::operator!=(other.date()) || Time::operator!=(other.time());
 }
 
-Datetime &Datetime::operator+=(const Day& days)
+Datetime &Datetime::operator+=(const Days& days)
 {
     Date::operator+=(days);
     return *this;
 }
 
-Datetime &Datetime::operator-=(const Day& days)
+Datetime &Datetime::operator-=(const Days& days)
 {
     Date::operator-=(days);
     return *this;
@@ -208,7 +208,7 @@ Datetime Datetime::from_ms(size_t timestamp, Timezone to_timezone, Timezone from
         month++;
     }
 
-    // Day.
+    // Days.
     // We'll later add 1 to 'day' because we cannot have day = 0. Minimum day is 1.
     uint8_t day = timestamp / MILLISECONDS_PER_DAY;
     timestamp %= MILLISECONDS_PER_DAY;
@@ -332,7 +332,7 @@ Datetime& Datetime::operator+=(Time time)
     second = time_delta.second;
     minute = time_delta.minute;
     hour = time_delta.hour;
-    (*this) += Day(time_delta.days);
+    (*this) += Days(time_delta.days);
     return *this;
 }
 
@@ -345,7 +345,7 @@ Datetime& Datetime::operator-=(Time time)
     second = time_delta.second;
     minute = time_delta.minute;
     hour = time_delta.hour;
-    (*this) -= Day(-time_delta.days);
+    (*this) -= Days(-time_delta.days);
     return *this;
 }
 
@@ -394,14 +394,14 @@ const size_t Datetime::MILLISECONDS_PER_LEAP_YEAR = MILLISECONDS_PER_NON_LEAP_YE
 
 Datetime& Datetime::operator+=(TimeDelta time_delta)
 {
-    (*this) += Day(time_delta.days);
+    (*this) += Days(time_delta.days);
     (*this) += Time(time_delta, timezone);
     return *this;
 }
 
 Datetime& Datetime::operator-=(TimeDelta time_delta)
 {
-    (*this) -= Day(time_delta.days);
+    (*this) -= Days(time_delta.days);
     (*this) -= Time(time_delta, timezone);
     return *this;
 }
@@ -456,7 +456,7 @@ size_t Datetime::hash() const
     return std::hash<std::string>{}(to_string());
 }
 
-std::vector<Datetime> Datetime::range(Datetime start, Datetime end, Day increment)
+std::vector<Datetime> Datetime::range(Datetime start, Datetime end, Days increment)
 {
     return range(start, end,
                  [&increment](Datetime& datetime)

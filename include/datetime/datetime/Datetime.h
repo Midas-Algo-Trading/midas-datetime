@@ -123,7 +123,7 @@ public:
     *
     * @return range of datetimes within 'start' to 'end'.
     */
-    static std::vector<Datetime> range(Datetime start, Datetime end, Day increment);
+    static std::vector<Datetime> range(Datetime start, Datetime end, Days increment);
 
     /**
     * Gets the datetimes within a range.
@@ -356,7 +356,7 @@ public:
      *
      * @return A reference to this modified 'Datetime'.
      */
-    Datetime& operator+=(const Day& days) override;
+    Datetime& operator+=(const Days& days) override;
 
     /**
      * Subtracts 'days' from this 'Datetime'.
@@ -365,7 +365,7 @@ public:
      *
      * @return A reference to this modified 'Datetime'.
      */
-    Datetime& operator-=(const Day& days) override;
+    Datetime& operator-=(const Days& days) override;
 
     /**
      * Adds 'hours' to this 'Datetime'.

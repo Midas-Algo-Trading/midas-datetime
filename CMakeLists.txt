@@ -19,7 +19,7 @@ endif()
             include/datetime/time/components/Microseconds.h
             include/datetime/time/components/Nanoseconds.h
         include/datetime/date/Date.h
-        include/datetime/date/components/Day.h
+            include/datetime/date/components/Days.h
         include/datetime/time/Timezone.h
             include/datetime/time/components/Milliseconds.h
         include/datetime/time/TimeRange.h

@@ -259,7 +259,7 @@ TEST(DatetimeRange, in_range)
 TEST(Datetime, operator_plusequal_adds_day_basic)
 {
         Datetime datetime = Datetime(1970, 1, 1);
-        datetime += Day(1);
+        datetime += Days(1);
         int new_day = datetime.day;
         EXPECT_EQ(new_day, 2);
 }
@@ -267,7 +267,7 @@ TEST(Datetime, operator_plusequal_adds_day_basic)
 TEST(Datetime, operator_plusequal_adds_day_new_month)
 {
         Datetime datetime = Datetime(1970, 1, 31);
-        datetime += Day(1);
+        datetime += Days(1);
         EXPECT_EQ(datetime.month, 2);
         EXPECT_EQ(datetime.day, 1);
 }
@@ -275,14 +275,14 @@ TEST(Datetime, operator_plusequal_adds_day_new_month)
 TEST(Datetime, operator_minusequal_subtracts_day_basic)
 {
         Datetime datetime = Datetime(1970, 1, 2);
-        datetime -= Day(1);
+        datetime -= Days(1);
         EXPECT_EQ(datetime.day, 1);
 }
 
 TEST(Datetime, operator_minusequal_subtracts_month)
 {
         Datetime datetime = Datetime(1970, 2, 1);
-        datetime -= Day(1);
+        datetime -= Days(1);
         EXPECT_EQ(datetime.month, 1);
         EXPECT_EQ(datetime.day, 31);
 }
@@ -868,7 +868,7 @@ TEST(Datetime, increment_days)
 {
     std::vector<Datetime> actual = Datetime::range(Datetime(2022, 12, 30),
                                                    Datetime(2023, 1, 1),
-                                                   Day(1));
+                                                   Days(1));
     std::vector<Datetime> expected = {Datetime(2022, 12, 30),
                                       Datetime(2022, 12, 31),
                                       Datetime(2023, 1, 1)};
@@ -879,7 +879,7 @@ TEST(Datetime, increment_2_days)
 {
     std::vector<Datetime> actual = Datetime::range(Datetime(2022, 12, 30),
                                                    Datetime(2023, 1, 1),
-                                                   Day(2));
+                                                   Days(2));
     std::vector<Datetime> expected = {Datetime(2022, 12, 30),
                                       Datetime(2023, 1, 1)};
     EXPECT_EQ(actual, expected);

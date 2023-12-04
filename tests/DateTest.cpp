@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "datetime/date/Date.h"
-#include "datetime/date/components/Day.h"
+#include "datetime/date/components/Days.h"
 #include "datetime/timedelta/TimeDelta.h"
 #include "datetime/date/DateRange.h"
 
@@ -15,7 +15,7 @@ TEST(Date, ostream)
 
 TEST(Day_test, constrctor_int_int_int_set_variable)
 {
-        Day day = Day(1);
+        Days day = Days(1);
         ASSERT_EQ(day.value, 1);
 }
 
@@ -54,7 +54,7 @@ TEST(Date, today_sets_local_date)
 TEST(Date, operator_plusequal_adds_day_basic)
 {
         Date date = Date(1970, 1, 1);
-        date += Day(1);
+        date += Days(1);
         int new_day = date.day;
         EXPECT_EQ(new_day, 2);
 }
@@ -62,7 +62,7 @@ TEST(Date, operator_plusequal_adds_day_basic)
 TEST(Date, operator_plusequal_adds_day_new_month)
 {
         Date date = Date(1970, 1, 31);
-        date += Day(1);
+        date += Days(1);
         EXPECT_EQ(date.month, 2);
         EXPECT_EQ(date.day, 1);
 }
@@ -70,7 +70,7 @@ TEST(Date, operator_plusequal_adds_day_new_month)
 TEST(Date, operator_plusequal_adds_2_new_months)
 {
         Date date = Date(1970, 3, 31);
-        date += Day(31);
+        date += Days(31);
         EXPECT_EQ(date.month, 5);
         EXPECT_EQ(date.day, 1);
 }
@@ -78,7 +78,7 @@ TEST(Date, operator_plusequal_adds_2_new_months)
 TEST(Date, operator_plusequal_adds_new_year)
 {
         Date date = Date(1970, 1, 1);
-        date += Day(365);
+        date += Days(365);
         EXPECT_EQ(date.year, 1971);
         EXPECT_EQ(date.month, 1);
         EXPECT_EQ(date.day, 1);
@@ -87,14 +87,14 @@ TEST(Date, operator_plusequal_adds_new_year)
 TEST(Date, operator_minusequal_subtracts_day_basic)
 {
         Date date = Date(1970, 1, 2);
-        date -= Day(1);
+        date -= Days(1);
         EXPECT_EQ(date.day, 1);
 }
 
 TEST(Date, operator_minusequal_subtracts_month)
 {
         Date date = Date(1970, 2, 1);
-        date -= Day(1);
+        date -= Days(1);
         EXPECT_EQ(date.month, 1);
         EXPECT_EQ(date.day, 31);
 }
@@ -102,7 +102,7 @@ TEST(Date, operator_minusequal_subtracts_month)
 TEST(Date, operator_minusequal_subtracts_2_months)
 {
         Date date = Date(1970, 5, 1);
-        date -= Day(31);
+        date -= Days(31);
         EXPECT_EQ(date.month, 3);
         EXPECT_EQ(date.day, 31);
 }
@@ -110,7 +110,7 @@ TEST(Date, operator_minusequal_subtracts_2_months)
 TEST(Date, operator_minusqual_subtracts_year)
 {
         Date date = Date(1970, 1, 1);
-        date -= Day(365);
+        date -= Days(365);
         EXPECT_EQ(date.year, 1969);
         EXPECT_EQ(date.month, 1);
         EXPECT_EQ(date.day, 1);
@@ -382,14 +382,14 @@ TEST(Date, constructor_string_throws_invalid_argument)
 TEST(Date, operator_plus)
 {
     Date date = Date(2000, 1, 1);
-    Date new_date = date + Day(1);
+    Date new_date = date + Days(1);
     EXPECT_EQ(new_date, Date(2000, 1, 2));
 }
 
 TEST(Date, operator_minus)
 {
     Date date = Date(2000, 1, 2);
-    Date new_date = date - Day(1);
+    Date new_date = date - Days(1);
     EXPECT_EQ(new_date, Date(2000, 1, 1));
 }
 
@@ -397,7 +397,7 @@ TEST(Date, tomorrow)
 {
     Date today = Date::today();
     Date tomorrow = Date::tomorrow();
-    EXPECT_EQ(tomorrow - Day(1), today);
+    EXPECT_EQ(tomorrow - Days(1), today);
 }
 
 TEST(Date, hash)
@@ -407,21 +407,21 @@ TEST(Date, hash)
 
 TEST(Date, range)
 {
-    std::vector<Date> actual = Date::range(Date(2022, 12, 30), Date(2023, 1, 1), Day(1));
+    std::vector<Date> actual = Date::range(Date(2022, 12, 30), Date(2023, 1, 1), Days(1));
     std::vector<Date> expected = {Date(2022, 12, 30), Date(2022, 12, 31), Date(2023, 1, 1)};
     EXPECT_EQ(actual, expected);
 }
 
 TEST(Date, range_increment_by_2)
 {
-    std::vector<Date> actual = Date::range(Date(2022, 12, 30), Date(2023, 1, 1), Day(2));
+    std::vector<Date> actual = Date::range(Date(2022, 12, 30), Date(2023, 1, 1), Days(2));
     std::vector<Date> expected = {Date(2022, 12, 30), Date(2023, 1, 1)};
     EXPECT_EQ(actual, expected);
 }
 
 TEST(Date, range_start_greater_than_end)
 {
-    std::vector<Date> actual = Date::range(Date(2023, 1, 1), Date(2022, 12, 30), Day(2));
+    std::vector<Date> actual = Date::range(Date(2023, 1, 1), Date(2022, 12, 30), Days(2));
     std::vector<Date> expected;
     EXPECT_EQ(actual, expected);
 }

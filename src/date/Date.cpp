@@ -30,7 +30,7 @@ Date Date::today(uint8_t day_offset, Timezone timezone)
     }
 
     // Create date
-    ret += Day(day_offset);
+    ret += Days(day_offset);
 
     // Check if date is valid
     ASSERT(ret.is_valid_date(),
@@ -39,7 +39,7 @@ Date Date::today(uint8_t day_offset, Timezone timezone)
     return ret;
 }
 
-Date& Date::operator+=(const Day& days)
+Date& Date::operator+=(const Days& days)
 {
     if (days.value < 0)
         subtract_days(-days.value);
@@ -48,7 +48,7 @@ Date& Date::operator+=(const Day& days)
     return *this;
 }
 
-Date& Date::operator-=(const Day& days)
+Date& Date::operator-=(const Days& days)
 {
     if (days.value < 0)
         add_days(-days.value);
@@ -308,14 +308,14 @@ bool Date::is_valid_day() const
     return day <= max_days_in_month(month, year) && day >= 1;
 }
 
-Date Date::operator+(const Day& days)
+Date Date::operator+(const Days& days)
 {
     Date date = (*this);
     date += days;
     return date;
 }
 
-Date Date::operator-(const Day &days)
+Date Date::operator-(const Days &days)
 {
     Date date = (*this);
     date -= days;
@@ -365,7 +365,7 @@ size_t Date::hash() const
     return std::hash<std::string>{}(to_string());
 }
 
-std::vector<Date> Date::range(Date start, Date end, Day increment)
+std::vector<Date> Date::range(Date start, Date end, Days increment)
 {
     std::vector<Date> ret;
     Date current_date = std::move(start);

@@ -1,5 +1,5 @@
-#ifndef DATETIME_DAY_H
-#define DATETIME_DAY_H
+#ifndef DATETIME_DAYS_H
+#define DATETIME_DAYS_H
 
 #include "../../../../src/Component.h"
 #include "../../../../src/date/DateComponent.h"
@@ -9,15 +9,15 @@
  *
  * Used in the 'Date' class to add to days to the 'Date'.
  */
-struct Day : DateComponent
+struct Days : DateComponent
 {
     /**
-     * Creates a 'Day' which represents a number of days.
+     * Creates a 'Days' which represents a number of days.
      *
      * @param day Number of days to represent.
      */
-    explicit Day(int64_t day) :
+    explicit Days(int64_t day) :
         DateComponent(day) {}
 };
 
-#endif //DATETIME_DAY_H
+#endif //DATETIME_DAYS_H

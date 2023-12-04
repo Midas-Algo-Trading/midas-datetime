@@ -2,7 +2,7 @@
 #define DATETIME_DATE_H
 
 
-#include "datetime/date/components/Day.h"
+#include "datetime/date/components/Days.h"
 #include "datetime/time/Time.h"
 #include "fmt/format.h"
 #include "../../../util/macros.h"
@@ -25,7 +25,7 @@ public:
      */
     uint8_t month = EPOCH.month;
     /**
-     * Day of the date.
+     * Days of the date.
      */
     uint8_t day = EPOCH.day;
 
@@ -48,7 +48,7 @@ public:
      *
      * @param year Year the 'Date' will be set to (default EPOCH.year).
      * @param month Month the 'Date' will be set to (default EPOCH.month).
-     * @param day Day the 'Date' will be set to (default EPOCH.day).
+     * @param day Days the 'Date' will be set to (default EPOCH.day).
      */
     explicit Date(uint16_t year = EPOCH.year, uint8_t month = EPOCH.month, uint8_t day = EPOCH.day);
 
@@ -74,7 +74,7 @@ public:
      * @param string string representation of the date.
      * Should be in the format %Y-%m-%d.
      *
-     * @note calls Date(std::string, DateComponents...) with DateComponents: Year, Month, Day.
+     * @note calls Date(std::string, DateComponents...) with DateComponents: Year, Month, Days.
      */
     explicit Date(std::string_view string) :
         Date(string, Component::YEAR, Component::MONTH, Component::DAY) {}
@@ -106,7 +106,7 @@ public:
      *
      * @return range of dates within 'start' to 'end'.
      */
-    static std::vector<Date> range(Date start, Date end, Day increment = Day(1));
+    static std::vector<Date> range(Date start, Date end, Days increment = Days(1));
 
     /**
      * Gets the 'DayOfWeek' of this 'Date'.
@@ -178,7 +178,7 @@ public:
      *
      * @return A reference to this modified 'Date'.
      */
-    virtual Date& operator+=(const Day& days);
+    virtual Date& operator+=(const Days& days);
 
     /**
      * Subtracts 'days' from this 'Date'.
@@ -187,7 +187,7 @@ public:
      *
      * @return A reference to this modified 'Date'.
      */
-    virtual Date& operator-=(const Day& days);
+    virtual Date& operator-=(const Days& days);
 
     /**
      * Adds 'days' to 'this'.
@@ -196,7 +196,7 @@ public:
      *
      * @return a new 'Date' with 'days' added.
      */
-    Date operator+(const Day& days);
+    Date operator+(const Days& days);
 
     /**
      * Subtracts 'days' to 'this'.
@@ -205,7 +205,7 @@ public:
      *
      * @return a new 'Date' with 'days' subtracted.
      */
-    Date operator-(const Day& days);
+    Date operator-(const Days& days);
 
     /**
      * Adds a day to this 'Date'.
