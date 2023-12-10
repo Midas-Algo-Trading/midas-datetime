@@ -349,12 +349,11 @@ Datetime& Datetime::operator-=(Time time)
     return *this;
 }
 
-size_t Datetime::to_ms(std::optional<Timezone> timezone) const
+size_t Datetime::to_ms(Timezone timezone) const
 {
     // Create datetime copy to convert incase we need to change timezone.
     Datetime datetime = Datetime(*this);
-    if (timezone.has_value())
-        datetime.set_timezone(timezone.value());
+    datetime.set_timezone(timezone);
 
     size_t ret = 0;
 
@@ -367,11 +366,11 @@ size_t Datetime::to_ms(std::optional<Timezone> timezone) const
     // Months.
     for (uint8_t m = 1; m < datetime.month; ++m)
     {
-        ret += max_days_in_month(m, year) * MILLISECONDS_PER_DAY;
+        ret += max_days_in_month(m, datetime.year) * MILLISECONDS_PER_DAY;
     }
 
     // Days.
-    ret += (day - 1) * MILLISECONDS_PER_DAY;
+    ret += (datetime.day - 1) * MILLISECONDS_PER_DAY;
 
     // Hours.
     ret += datetime.hour * MILLISECONDS_PER_HOUR;

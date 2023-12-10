@@ -80,13 +80,13 @@ public:
                             Timezone from_timezone = TZ::UTC);
 
     /**
-     * Converts 'this' to UNIX ms timestamp.
+     * Converts 'this' to ms timestamp.
      *
-     * @param timezone the timezone to convert the ms timestamp to.
+     * @param timezone the timezone to convert the ms timestamp to. (default UTC)
      *
-     * @return 'this' as a UNIX ms timestamp.
+     * @return 'this' as a ms timestamp.
      */
-    size_t to_ms(std::optional<Timezone> timezone = {}) const;
+    size_t to_ms(Timezone timezone = TZ::UTC) const;
 
     /**
      * Creates a 'Datetime' from a std::string.

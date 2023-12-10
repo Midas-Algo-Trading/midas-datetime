@@ -699,15 +699,15 @@ TEST(Datetime, operator_minus_nanosecond)
     EXPECT_EQ(new_datetime, Datetime(2000, 1, 1, 1, 2, 3, 4, 5, 5));
 }
 
-TEST(Datetime, to_ms_1)
+TEST(Datetime, to_ms_same_timezone)
 {
     Datetime datetime = Datetime(2000, 1, 2, 3, 4, 5, 6, 0, 0);
-    EXPECT_EQ(datetime.to_ms(), 946782245006);
+    EXPECT_EQ(datetime.to_ms(datetime.timezone), 946782245006);
 }
 
-TEST(Datetime, to_ms_2)
+TEST(Datetime, to_ms_timezone_utc)
 {
-    Datetime datetime = Datetime("2023-10-30 3:25:09.0.0.0",
+    Datetime datetime = Datetime("2023-10-29 22:25:09.0.0.0",
                                 Date::Component::YEAR,
                                 Date::Component::MONTH,
                                 Date::Component::DAY,
@@ -717,21 +717,6 @@ TEST(Datetime, to_ms_2)
                                 Time::Component::MILLISECOND,
                                 Time::Component::MICROSECOND,
                                 Time::Component::NANOSECOND);
-    EXPECT_EQ(datetime.to_ms({}), 1698636309000);
-}
-
-TEST(Datetime, to_ms_3)
-{
-    Datetime datetime = Datetime("2023-10-30 3:25:09.0.0.0",
-                                 Date::Component::YEAR,
-                                 Date::Component::MONTH,
-                                 Date::Component::DAY,
-                                 Time::Component::HOUR,
-                                 Time::Component::MINUTE,
-                                 Time::Component::SECOND,
-                                 Time::Component::MILLISECOND,
-                                 Time::Component::MICROSECOND,
-                                 Time::Component::NANOSECOND);
     EXPECT_EQ(datetime.to_ms(), 1698636309000);
 }
 
