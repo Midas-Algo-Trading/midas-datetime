@@ -91,9 +91,9 @@ public:
     /**
      * Creates a 'Datetime' from a std::string.
      *
-     * @tparam DateComponent1 should be of type 'Date::Component'.
-     * @tparam DateComponent2 should be of type 'Date::Component'.
-     * @tparam DateComponent3 should be of type 'Date::Component'.
+     * @tparam DateComponent1 should be of type 'DateComponent'.
+     * @tparam DateComponent2 should be of type 'DateComponent'.
+     * @tparam DateComponent3 should be of type 'DateComponent'.
      * @tparam TimeComponents should be of type 'Time::Component'.
      *
      * @param string string representation of the date and time.
@@ -211,19 +211,32 @@ public:
     /**
      * Represents this 'Datetime' as a std::string.
      *
+     * @param include_to Include the time components up until 'include_to' in the resulting
+     * string (inclusive). (default TimeComponent::TIMEZONE)
+     * @param delim_date delimiter for date components.
+     * @param delim_date_and_time delimiter between date and time.
+     * @param delim_h_m_s 'char' separating hours, minutes, and seconds.
+     * @param delim_ms_us_ns 'char' separating milliseconds, microseconds, and nanoseconds.
+     * @param delim_tz delimiter between nanosecond and timezone.
+     *
      * Represents this 'Datetime' as a std::string with format
      * %Y-%m-%d %-H:%M:%S.%ms.%f.%ns
      *
      * @example
-     * Datetime datetime = Datetime(2000, 1, 2, 3, 4, 5, 6, 7, 8);
-     * std::string datetime_string = date.to_string();
+     * Datetime datetime = Datetime(2000, 1, 2, 3, 4, 5, 6, 7, 8, TZ::EST);
+     * std::string datetime_string = datetime.to_string();
      * std::cout << datetime_string;
      *
-     * // output: 2000-01-02 3:04:05.6.7.8
+     * // output: 2000-01-02 3:04:05.6.7.8+5:00
      *
      * @return resulting std::string.
      */
-    std::string to_string(char separate_components = ' ', char separate_time = ':') const override;
+    std::string to_string(TimeComponent inluce_0s_until = TimeComponent::TIMEZONE,
+                          char delim_date = '-',
+                          char delim_date_and_time = ' ',
+                          char delim_h_m_s = ':',
+                          char delim_ms_us_ns = '.',
+                          char delim_tz = '+') const;
 
     /**
      * Checks if 'this' is greater than 'other'.

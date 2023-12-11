@@ -270,11 +270,13 @@ bool Date::is_weekend() const
     }
 }
 
-std::string Date::to_string(char separate_year, char separate_day) const
+std::string Date::to_string(char delim) const
 {
     return std::to_string(year)
-           + separate_year + strh::align(std::to_string(month), strh::Alignment::LEFT, 2, '0')
-           + separate_day + strh::align(std::to_string(day), strh::Alignment::LEFT, 2, '0');
+           + delim
+           + strh::align(std::to_string(month), strh::Alignment::LEFT, 2, '0')
+           + delim
+           + strh::align(std::to_string(day), strh::Alignment::LEFT, 2, '0');
 }
 
 bool Date::is_valid_date() const

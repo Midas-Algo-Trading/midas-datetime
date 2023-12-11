@@ -341,13 +341,13 @@ TEST(Date, to_string)
 TEST(Date, constructor_string_DateComponents_basic)
 {
     Date date = Date("2000-01-20",
-                     Date::Component::YEAR, Date::Component::MONTH, Date::Component::DAY);
+                     DateComponent::YEAR, DateComponent::MONTH, DateComponent::DAY);
     EXPECT_EQ(date.year, 2000);
     EXPECT_EQ(date.month, 1);
     EXPECT_EQ(date.day, 20);
 
     date = Date("2000-20-01",
-                Date::Component::YEAR, Date::Component::DAY, Date::Component::MONTH);
+                DateComponent::YEAR, DateComponent::DAY, DateComponent::MONTH);
     EXPECT_EQ(date.year, 2000);
     EXPECT_EQ(date.month, 1);
     EXPECT_EQ(date.day, 20);
@@ -355,14 +355,14 @@ TEST(Date, constructor_string_DateComponents_basic)
 
 TEST(Date, constructor_string_DateComponents_throws_invalid_argument_on_wrong_date_components)
 {
-        EXPECT_THROW(Date("2000", Date::Component::YEAR, Date::Component::MONTH),
+        EXPECT_THROW(Date("2000", DateComponent::YEAR, DateComponent::MONTH),
                      std::invalid_argument);
 }
 
 TEST(Date, constructor_string_DateComponents_throws_invalid_argument_on_out_of_range_components)
 {
-    EXPECT_THROW(Date("1800-01-01", Date::Component::YEAR, Date::Component::MONTH,
-                      Date::Component::DAY),
+    EXPECT_THROW(Date("1800-01-01", DateComponent::YEAR, DateComponent::MONTH,
+                      DateComponent::DAY),
                  std::invalid_argument);
 }
 
@@ -424,4 +424,11 @@ TEST(Date, range_start_greater_than_end)
     std::vector<Date> actual = Date::range(Date(2023, 1, 1), Date(2022, 12, 30), Days(2));
     std::vector<Date> expected;
     EXPECT_EQ(actual, expected);
+}
+
+TEST(Date, to_string_delimeter)
+{
+    Date date = Date(2020, 1, 2);
+    std::string date_str = date.to_string('/');
+    EXPECT_EQ(date_str, "2020/01/02");
 }

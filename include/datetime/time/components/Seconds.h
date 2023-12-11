@@ -1,14 +1,14 @@
 #ifndef DATETIME_SECONDS_H
 #define DATETIME_SECONDS_H
 
-#include "TimeComponent.h"
+#include "../../../src/Component.h"
 
 /**
  * Number of seconds.
  *
  * Used in the 'Time' class to add to seconds to the 'Time'.
  */
-struct Seconds : TimeComponent
+struct Seconds : Component
 {
     /**
      * Creates a 'Seconds' which represents an amount of seconds.
@@ -16,7 +16,7 @@ struct Seconds : TimeComponent
      * @param second number of seconds.
      */
     explicit Seconds(int64_t second) :
-        TimeComponent(second) {}
+        Component(second) {}
 };
 
 #endif //DATETIME_SECONDS_H

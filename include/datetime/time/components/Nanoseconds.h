@@ -1,14 +1,14 @@
 #ifndef DATETIME_NANOSECONDS_H
 #define DATETIME_NANOSECONDS_H
 
-#include "TimeComponent.h"
+#include "../../../src/Component.h"
 
 /**
  * Number of nanoseconds.
  *
  * Used in the 'Time' class to add to nanoseconds to the 'Time'.
  */
-struct Nanoseconds : TimeComponent
+struct Nanoseconds : Component
 {
     /**
      * Creates a 'Nanoseconds' which represents an amount of nanoseconds.
@@ -16,7 +16,7 @@ struct Nanoseconds : TimeComponent
      * @param nanosecond number of nanoseconds.
      */
     explicit Nanoseconds(int64_t nanosecond) :
-        TimeComponent(nanosecond) {}
+        Component(nanosecond) {}
 };
 
 #endif //DATETIME_NANOSECONDS_H

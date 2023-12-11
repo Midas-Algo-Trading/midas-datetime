@@ -69,13 +69,13 @@
 	Time time = Time(1, 2, 3, 4, 5, 6, TZ::EST);
 
     Time time = Time("1:02:03.4.5.6+5:00",
-                     Time::Component::HOUR,
-                     Time::Component::MINUTE,
-                     Time::Component::SECOND,
-                     Time::Component::MILLISECOND,
-                     Time::Component::MICROSECOND,
-                     Time::Component::NANOSECOND,
-                     Time::Component::TIMEZONE);
+                     TimeComponent::HOUR,
+                     TimeComponent::MINUTE,
+                     TimeComponent::SECOND,
+                     TimeComponent::MILLISECOND,
+                     TimeComponent::MICROSECOND,
+                     TimeComponent::NANOSECOND,
+                     TimeComponent::TIMEZONE);
 	 
 	Time time = Time::now();
 	
@@ -100,9 +100,9 @@
 ### Operations
 	time.set_timezone(TZ::UTC);
 
-	time.round(Time::Component::Minute);
+	time.round(TimeComponent::Minute);
 
-	Time.floor(Time::Component::Second);
+	Time.floor(TimeComponent::Second);
 	
 	std::string str = time.to_string();
 	
@@ -127,11 +127,11 @@
 	Datetime datetime = Datetime::from_ms(1641016800000);
 
 	Datetime datetime = Datetime("2022 1:2:3+5:00",  
-                                 Date::Component::YEAR,
-                                 Time::Component::HOUR,
-                                 Time::Component::MINUTE,
-                                 Time::Component::SECOND,
-                                 Time::Component::TIMEZONE);
+                                 DateComponent::YEAR,
+                                 TimeComponent::HOUR,
+                                 TimeComponent::MINUTE,
+                                 TimeComponent::SECOND,
+                                 TimeComponent::TIMEZONE);
 								 
 	 
 	// Get the datetimes between 2 datetimes with 7 days between each datetime

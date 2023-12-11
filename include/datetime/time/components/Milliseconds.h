@@ -1,14 +1,14 @@
 #ifndef DATETIME_MILLISECONDS_H
 #define DATETIME_MILLISECONDS_H
 
-#include "TimeComponent.h"
+#include "../../../src/Component.h"
 
 /**
  * Number of milliseconds.
  *
  * Used in the 'Time' class to add to milliseconds to the 'Time'.
  */
-struct Milliseconds : TimeComponent
+struct Milliseconds : Component
 {
     /**
      * Creates a 'Milliseconds' which represents an amount of milliseconds.
@@ -16,7 +16,7 @@ struct Milliseconds : TimeComponent
      * @param millisecond number of milliseconds.
      */
     explicit Milliseconds(int64_t millisecond) :
-        TimeComponent(millisecond) {}
+        Component(millisecond) {}
 };
 
 #endif //DATETIME_MILLISECONDS_H

@@ -235,37 +235,37 @@ Time::Time(uint8_t hour, uint8_t minute, uint8_t second, uint16_t millisecond, u
            std::invalid_argument(fmt::format("Time '{}' is invalid", Time::to_string())));
 }
 
-Time& Time::round(Component to)
+Time& Time::round(TimeComponent to)
 {
-    if (to == NANOSECOND)
+    if (to == TimeComponent::NANOSECOND)
         return *this;
 
     if (nanosecond >= NANOSECONDS_PER_MICROSECOND / 2)
         add_microseconds(1);
     nanosecond = 0;
 
-    if (to == MICROSECOND)
+    if (to == TimeComponent::MICROSECOND)
         return *this;
 
     if (microsecond >= MICROSECONDS_PER_MILLISECOND / 2)
         add_milliseconds(1);
     microsecond = 0;
 
-    if (to == MILLISECOND)
+    if (to == TimeComponent::MILLISECOND)
         return *this;
 
     if (millisecond >= MILLISECONDS_PER_SECOND / 2)
         add_seconds(1);
     millisecond = 0;
 
-    if (to == SECOND)
+    if (to == TimeComponent::SECOND)
         return *this;
 
     if (second >= SECONDS_PER_MINUTE / 2)
         add_minutes(1);
     second = 0;
 
-    if (to == MINUTE)
+    if (to == TimeComponent::MINUTE)
         return *this;
 
     if (minute >= MINUTES_PER_HOUR / 2)
@@ -275,37 +275,37 @@ Time& Time::round(Component to)
     return *this;
 }
 
-Time& Time::ceil(Time::Component to)
+Time& Time::ceil(TimeComponent to)
 {
-    if (to == NANOSECOND)
+    if (to == TimeComponent::NANOSECOND)
         return *this;
 
     if (nanosecond > 0)
         add_microseconds(1);
     nanosecond = 0;
 
-    if (to == MICROSECOND)
+    if (to == TimeComponent::MICROSECOND)
         return *this;
 
     if (microsecond > 0)
         add_milliseconds(1);
     microsecond = 0;
 
-    if (to == MILLISECOND)
+    if (to == TimeComponent::MILLISECOND)
         return *this;
 
     if (millisecond > 0)
         add_seconds(1);
     millisecond = 0;
 
-    if (to == SECOND)
+    if (to == TimeComponent::SECOND)
         return *this;
 
     if (second > 0)
         add_minutes(1);
     second = 0;
 
-    if (to == MINUTE)
+    if (to == TimeComponent::MINUTE)
         return *this;
 
     if (minute > 0)
@@ -315,21 +315,21 @@ Time& Time::ceil(Time::Component to)
     return *this;
 }
 
-Time& Time::floor(Time::Component to)
+Time& Time::floor(TimeComponent to)
 {
-    if (to == NANOSECOND)
+    if (to == TimeComponent::NANOSECOND)
         return *this;
     nanosecond = 0;
-    if (to == MICROSECOND)
+    if (to == TimeComponent::MICROSECOND)
         return *this;
     microsecond = 0;
-    if (to == MILLISECOND)
+    if (to == TimeComponent::MILLISECOND)
         return *this;
     millisecond = 0;
-    if (to == SECOND)
+    if (to == TimeComponent::SECOND)
         return *this;
     second = 0;
-    if (to == MINUTE)
+    if (to == TimeComponent::MINUTE)
         return *this;
     minute = 0;
     return *this;
@@ -570,6 +570,20 @@ std::vector<Time> Time::range(Time start, Time end, Nanoseconds increment)
                  {
                      time += increment;
                  });
+}
+
+std::string Time::to_string(TimeComponent include_to,
+                            char delim_h_m_s,
+                            char delim_ms_us_na,
+                            char delim_tz) const
+{
+    std::stringstream ss;
+    ss << BasicTime::to_string(include_to, delim_h_m_s, delim_ms_us_na);
+
+    if (include_to == TimeComponent::TIMEZONE)
+        ss << delim_tz << timezone.to_string();
+
+    return ss.str();
 }
 
 template<typename Func>

@@ -7,6 +7,7 @@
 #include "fmt/format.h"
 #include "../../../util/macros.h"
 #include "stringhelpers/stringhelpers.h"
+#include "DateComponent.h"
 
 class TimeDelta;
 
@@ -28,13 +29,6 @@ public:
      * Days of the date.
      */
     uint8_t day = EPOCH.day;
-
-    /**
-     * Components of a date.
-     *
-     * @see Date
-     */
-    enum Component { YEAR, MONTH, DAY };
 
     /**
      * Different days in a week.
@@ -77,7 +71,7 @@ public:
      * @note calls Date(std::string, DateComponents...) with DateComponents: Year, Month, Days.
      */
     explicit Date(std::string_view string) :
-        Date(string, Component::YEAR, Component::MONTH, Component::DAY) {}
+        Date(string, DateComponent::YEAR, DateComponent::MONTH, DateComponent::DAY) {}
 
     /**
      * Creates a 'Date' that matches today's date.
@@ -137,6 +131,8 @@ public:
     /**
      * Represents this 'Date' as a std::string.
      *
+     * @param delim delimiter between year/month and month/date.
+     *
      * Represents this 'Date' as a std::string with format %Y-%m-%d.
      *
      * @return resulting std::string.
@@ -148,7 +144,7 @@ public:
      *
      * // output: 2000-01-30
      */
-    virtual std::string to_string(char separate_year = '-', char separate_day = '-') const;
+    virtual std::string to_string(char delim = '-') const;
 
     /**
      * Returns whether 'year' is a leap year.
@@ -391,9 +387,8 @@ Date::Date(std::string_view string, DateComponents... date_components)
     std::vector<std::string> date_components_strs = strh::split_alphabetical(string);
 
     ASSERT(date_components_strs.size() >= sizeof...(date_components),
-           std::invalid_argument(fmt::format("components: '{}' with size '{}' does not match date "
+           std::invalid_argument(fmt::format("components with size '{}' does not match date "
                                              "strings: '{}' with size '{}'",
-                                             strh::from_parameter_pack(date_components...),
                                              sizeof...(date_components),
                                              fmt::join(date_components_strs, ", "),
                                              date_components_strs.size())));
@@ -403,16 +398,16 @@ Date::Date(std::string_view string, DateComponents... date_components)
     // Lambda to get each date component value from each corresponding date component string
     auto set_date_components_from_str = [&](const auto& date_component, size_t idx) {
         switch (date_component) {
-        case Date::Component::YEAR:
+        case DateComponent::YEAR:
             year = std::stoi(date_components_strs[idx]);
             break;
-        case Date::Component::MONTH:
+        case DateComponent::MONTH:
             if (date_components_strs[idx][0] == '0')
                 month = date_components_strs[idx][1] - '0'; // char to int
             else
                 month = std::stoi(date_components_strs[idx]);
             break;
-        case Date::Component::DAY:
+        case DateComponent::DAY:
             if (date_components_strs[idx][0] == '0')
                 day = date_components_strs[idx][1] - '0'; // char to int
             else

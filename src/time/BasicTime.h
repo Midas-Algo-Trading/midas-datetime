@@ -3,6 +3,7 @@
 
 #include <utility>
 #include <string>
+#include <datetime/time/TimeComponent.h>
 
 /**
  * Basic time representation.
@@ -151,14 +152,21 @@ public:
     virtual int64_t total_nanoseconds() const;
 
     /**
+     * Hours in a day.
+     */
+    static const int HOURS_PER_DAY;
+
+protected:
+
+    /**
      * Represents this 'Time' as a std::string.
      *
      * Represents this 'Time' as a std::string with format %-H:%M:%S.%ms.%f.%ns
      *
-     * @param include_0s if 'false', components will not print if their and their smaller
-     * components' values are all 0. If 'true', all components will print.
-     * @param separate_time 'char' separating hours, minutes, and seconds.
-     * @param separate_seconds 'char' separating milliseconds, microseconds, and nanoseconds.
+     * @param include_to Include the time components up until 'include_to' in the resulting
+     * string (inclusive).
+     * @param delim_h_m_s 'char' separating hours, minutes, and seconds.
+     * @param delim_ms_us_ns 'char' separating milliseconds, microseconds, and nanoseconds.
      *
      * @example
      * Time time = Datetime(1, 2, 3, 4, 5, 6);
@@ -169,16 +177,9 @@ public:
      *
      * @return resulting std::string.
      */
-    virtual std::string to_string(bool include_0s = true,
-                                  char separate_time = ':',
-                                  char separate_seconds = '.') const;
-
-    /**
-     * Hours in a day.
-     */
-    static const int HOURS_PER_DAY;
-
-protected:
+    virtual std::string to_string(TimeComponent include_to = TimeComponent::NANOSECOND,
+                                  char delim_h_m_s = ':',
+                                  char delim_ms_us_ns = '.') const;
 
     /**
      * Minutes in a hour.

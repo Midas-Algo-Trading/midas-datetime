@@ -486,15 +486,15 @@ TEST(Datetime, operator_decrement)
 TEST(Datetime, constructor_string_DateComponent1_DateComponent2_DateComponent3_TimeComponents_basic)
 {
     Datetime datetime = Datetime("2000-01-02 3:04:50.6.7.8",
-                                 Date::Component::YEAR,
-                                 Date::Component::MONTH,
-                                 Date::Component::DAY,
-                                 Time::Component::HOUR,
-                                 Time::Component::MINUTE,
-                                 Time::Component::SECOND,
-                                 Time::Component::MILLISECOND,
-                                 Time::Component::MICROSECOND,
-                                 Time::Component::NANOSECOND);
+                                 DateComponent::YEAR,
+                                 DateComponent::MONTH,
+                                 DateComponent::DAY,
+                                 TimeComponent::HOUR,
+                                 TimeComponent::MINUTE,
+                                 TimeComponent::SECOND,
+                                 TimeComponent::MILLISECOND,
+                                 TimeComponent::MICROSECOND,
+                                 TimeComponent::NANOSECOND);
     EXPECT_EQ(datetime.year, 2000);
     EXPECT_EQ(datetime.month, 1);
     EXPECT_EQ(datetime.day, 2);
@@ -509,11 +509,11 @@ TEST(Datetime, constructor_string_DateComponent1_DateComponent2_DateComponent3_T
 TEST(Datetime, constructor_string_DateComponent1_DateComponent2_DateComponent3_TimeComponents_skip)
 {
     Datetime datetime = Datetime("2000-01-02 3.4",
-                                 Date::Component::YEAR,
-                                 Date::Component::MONTH,
-                                 Date::Component::DAY,
-                                 Time::Component::HOUR,
-                                 Time::Component::NANOSECOND);
+                                 DateComponent::YEAR,
+                                 DateComponent::MONTH,
+                                 DateComponent::DAY,
+                                 TimeComponent::HOUR,
+                                 TimeComponent::NANOSECOND);
     EXPECT_EQ(datetime.year, 2000);
     EXPECT_EQ(datetime.month, 1);
     EXPECT_EQ(datetime.day, 2);
@@ -524,7 +524,7 @@ TEST(Datetime, constructor_string_DateComponent1_DateComponent2_DateComponent3_T
 TEST(Datetime, to_string)
 {
     Datetime datetime = Datetime(2000, 1, 2, 3, 4, 50, 6, 7, 8);
-    EXPECT_EQ(datetime.to_string(), "2000-01-02 3:04:50.6.7.8");
+    EXPECT_EQ(datetime.to_string(TimeComponent::TIMEZONE), "2000-01-02 3:04:50.6.7.8+5:00");
 }
 
 TEST(Datetime, ostream)
@@ -532,7 +532,7 @@ TEST(Datetime, ostream)
         Datetime datetime = Datetime(2000, 1, 2, 3, 4, 5, 6, 7, 8);
         std::stringstream actual;
         actual << datetime;
-        EXPECT_EQ(actual.str(), "2000-01-02 3:04:05.6.7.8");
+        EXPECT_EQ(actual.str(), "2000-01-02 3:04:05.6.7.8+5:00");
 }
 
 TEST(Datetime, from_ms_basic)
@@ -708,15 +708,15 @@ TEST(Datetime, to_ms_same_timezone)
 TEST(Datetime, to_ms_timezone_utc)
 {
     Datetime datetime = Datetime("2023-10-29 22:25:09.0.0.0",
-                                Date::Component::YEAR,
-                                Date::Component::MONTH,
-                                Date::Component::DAY,
-                                Time::Component::HOUR,
-                                Time::Component::MINUTE,
-                                Time::Component::SECOND,
-                                Time::Component::MILLISECOND,
-                                Time::Component::MICROSECOND,
-                                Time::Component::NANOSECOND);
+                                DateComponent::YEAR,
+                                DateComponent::MONTH,
+                                DateComponent::DAY,
+                                TimeComponent::HOUR,
+                                TimeComponent::MINUTE,
+                                TimeComponent::SECOND,
+                                TimeComponent::MILLISECOND,
+                                TimeComponent::MICROSECOND,
+                                TimeComponent::NANOSECOND);
     EXPECT_EQ(datetime.to_ms(), 1698636309000);
 }
 

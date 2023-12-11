@@ -74,6 +74,36 @@ public:
     {
         return utc_offset != other.utc_offset;
     }
+
+    /**
+     * 'std::string' representation of 'this'.
+     *
+     * @return 'std::string' representation of 'this'.
+     *
+     * @example
+     * Timezone est = TZ::EST;
+     * std::string timezone_string = est.to_string();
+     * std::cout << timezone_string;
+     *
+     * Output: 5:00
+     */
+    std::string to_string() const
+    {
+        return fmt::format("{}:00", utc_offset);
+    }
+
+    /**
+     * Outputs 'timezone' into 'os'.
+     *
+     * @param os std::ostream' to insert 'timezone' into.
+     * @param timezone 'Timezone' to insert into 'os'.
+     *
+     * @return reference to 'os' after inserting 'timezone' into 'os'.
+     */
+    friend std::ostream& operator<<(std::ostream& os, const Timezone& timezone)
+    {
+        return os << timezone.to_string();
+    }
 };
 
 namespace TZ

@@ -127,29 +127,33 @@ int64_t BasicTime::total_nanoseconds() const
     );
 }
 
-std::string BasicTime::to_string(bool include_0s, char separate_time, char separate_seconds) const
+std::string BasicTime::to_string(TimeComponent include_to,
+                                 char delim_h_m_s,
+                                 char delim_ms_us_na) const
 {
     std::stringstream ss;
 
-    if (include_0s || hour > 0 || minute > 0 || second > 0 || millisecond > 0 || microsecond > 0
-        || nanosecond > 0)
-        ss << static_cast<int>(hour);
+    ss << static_cast<int>(hour);
 
-    if (include_0s || minute > 0 || second > 0 || millisecond > 0 || microsecond > 0
-        || nanosecond > 0)
-        ss << separate_time << strh::align(std::to_string(minute), strh::Alignment::LEFT, 2, '0');
+    if (include_to == TimeComponent::HOUR) return ss.str();
 
-    if (include_0s || second > 0 || millisecond > 0 || microsecond > 0 || nanosecond > 0)
-        ss << separate_time << strh::align(std::to_string(second), strh::Alignment::LEFT, 2, '0');
+    ss << delim_h_m_s << strh::align(std::to_string(minute), strh::Alignment::LEFT, 2, '0');
 
-    if (include_0s || millisecond > 0 || microsecond > 0 || nanosecond > 0)
-        ss << separate_seconds << std::to_string(millisecond);
+    if (include_to == TimeComponent::MINUTE) return ss.str();
 
-    if (include_0s || microsecond > 0 || nanosecond > 0)
-        ss << separate_seconds << std::to_string(microsecond);
+    ss << delim_h_m_s << strh::align(std::to_string(second), strh::Alignment::LEFT, 2, '0');
 
-    if (include_0s || nanosecond > 0)
-        ss << separate_seconds << std::to_string(nanosecond);
+    if (include_to == TimeComponent::SECOND) return ss.str();
+
+    ss << delim_ms_us_na << static_cast<int>(millisecond);
+
+    if (include_to == TimeComponent::MILLISECOND) return ss.str();
+
+    ss << delim_ms_us_na << static_cast<int>(microsecond);
+
+    if (include_to == TimeComponent::MICROSECOND) return ss.str();
+
+    ss << delim_ms_us_na << static_cast<int>(nanosecond);
 
     return ss.str();
 }

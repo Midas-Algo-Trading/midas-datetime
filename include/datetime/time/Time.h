@@ -58,8 +58,8 @@ public:
      * @param string string representation of the date.
      * @param time_components 'Components' that correspond to each number in 'string'.
      */
-    template<typename... TimeComponents>
-    explicit Time(std::string_view string, TimeComponents... time_components);
+    template<typename... Component>
+    explicit Time(std::string_view string, Component... time_components);
 
     /**
      * Creates a 'Time' object from a 'TimeDelta'.
@@ -147,9 +147,27 @@ public:
     static std::vector<Time> range(Time start, Time end, Nanoseconds increment = Nanoseconds(1));
 
     /**
-     * Components of a time.
+     * Represents this 'Datetime' as a std::string.
+     *
+     * @param include_to Include the time components up until 'include_to' in the resulting
+     * string (inclusive). (default TimeComponent::TIMEZONE)
+     * @param delim_h_m_s 'char' separating hours, minutes, and seconds.
+     * @param delim_ms_us_ns 'char' separating milliseconds, microseconds, and nanoseconds.
+     * @param delim_tz delimiter between nanosecond and timezone.
+     *
+     * @example
+     * Time time = Time(1, 2, 3, 4, 5, 6, TZ::EST);
+     * std::string time_string = time.to_string();
+     * std::cout << time_string;
+     *
+     * // output: 1:02:03.4.5.6+5:00
+     *
+     * @return resulting std::string.
      */
-    enum Component { HOUR, MINUTE, SECOND, MILLISECOND, MICROSECOND, NANOSECOND, TIMEZONE};
+    virtual std::string to_string(TimeComponent include_to = TimeComponent::TIMEZONE,
+                                  char delim_h_m_s = ':',
+                                  char delim_ms_us_na = '.',
+                                  char delim_tz = '+') const;
 
     /**
      * Adds 'time' and 'other'.
@@ -479,21 +497,21 @@ public:
      *
      * // output: 1:03:00.0.0.0
      */
-    Time& round(Component to);
+    Time& round(TimeComponent to);
 
     /**
      * Rounds up the components of this 'Time', stopping at 'to'.
      *
      * @param to finish the rounding up of this 'Time's' components at this 'Component'.
      */
-    Time& ceil(Component to);
+    Time& ceil(TimeComponent to);
 
     /**
      * Rounds down the components of this 'Time', stopping at 'to'.
      *
      * @param to finish the rounding down of this 'Time's' components at this 'Component'.
      */
-    Time& floor(Component to);
+    Time& floor(TimeComponent to);
 
     /**
      * Outputs 'time' into 'os'.
@@ -501,7 +519,7 @@ public:
      * @param os std::ostream' to insert 'time' into.
      * @param time 'Time' to insert into 'os'.
      *
-     * @return reference to 'os' after inserting 'date' into 'os'.
+     * @return reference to 'os' after inserting 'time' into 'os'.
      */
     friend std::ostream& operator<<(std::ostream& os, const Time& time);
 
@@ -637,15 +655,14 @@ private:
     bool is_valid_nanosecond() const;
 };
 
-template<typename... TimeComponent>
-Time::Time(std::string_view string, TimeComponent... time_components)
+template<typename... Component>
+Time::Time(std::string_view string, Component... time_components)
 {
     std::vector<std::string> time_components_strs = strh::split_alphabetical(string);
 
     ASSERT(time_components_strs.size() >= sizeof...(time_components),
-           std::invalid_argument(fmt::format("components: '{}' with size '{}' does not match date "
+           std::invalid_argument(fmt::format("components with size '{}' does not match date "
                                              "strings: '{}' with size '{}'",
-                                             strh::from_parameter_pack(time_components...),
                                              sizeof...(time_components),
                                              fmt::join(time_components_strs, ", "),
                                              time_components_strs.size())));
@@ -656,31 +673,31 @@ Time::Time(std::string_view string, TimeComponent... time_components)
     auto get_time_components_from_str = [&](const auto& time_component, size_t idx) {
         switch (time_component)
         {
-        case Time::Component::HOUR:
+        case TimeComponent::HOUR:
             hour = std::stoi(time_components_strs[idx]);
             break;
-        case Time::Component::MINUTE:
+        case TimeComponent::MINUTE:
             if (time_components_strs[idx][0] == '0')
                 minute = time_components_strs[idx][1] - '0'; // char to int
             else
                 minute = std::stoi(time_components_strs[idx]);
             break;
-        case Time::Component::SECOND:
+        case TimeComponent::SECOND:
             if (time_components_strs[idx][0] == '0')
                 second = time_components_strs[idx][1] - '0'; // char to int
             else
                 second = std::stoi(time_components_strs[idx]);
             break;
-        case Time::Component::MILLISECOND:
+        case TimeComponent::MILLISECOND:
             millisecond = std::stoi(time_components_strs[idx]);
             break;
-        case Time::Component::MICROSECOND:
+        case TimeComponent::MICROSECOND:
             microsecond = std::stoi(time_components_strs[idx]);
             break;
-        case Time::Component::NANOSECOND:
+        case TimeComponent::NANOSECOND:
             nanosecond = std::stoi(time_components_strs[idx]);
             break;
-        case Time::Component::TIMEZONE:
+        case TimeComponent::TIMEZONE:
             timezone = Timezone(time_components_strs[idx][1] - '0');
             break;
         }

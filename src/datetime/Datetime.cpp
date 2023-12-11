@@ -177,9 +177,17 @@ Datetime &Datetime::operator--()
     return *this;
 }
 
-std::string Datetime::to_string(char separate_components, char separate_time) const
+std::string Datetime::to_string(TimeComponent include_to,
+                                char delim_date,
+                                char delim_date_and_time,
+                                char delim_h_m_s,
+                                char delim_ms_us_ns,
+                                char delim_tz) const
 {
-    return Date::to_string() + separate_components + Time::to_string(separate_time);
+    return
+      Date::to_string(delim_date)
+    + delim_date_and_time
+    + Time::to_string(include_to, delim_h_m_s, delim_ms_us_ns, delim_tz);
 }
 
 std::ostream& operator<<(std::ostream& os, const Datetime& datetime)

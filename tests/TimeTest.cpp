@@ -233,7 +233,7 @@ TEST(Time, ostream)
         Time time = Time(1, 2, 3, 4, 5, 6);
         std::stringstream actual;
         actual << time;
-        EXPECT_EQ(actual.str(), "1:02:03.4.5.6");
+        EXPECT_EQ(actual.str(), "1:02:03.4.5.6+5:00");
 }
 
 TEST(TimeRange, constructor_sets_variables)
@@ -454,157 +454,162 @@ TEST(Timezone, get_from_str_throws_if_not_timezone_str)
         EXPECT_THROW(TZ::helpers::get_from_str("Invalid timezone str"), std::invalid_argument);
 }
 
+TEST(Timezone, to_string)
+{
+    std::string est_string = TZ::EST.to_string();
+    EXPECT_EQ(est_string, "5:00");
+}
 
 TEST(Time, round_up)
 {
         Time time = Time(11, 29, 30, 1, 1, 1);
-        time.round(Time::Component::HOUR);
+        time.round(TimeComponent::HOUR);
         EXPECT_EQ(time, Time(12, 0, 0, 0, 0, 0));
 
         time = Time(1, 29, 29, 500, 1, 1);
-        time.round(Time::Component::MINUTE);
+        time.round(TimeComponent::MINUTE);
         EXPECT_EQ(time, Time(1, 30, 0, 0, 0, 0));
 
         time = Time(1, 0, 29, 499, 500, 1);
-        time.round(Time::Component::SECOND);
+        time.round(TimeComponent::SECOND);
         EXPECT_EQ(time, Time(1, 0, 30, 0, 0, 0));
 
         time = Time(1, 0, 0, 499, 499, 500);
-        time.round(Time::Component::MILLISECOND);
+        time.round(TimeComponent::MILLISECOND);
         EXPECT_EQ(time, Time(1, 0, 0, 500, 0, 0));
 
         time = Time(1, 0, 0, 0, 499, 500);
-        time.round(Time::Component::MICROSECOND);
+        time.round(TimeComponent::MICROSECOND);
         EXPECT_EQ(time, Time(1, 0, 0, 0, 500, 0));
 }
 
 TEST(Time, round_down)
 {
         Time time = Time(11, 29, 1, 1, 1, 1);
-        time.round(Time::Component::HOUR);
+        time.round(TimeComponent::HOUR);
         EXPECT_EQ(time, Time(11, 0, 0, 0, 0, 0));
 
         time = Time(1, 29, 29, 1, 1, 1);
-        time.round(Time::Component::MINUTE);
+        time.round(TimeComponent::MINUTE);
         EXPECT_EQ(time, Time(1, 29, 0, 0, 0, 0));
 
         time = Time(1, 1, 29, 499, 1, 1);
-        time.round(Time::Component::SECOND);
+        time.round(TimeComponent::SECOND);
         EXPECT_EQ(time, Time(1, 1, 29, 0, 0, 0));
 
         time = Time(1, 1, 1, 499, 499, 1);
-        time.round(Time::Component::MILLISECOND);
+        time.round(TimeComponent::MILLISECOND);
         EXPECT_EQ(time, Time(1, 1, 1, 499, 0, 0));
 
         time = Time(1, 1, 1, 1, 499, 499);
-        time.round(Time::Component::MICROSECOND);
+        time.round(TimeComponent::MICROSECOND);
         EXPECT_EQ(time, Time(1, 1, 1, 1, 499, 0));
 
         time = Time(1, 1, 1, 1, 1, 499);
-        time.round(Time::Component::NANOSECOND);
+        time.round(TimeComponent::NANOSECOND);
         EXPECT_EQ(time, Time(1, 1, 1, 1, 1, 499));
 }
 
 TEST(Time, ceil_up)
 {
         Time time = Time(11, 1, 0, 0, 0, 0);
-        time.ceil(Time::Component::HOUR);
+        time.ceil(TimeComponent::HOUR);
         EXPECT_EQ(time, Time(12, 0, 0, 0, 0, 0));
 
         time = Time(1, 29, 29, 1, 1, 1);
-        time.ceil(Time::Component::MINUTE);
+        time.ceil(TimeComponent::MINUTE);
         EXPECT_EQ(time, Time(1, 30, 0, 0, 0, 0));
 
         time = Time(1, 1, 29, 1, 1, 1);
-        time.ceil(Time::Component::SECOND);
+        time.ceil(TimeComponent::SECOND);
         EXPECT_EQ(time, Time(1, 1, 30, 0, 0, 0));
 
         time = Time(1, 1, 1, 499, 1, 1);
-        time.ceil(Time::Component::MILLISECOND);
+        time.ceil(TimeComponent::MILLISECOND);
         EXPECT_EQ(time, Time(1, 1, 1, 500, 0, 0));
 
         time = Time(1, 1, 1, 1, 499, 1);
-        time.ceil(Time::Component::MICROSECOND);
+        time.ceil(TimeComponent::MICROSECOND);
         EXPECT_EQ(time, Time(1, 1, 1, 1, 500, 0));
 
         time = Time(1, 1, 1, 1, 1, 499);
-        time.ceil(Time::Component::NANOSECOND);
+        time.ceil(TimeComponent::NANOSECOND);
         EXPECT_EQ(time, Time(1, 1, 1, 1, 1, 499));
 }
 
 TEST(Time, ceil_no_up)
 {
         Time time = Time(1);
-        time.ceil(Time::Component::HOUR);
+        time.ceil(TimeComponent::HOUR);
         EXPECT_EQ(time, Time(1));
 
         time = Time(1, 1);
-        time.ceil(Time::Component::MINUTE);
+        time.ceil(TimeComponent::MINUTE);
         EXPECT_EQ(time, Time(1, 1));
 
         time = Time(1, 0, 1);
-        time.ceil(Time::Component::SECOND);
+        time.ceil(TimeComponent::SECOND);
         EXPECT_EQ(time, Time(1, 0, 1));
 
         time = Time(1, 0, 0, 1);
-        time.ceil(Time::Component::MILLISECOND);
+        time.ceil(TimeComponent::MILLISECOND);
         EXPECT_EQ(time, Time(1, 0, 0, 1));
 
         time = Time(1, 0, 0, 0, 1);
-        time.ceil(Time::Component::MICROSECOND);
+        time.ceil(TimeComponent::MICROSECOND);
         EXPECT_EQ(time, Time(1, 0, 0, 0, 1));
 
         time = Time(1, 1, 1, 1, 1, 499);
-        time.ceil(Time::Component::NANOSECOND);
+        time.ceil(TimeComponent::NANOSECOND);
         EXPECT_EQ(time, Time(1, 1, 1, 1, 1, 499));
 }
 
 TEST(Time, floor)
 {
         Time time = Time(1, 59);
-        time.floor(Time::Component::HOUR);
+        time.floor(TimeComponent::HOUR);
         EXPECT_EQ(time, Time(1));
 
         time = Time(1, 1, 59);
-        time.floor(Time::Component::MINUTE);
+        time.floor(TimeComponent::MINUTE);
         EXPECT_EQ(time, Time(1, 1));
 
         time = Time(1, 0, 1, 999);
-        time.floor(Time::Component::SECOND);
+        time.floor(TimeComponent::SECOND);
         EXPECT_EQ(time, Time(1, 0, 1));
 
         time = Time(1, 0, 0, 1, 999);
-        time.floor(Time::Component::MILLISECOND);
+        time.floor(TimeComponent::MILLISECOND);
         EXPECT_EQ(time, Time(1, 0, 0, 1));
 
         time = Time(1, 0, 0, 0, 1, 999);
-        time.floor(Time::Component::MICROSECOND);
+        time.floor(TimeComponent::MICROSECOND);
         EXPECT_EQ(time, Time(1, 0, 0, 0, 1  ));
 
         time = Time(1, 1, 1, 1, 1, 499);
-        time.floor(Time::Component::NANOSECOND);
+        time.floor(TimeComponent::NANOSECOND);
         EXPECT_EQ(time, Time(1, 1, 1, 1, 1, 499));
 }
 
 TEST(Time, to_string)
 {
     Time time = Time(1, 2, 30, 4, 5, 6);
-    EXPECT_EQ(time.to_string(), "1:02:30.4.5.6");
+    EXPECT_EQ(time.to_string(TimeComponent::TIMEZONE), "1:02:30.4.5.6+5:00");
 }
 
-TEST(Time, to_string_do_not_include_0s)
+TEST(Time, to_string_include_up_to_millisecond)
 {
     Time time = Time(1, 2, 30, 4);
-    EXPECT_EQ(time.to_string(false), "1:02:30.4");
+    EXPECT_EQ(time.to_string(TimeComponent::MILLISECOND), "1:02:30.4");
 }
 
 
 TEST(Time, string_TimeComponents_basic)
 {
     Time time = Time("1:02:30.4.5.6-07:00",
-                     Time::Component::HOUR, Time::Component::MINUTE, Time::Component::SECOND,
-                     Time::Component::MILLISECOND, Time::Component::MICROSECOND,
-                     Time::Component::NANOSECOND, Time::Component::TIMEZONE);
+                     TimeComponent::HOUR, TimeComponent::MINUTE, TimeComponent::SECOND,
+                     TimeComponent::MILLISECOND, TimeComponent::MICROSECOND,
+                     TimeComponent::NANOSECOND, TimeComponent::TIMEZONE);
     EXPECT_EQ(time.hour, 1);
     EXPECT_EQ(time.minute, 2);
     EXPECT_EQ(time.second, 30);
@@ -616,7 +621,7 @@ TEST(Time, string_TimeComponents_basic)
 
 TEST(Time, string_TimeComponents_skip)
 {
-    Time time = Time("1.2", Time::Component::HOUR, Time::Component::NANOSECOND);
+    Time time = Time("1.2", TimeComponent::HOUR, TimeComponent::NANOSECOND);
     EXPECT_EQ(time.hour, 1);
     EXPECT_EQ(time.nanosecond, 2);
 }
@@ -628,13 +633,13 @@ TEST(Time, constructor_int_int_int_int_int_int_throws_invalid_argument)
 
 TEST(Time, constructor_string_TimeComponents_throws_invalid_argument_on_wrong_time_components)
 {
-    EXPECT_THROW(Time("1", Time::Component::HOUR, Time::Component::MINUTE),
+    EXPECT_THROW(Time("1", TimeComponent::HOUR, TimeComponent::MINUTE),
                  std::invalid_argument);
 }
 
 TEST(Time, constructor_string_TimeComponents_throws_invalid_argument_on_out_of_range_components)
 {
-    EXPECT_THROW(Time("25", Time::Component::HOUR), std::invalid_argument);
+    EXPECT_THROW(Time("25", TimeComponent::HOUR), std::invalid_argument);
 }
 
 TEST(Time, operator_plus_time)
