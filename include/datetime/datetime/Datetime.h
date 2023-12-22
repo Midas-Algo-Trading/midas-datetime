@@ -212,12 +212,12 @@ public:
     *
     * @param mock_datetime the datetime we want to set and reference
     */
-    void set_mock_datetime(Datetime mock_datetime);
+    static void set_mock_datetime(Datetime mock_datetime);
 
     /**
     * Clear the mock datetime that is currently set
     */
-    void clear_mock_datetime();
+    static void clear_mock_datetime();
 
 
     /**
