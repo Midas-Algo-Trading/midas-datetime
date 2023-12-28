@@ -24,6 +24,17 @@ class Time : public BasicTime
 public:
 
     /**
+     * The mock time we will used in time::now() when mock_time is true
+     */
+    static Time mock_time_var;
+
+
+    /**
+     * Whether or not there is a mock time provided
+     */
+    static bool mock_time;
+
+    /**
      * 'Timezone' of the 'Time'.
      */
     Timezone timezone = default_timezone;

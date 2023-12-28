@@ -31,6 +31,17 @@ public:
     uint8_t day = EPOCH.day;
 
     /**
+     * The mock date we will used in date::today() when mock_date is true
+     */
+    static Date mock_date_var;
+
+
+    /**
+     * Whether or not there is a mock date provided
+     */
+    static bool mock_date;
+
+    /**
      * Different days in a week.
      *
      * @see day_of_week

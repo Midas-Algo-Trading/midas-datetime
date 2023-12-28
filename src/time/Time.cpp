@@ -6,12 +6,18 @@
 
 Timezone Time::default_timezone = TZ::EST;
 
+bool Time::mock_time = false;
+Time Time::mock_time_var;
+
 Time Time::now(uint8_t hour_offset, uint8_t minute_offset, uint8_t second_offset,
                uint16_t millisecond_offset, uint16_t microsecond_offset,
-               uint16_t nanosecond_offset, Timezone timezone)
-{
+               uint16_t nanosecond_offset, Timezone timezone) {
+    if (mock_time)
+        return mock_time_var;
+
     // Get the current local time
     std::time_t now = std::time(nullptr);
+
     std::tm local_tm = *std::localtime(&now);
 
     // Extract the different time components

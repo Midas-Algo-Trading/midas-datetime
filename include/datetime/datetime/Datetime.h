@@ -11,21 +11,21 @@
 class Datetime : public Date, public Time
 {
 public:
-
     /**
-     * The mock date to be used when getting the current datetime
+     * The mock date we will use to construct the mock datetime
      */
     static Date mock_date;
 
     /**
-     * The mock time to be used when getting the current datetime
+     * The mock time we will use to construct the mock datetime
      */
     static Time mock_time;
+
 
     /**
      * Whether or not there is a mock datetime provided
      */
-     static bool mock_datetime;
+    static bool mock_datetime;
 
     /**
      * Creates a 'Datetime' whose date values match 'date'.
@@ -34,8 +34,8 @@ public:
      * @param date 'Date' to set the date values of 'Datetime' to.
      */
     explicit Datetime(const Date& date) :
-        Date(date.year, date.month, date.day),
-        Time() {}
+            Date(date.year, date.month, date.day),
+            Time() {}
 
     /**
      * Creates a 'Datetime' whose date values match 'date' and whose time values match 'time'.
@@ -44,9 +44,9 @@ public:
      * @param time 'Time' to set the time values of 'Datetime' to.
      */
     explicit Datetime(const Date& date, const Time& time) :
-        Date(date.year, date.month, date.day),
-        Time(time.hour, time.minute, time.second, time.millisecond, time.microsecond,
-             time.nanosecond, time.timezone) {}
+            Date(date.year, date.month, date.day),
+            Time(time.hour, time.minute, time.second, time.millisecond, time.microsecond,
+                 time.nanosecond, time.timezone) {}
 
     /**
      * Creates a 'Datetime' based on the given arguments.
@@ -66,9 +66,9 @@ public:
                       uint8_t day = EPOCH.day, uint8_t hour = 0, uint8_t minute = 0,
                       uint8_t second = 0, uint16_t millisecond = 0, uint16_t microsecond = 0,
                       uint16_t nanosecond = 0, Timezone timezone = Time::default_timezone)
-        :
-        Date(year, month, day),
-        Time(hour, minute, second, millisecond, microsecond, nanosecond, timezone) {}
+            :
+            Date(year, month, day),
+            Time(hour, minute, second, millisecond, microsecond, nanosecond, timezone) {}
 
     /**
      * Creates a 'Datetime' whose components' values match the current date and time.
@@ -120,15 +120,15 @@ public:
      * @param time_components 'Time' components that correspond to each number in 'string'.
      */
     template<typename DateComponent1, typename DateComponent2, typename DateComponent3,
-        typename... TimeComponents>
+            typename... TimeComponents>
     explicit Datetime(std::string_view string, DateComponent1 date_component1,
                       DateComponent2 date_component2, DateComponent3 date_component3,
                       TimeComponents... time_components) :
     // First 10 characters in 'string' will be for the date, remaining will be for
     // the time.
-        Date(string.substr(0, 10), date_component1, date_component2, date_component3),
-        Time(string.substr(10, string.length()),
-             std::forward<TimeComponents>(time_components)...) {}
+            Date(string.substr(0, 10), date_component1, date_component2, date_component3),
+            Time(string.substr(10, string.length()),
+                 std::forward<TimeComponents>(time_components)...) {}
 
     /**
     * Gets the datetimes within a range.
@@ -728,14 +728,14 @@ private:
 
 namespace std
 {
-template<>
-struct hash<Datetime>
-{
-    size_t operator()(const Datetime& datetime) const
+    template<>
+    struct hash<Datetime>
     {
-        return datetime.hash();
-    }
-};
+        size_t operator()(const Datetime& datetime) const
+        {
+            return datetime.hash();
+        }
+    };
 }
 
 #endif //DATETIME_DATETIME_H
