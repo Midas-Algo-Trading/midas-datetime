@@ -2,6 +2,7 @@
 #define TIME_TIME_H
 
 #include <iostream>
+#include <fmt/ranges.h>
 #include "datetime/time/components/Hours.h"
 #include "datetime/time/components/Minutes.h"
 #include "datetime/time/components/Seconds.h"
