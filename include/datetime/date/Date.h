@@ -8,6 +8,7 @@
 #include "../../../util/macros.h"
 #include "stringhelpers/stringhelpers.h"
 #include "DateComponent.h"
+#include <optional>
 
 class TimeDelta;
 
