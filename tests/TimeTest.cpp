@@ -604,7 +604,7 @@ TEST(Time, to_string_include_up_to_millisecond)
 }
 
 
-TEST(Time, string_TimeComponents_basic)
+TEST(Time, string_TimeComponents_0_at_front_of_timezone)
 {
     Time time = Time("1:02:30.4.5.6-07:00",
                      TimeComponent::HOUR, TimeComponent::MINUTE, TimeComponent::SECOND,
@@ -617,6 +617,36 @@ TEST(Time, string_TimeComponents_basic)
     EXPECT_EQ(time.microsecond, 5);
     EXPECT_EQ(time.nanosecond, 6);
     EXPECT_EQ(time.timezone.utc_offset, 7);
+}
+
+TEST(Time, string_TimeComponents_1_digit_timezone)
+{
+    Time time = Time("1:02:30.4.5.6-7:00",
+                     TimeComponent::HOUR, TimeComponent::MINUTE, TimeComponent::SECOND,
+                     TimeComponent::MILLISECOND, TimeComponent::MICROSECOND,
+                     TimeComponent::NANOSECOND, TimeComponent::TIMEZONE);
+    EXPECT_EQ(time.hour, 1);
+    EXPECT_EQ(time.minute, 2);
+    EXPECT_EQ(time.second, 30);
+    EXPECT_EQ(time.millisecond, 4);
+    EXPECT_EQ(time.microsecond, 5);
+    EXPECT_EQ(time.nanosecond, 6);
+    EXPECT_EQ(time.timezone.utc_offset, 7);
+}
+
+TEST(Time, string_TimeComponents_2_digit_timezone)
+{
+    Time time = Time("1:02:30.4.5.6-12:00",
+                     TimeComponent::HOUR, TimeComponent::MINUTE, TimeComponent::SECOND,
+                     TimeComponent::MILLISECOND, TimeComponent::MICROSECOND,
+                     TimeComponent::NANOSECOND, TimeComponent::TIMEZONE);
+    EXPECT_EQ(time.hour, 1);
+    EXPECT_EQ(time.minute, 2);
+    EXPECT_EQ(time.second, 30);
+    EXPECT_EQ(time.millisecond, 4);
+    EXPECT_EQ(time.microsecond, 5);
+    EXPECT_EQ(time.nanosecond, 6);
+    EXPECT_EQ(time.timezone.utc_offset, 12);
 }
 
 TEST(Time, string_TimeComponents_skip)
