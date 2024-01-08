@@ -485,7 +485,7 @@ TEST(Datetime, operator_decrement)
 
 TEST(Datetime, constructor_string_DateComponent1_DateComponent2_DateComponent3_TimeComponents_basic)
 {
-    Datetime datetime = Datetime("2000-01-02 3:04:50.6.7.8",
+    Datetime datetime = Datetime("2000-01-02 3:04:50.6.7.8+9:00",
                                  DateComponent::YEAR,
                                  DateComponent::MONTH,
                                  DateComponent::DAY,
@@ -494,7 +494,8 @@ TEST(Datetime, constructor_string_DateComponent1_DateComponent2_DateComponent3_T
                                  TimeComponent::SECOND,
                                  TimeComponent::MILLISECOND,
                                  TimeComponent::MICROSECOND,
-                                 TimeComponent::NANOSECOND);
+                                 TimeComponent::NANOSECOND,
+                                 TimeComponent::TIMEZONE);
     EXPECT_EQ(datetime.year, 2000);
     EXPECT_EQ(datetime.month, 1);
     EXPECT_EQ(datetime.day, 2);
@@ -504,6 +505,7 @@ TEST(Datetime, constructor_string_DateComponent1_DateComponent2_DateComponent3_T
     EXPECT_EQ(datetime.millisecond, 6);
     EXPECT_EQ(datetime.microsecond, 7);
     EXPECT_EQ(datetime.nanosecond, 8);
+    EXPECT_EQ(datetime.timezone.utc_offset, 9);
 }
 
 TEST(Datetime, constructor_string_DateComponent1_DateComponent2_DateComponent3_TimeComponents_skip)

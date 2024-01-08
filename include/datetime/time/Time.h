@@ -2,6 +2,7 @@
 #define TIME_TIME_H
 
 #include <iostream>
+#include <fmt/ranges.h>
 #include "datetime/time/components/Hours.h"
 #include "datetime/time/components/Minutes.h"
 #include "datetime/time/components/Seconds.h"
@@ -688,14 +689,14 @@ Time::Time(std::string_view string, Component... time_components)
             hour = std::stoi(time_components_strs[idx]);
             break;
         case TimeComponent::MINUTE:
-            if (time_components_strs[idx][0] == '0')
-                minute = time_components_strs[idx][1] - '0'; // char to int
+            if (time_components_strs[idx].front() == '0')
+                minute = time_components_strs[idx].back()- '0'; // char to int
             else
                 minute = std::stoi(time_components_strs[idx]);
             break;
         case TimeComponent::SECOND:
-            if (time_components_strs[idx][0] == '0')
-                second = time_components_strs[idx][1] - '0'; // char to int
+            if (time_components_strs[idx].front() == '0')
+                second = time_components_strs[idx].back() - '0'; // char to int
             else
                 second = std::stoi(time_components_strs[idx]);
             break;
@@ -709,7 +710,10 @@ Time::Time(std::string_view string, Component... time_components)
             nanosecond = std::stoi(time_components_strs[idx]);
             break;
         case TimeComponent::TIMEZONE:
-            timezone = Timezone(time_components_strs[idx][1] - '0');
+            if (time_components_strs[idx].front() == '0')
+                timezone = Timezone(time_components_strs[idx].back() - '0');
+            else
+                timezone = Timezone(std::stoi(time_components_strs[idx]));
             break;
         }
     };
