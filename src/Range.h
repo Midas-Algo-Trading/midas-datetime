@@ -1,6 +1,8 @@
 #ifndef DATETIME_RANGE_H
 #define DATETIME_RANGE_H
 
+#include <stdexcept>
+
 /**
  * Range of 'T'.
  *
