@@ -526,6 +526,24 @@ std::vector<Datetime> Datetime::range(Datetime start, Datetime end, Nanoseconds 
                  });
 }
 
+Datetime& Datetime::round(TimeComponent to)
+{
+    Time::round(to);
+    return *this;
+}
+
+Datetime& Datetime::ceil(TimeComponent to)
+{
+    Time::ceil(to);
+    return *this;
+}
+
+Datetime& Datetime::floor(TimeComponent to)
+{
+    Time::floor(to);
+    return *this;
+}
+
 template<typename Func>
 requires std::is_invocable_v<Func, Datetime&>
 std::vector<Datetime> Datetime::range(Datetime& start, Datetime& end, Func increment)
