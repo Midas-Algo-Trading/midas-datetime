@@ -267,6 +267,34 @@ public:
                           char delim_tz = '+') const;
 
     /**
+     * Rounds the components of this 'Datetime', stopping at 'to'.
+     *
+     * @param to finish the rounding of this 'Datetime's' components at this 'Component'.
+     *
+     * @example
+     * Datetime time = Datetime(2000, 1, 1, 1, 2, 33, 4, 5, 6);
+     * time.round(Time::MINUTE);
+     * std::cout << time;
+     *
+     * // output: 2000-01-01 1:03:00.0.0.0
+     */
+    Datetime& round(TimeComponent to) override;
+
+    /**
+     * Rounds up the components of this 'Datetime', stopping at 'to'.
+     *
+     * @param to finish the rounding up of this 'Datetime's' components at this 'Component'.
+     */
+    Datetime& ceil(TimeComponent to) override;
+
+    /**
+     * Rounds down the components of this 'Datetime', stopping at 'to'.
+     *
+     * @param to finish the rounding down of this 'Datetime's' components at this 'Component'.
+     */
+    Datetime& floor(TimeComponent to) override;
+
+    /**
      * Checks if 'this' is greater than 'other'.
      *
      * @param other 'Datetime' to compare to.

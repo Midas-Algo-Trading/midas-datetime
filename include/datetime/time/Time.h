@@ -509,21 +509,21 @@ public:
      *
      * // output: 1:03:00.0.0.0
      */
-    Time& round(TimeComponent to);
+    virtual Time& round(TimeComponent to);
 
     /**
      * Rounds up the components of this 'Time', stopping at 'to'.
      *
      * @param to finish the rounding up of this 'Time's' components at this 'Component'.
      */
-    Time& ceil(TimeComponent to);
+    virtual Time& ceil(TimeComponent to);
 
     /**
      * Rounds down the components of this 'Time', stopping at 'to'.
      *
      * @param to finish the rounding down of this 'Time's' components at this 'Component'.
      */
-    Time& floor(TimeComponent to);
+    virtual Time& floor(TimeComponent to);
 
     /**
      * Outputs 'time' into 'os'.

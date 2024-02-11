@@ -996,3 +996,134 @@ TEST(Datetime, increment_2_nanoseconds)
                                       Datetime(2023, 1, 1)};
     EXPECT_EQ(actual, expected);
 }
+
+TEST(Datetime, round_up)
+{
+    Datetime datetime = Datetime(2000, 1, 1, 11, 29, 30, 1, 1, 1);
+    datetime.round(TimeComponent::HOUR);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 12, 0, 0, 0, 0, 0));
+
+    datetime = Datetime(2000, 1, 1, 1, 29, 29, 500, 1, 1);
+    datetime.round(TimeComponent::MINUTE);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1, 30, 0, 0, 0, 0));
+
+    datetime = Datetime(2000, 1, 1, 1, 0, 29, 499, 500, 1);
+    datetime.round(TimeComponent::SECOND);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1, 0, 30, 0, 0, 0));
+
+    datetime = Datetime(2000, 1, 1, 1, 0, 0, 499, 499, 500);
+    datetime.round(TimeComponent::MILLISECOND);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1, 0, 0, 500, 0, 0));
+
+    datetime = Datetime(2000, 1, 1, 1, 0, 0, 0, 499, 500);
+    datetime.round(TimeComponent::MICROSECOND);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1, 0, 0, 0, 500, 0));
+}
+
+TEST(Datetime, round_down)
+{
+    Datetime datetime = Datetime(2000, 1, 1, 11, 29, 1, 1, 1, 1);
+    datetime.round(TimeComponent::HOUR);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 11, 0, 0, 0, 0, 0));
+
+    datetime = Datetime(2000, 1, 1, 1, 29, 29, 1, 1, 1);
+    datetime.round(TimeComponent::MINUTE);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1, 29, 0, 0, 0, 0));
+
+    datetime = Datetime(2000, 1, 1, 1, 1, 29, 499, 1, 1);
+    datetime.round(TimeComponent::SECOND);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1, 1, 29, 0, 0, 0));
+
+    datetime = Datetime(2000, 1, 1, 1, 1, 1, 499, 499, 1);
+    datetime.round(TimeComponent::MILLISECOND);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1, 1, 1, 499, 0, 0));
+
+    datetime = Datetime(2000, 1, 1, 1, 1, 1, 1, 499, 499);
+    datetime.round(TimeComponent::MICROSECOND);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1, 1, 1, 1, 499, 0));
+
+    datetime = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 499);
+    datetime.round(TimeComponent::NANOSECOND);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 499));
+}
+
+TEST(Datetime, ceil_up)
+{
+    Time time = Time(11, 1, 0, 0, 0, 0);
+    time.ceil(TimeComponent::HOUR);
+    EXPECT_EQ(time, Time(12, 0, 0, 0, 0, 0));
+
+    time = Time(1, 29, 29, 1, 1, 1);
+    time.ceil(TimeComponent::MINUTE);
+    EXPECT_EQ(time, Time(1, 30, 0, 0, 0, 0));
+
+    time = Time(1, 1, 29, 1, 1, 1);
+    time.ceil(TimeComponent::SECOND);
+    EXPECT_EQ(time, Time(1, 1, 30, 0, 0, 0));
+
+    time = Time(1, 1, 1, 499, 1, 1);
+    time.ceil(TimeComponent::MILLISECOND);
+    EXPECT_EQ(time, Time(1, 1, 1, 500, 0, 0));
+
+    time = Time(1, 1, 1, 1, 499, 1);
+    time.ceil(TimeComponent::MICROSECOND);
+    EXPECT_EQ(time, Time(1, 1, 1, 1, 500, 0));
+
+    time = Time(1, 1, 1, 1, 1, 499);
+    time.ceil(TimeComponent::NANOSECOND);
+    EXPECT_EQ(time, Time(1, 1, 1, 1, 1, 499));
+}
+
+TEST(Datetime, ceil_no_up)
+{
+    Datetime datetime = Datetime(2000, 1, 1, 1);
+    datetime.ceil(TimeComponent::HOUR);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1));
+
+    datetime = Datetime(2000, 1, 1, 1, 1);
+    datetime.ceil(TimeComponent::MINUTE);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1, 1));
+
+    datetime = Datetime(2000, 1, 1, 1, 0, 1);
+    datetime.ceil(TimeComponent::SECOND);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1, 0, 1));
+
+    datetime = Datetime(2000, 1, 1, 1, 0, 0, 1);
+    datetime.ceil(TimeComponent::MILLISECOND);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1, 0, 0, 1));
+
+    datetime = Datetime(2000, 1, 1, 1, 0, 0, 0, 1);
+    datetime.ceil(TimeComponent::MICROSECOND);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1, 0, 0, 0, 1));
+
+    datetime = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 499);
+    datetime.ceil(TimeComponent::NANOSECOND);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 499));
+}
+
+TEST(Datetime, floor)
+{
+    Datetime datetime = Datetime(2000, 1, 1, 1, 59);
+    datetime.floor(TimeComponent::HOUR);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1));
+
+    datetime = Datetime(2000, 1, 1, 1, 1, 59);
+    datetime.floor(TimeComponent::MINUTE);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1, 1));
+
+    datetime = Datetime(2000, 1, 1, 1, 0, 1, 999);
+    datetime.floor(TimeComponent::SECOND);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1, 0, 1));
+
+    datetime = Datetime(2000, 1, 1, 1, 0, 0, 1, 999);
+    datetime.floor(TimeComponent::MILLISECOND);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1, 0, 0, 1));
+
+    datetime = Datetime(2000, 1, 1, 1, 0, 0, 0, 1, 999);
+    datetime.floor(TimeComponent::MICROSECOND);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1, 0, 0, 0, 1  ));
+
+    datetime = Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 499);
+    datetime.floor(TimeComponent::NANOSECOND);
+    EXPECT_EQ(datetime, Datetime(2000, 1, 1, 1, 1, 1, 1, 1, 499));
+}
