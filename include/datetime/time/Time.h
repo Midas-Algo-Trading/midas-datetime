@@ -93,6 +93,14 @@ public:
                     nanosecond_offset = 0, Timezone timezone = default_timezone);
 
     /**
+     * Creates a 'Time' object with the max values for 'hour', 'minute', 'second', 'millisecond',
+     * 'microsecond', 'nanosecond'.
+     *
+     * @return 'Time' object with the max components.
+     */
+    static Time max();
+
+    /**
      * Gets the times within a range.
      *
      * @param start starting time of the range.

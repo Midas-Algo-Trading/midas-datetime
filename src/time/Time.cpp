@@ -592,6 +592,11 @@ std::string Time::to_string(TimeComponent include_to,
     return ss.str();
 }
 
+Time Time::max()
+{
+    return Time(23, 59, 59, 999, 999, 999);
+}
+
 template<typename Func>
 requires std::is_invocable_v<Func, Time&>
 std::vector<Time> Time::range(Time& start, Time& end, Func increment)

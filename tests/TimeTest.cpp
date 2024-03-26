@@ -882,3 +882,8 @@ TEST(Time, increment_2_nanosecond)
     std::vector<Time> expected = {Time(1, 1, 1, 1, 1, 1), Time(1, 1, 1, 1, 1, 3)};
     EXPECT_EQ(actual, expected);
 }
+
+TEST(Time, max)
+{
+    EXPECT_EQ(Time::max(), Time(23, 59, 59, 999, 999, 999));
+}
