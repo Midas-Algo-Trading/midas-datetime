@@ -11,4 +11,4 @@ FetchContent_MakeAvailable(googletest)
 # Now simply link against gtest or gtest_main as needed. Eg
 add_executable(exec DateTest.cpp DatetimeTest.cpp Test.cpp TimeTest.cpp TimeDeltaTest.cpp)
 
-target_link_libraries(exec PRIVATE ${PROJECT_NAME} gtest_main fmt)
+target_link_libraries(exec PRIVATE ${PROJECT_NAME} gtest_main)

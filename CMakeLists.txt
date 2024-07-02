@@ -3,13 +3,9 @@ project(datetime)
 
 set(CMAKE_CXX_STANDARD 23)
 
-if (NOT TARGET stringhelpers)
-    add_subdirectory(libs/stringhelpers)
-endif()
+add_subdirectory(libs/stringhelpers)
 
-if (NOT TARGET fmt)
-    add_subdirectory(libs/fmt)
-endif()
+find_package(fmt CONFIG REQUIRED)
 
     add_library(${PROJECT_NAME}
         include/datetime/time/Time.h
@@ -23,7 +19,7 @@ endif()
         include/datetime/time/Timezone.h
         include/datetime/time/components/Milliseconds.h
         include/datetime/time/TimeRange.h
-        util/exceptions/not_implemented_error.h
+        src/util/exceptions/not_implemented_error.h
         include/datetime/date/DateRange.h
         include/datetime/datetime/Datetime.h
         include/datetime/datetime/DatetimeRange.h
@@ -48,7 +44,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/in
 target_link_libraries(${PROJECT_NAME} PUBLIC stringhelpers fmt::fmt)
 
 option(DATETIME_BUILD_TESTS "Build the test directory for datetime" OFF)
-
 if (DATETIME_BUILD_TESTS)
     add_subdirectory(tests)
 endif()
