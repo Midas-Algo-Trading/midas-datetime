@@ -1,6 +1,5 @@
 #include "gtest/gtest.h"
-#include "datetime/timedelta/TimeDelta.h"
-#include "datetime/date/Date.h"
+#include <datetime/datetime.h>
 
 TEST(TimeDelta, operator_minus_date_date_no_difference)
 {

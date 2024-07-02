@@ -1,8 +1,6 @@
 #include "gtest/gtest.h"
 
-#include <datetime/datetime/Datetime.h>
-#include "datetime/datetime/DatetimeRange.h"
-#include "datetime/timedelta/TimeDelta.h"
+#include <datetime/datetime.h>
 
 
 TEST(Datetime, constructor_date_sets_members)

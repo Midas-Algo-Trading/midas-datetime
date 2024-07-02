@@ -1,4 +1,4 @@
-#include "BasicTime.h"
+#include "basic_time.h"
 #include <stringhelpers/stringhelpers.h>
 
 bool BasicTime::operator>(BasicTime other) const

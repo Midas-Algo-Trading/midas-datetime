@@ -167,7 +167,7 @@
 ## TimeDelta
 
 ### Include
-	#include <datetime/timedelta/TimeDelta.h>
+	#include <datetime/timedelta/time_delta.h>
 
 ### Construction
 	// Days, hours, minutes, seconds, milliseconds, microseconds, nanoseconds

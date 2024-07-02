@@ -3,7 +3,7 @@
 
 #include <utility>
 #include <string>
-#include <datetime/time/TimeComponent.h>
+#include <datetime/time/time_component.h>
 
 /**
  * Basic time representation.
