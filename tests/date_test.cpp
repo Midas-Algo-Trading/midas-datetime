@@ -1,9 +1,5 @@
 #include "gtest/gtest.h"
-
-#include "datetime/date/Date.h"
-#include "datetime/date/components/Days.h"
-#include "datetime/timedelta/TimeDelta.h"
-#include "datetime/date/DateRange.h"
+#include <datetime/datetime.h>
 
 TEST(Date, ostream)
 {

@@ -1,7 +1,7 @@
 #include <utility>
 
 #include "datetime/datetime/Datetime.h"
-#include "datetime/timedelta/TimeDelta.h"
+#include "datetime/timedelta/timedelta.h"
 
 bool Datetime::mock_datetime = false;
 Date Datetime::mock_date = Date(1970, 1, 1);

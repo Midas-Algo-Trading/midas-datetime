@@ -3,7 +3,7 @@
 
 #include <utility>
 #include <ostream>
-#include "../../../src/time/BasicTime.h"
+#include "../../../src/time/basic_time.h"
 
 /**
  * Stores addition/subtraction operations result between 2 date/time/datetime objects.
