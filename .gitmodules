@@ -1,6 +1,3 @@
-[submodule "libs/fmt"]
-	path = libs/fmt
-	url = https://github.com/fmtlib/fmt.git
 [submodule "libs/StringHelpers"]
 	path = libs/StringHelpers
 	url = https://github.com/Midas-Algo-Trading/StringHelpers.git

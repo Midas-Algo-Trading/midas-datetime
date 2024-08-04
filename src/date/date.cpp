@@ -3,8 +3,14 @@
 #include <utility>
 #include "datetime/timedelta/timedelta.h"
 
+bool Date::mock_date = false;
+Date Date::mock_date_var = Date(1970, 1, 1);
+
 Date Date::today(uint8_t day_offset, Timezone timezone)
 {
+    if (mock_date)
+        return mock_date_var;
+
     // Get the current time
     auto now = std::chrono::system_clock::now();
     std::time_t t = std::chrono::system_clock::to_time_t(now);
@@ -19,8 +25,7 @@ Date Date::today(uint8_t day_offset, Timezone timezone)
     Date ret = Date(year, month, day);
 
     // Adjust date for non-local timezone
-    if (timezone != TZ::LOCAL)
-    {
+    if (timezone != TZ::LOCAL) {
         int hour = Time::now().hour + TZ::LOCAL.get_utc_offset_diff(timezone);
         if (hour >= Time::HOURS_PER_DAY)
             ret.add_days(1);

@@ -3,13 +3,24 @@
 #include "datetime/datetime/Datetime.h"
 #include "datetime/timedelta/timedelta.h"
 
+bool Datetime::mock_datetime = false;
+Date Datetime::mock_date = Date(1970, 1, 1);
+Time Datetime::mock_time = Time();
+
 Datetime Datetime::now(uint8_t  day_offset, uint8_t hour_offset, uint8_t minute_offset,
                        uint8_t second_offset, uint16_t millisecond_offset,
                        uint16_t microsecond_offset, uint16_t nanosecond_offset, Timezone timezone)
 {
-    return Datetime(Date::today(day_offset, timezone),
-                    Time::now(hour_offset, minute_offset, second_offset, millisecond_offset,
-                              microsecond_offset, nanosecond_offset, timezone));
+    if (!mock_datetime)
+    {
+        return Datetime(Date::today(day_offset, timezone),
+                        Time::now(hour_offset, minute_offset, second_offset, millisecond_offset,
+                                  microsecond_offset, nanosecond_offset, timezone));
+    }
+    else
+    {
+        return Datetime(mock_date, mock_time);
+    }
 }
 
 int64_t Datetime::add_hours(int64_t hours_to_add)
@@ -22,6 +33,26 @@ int64_t Datetime::add_hours(int64_t hours_to_add)
         subtract_days(-day_change);
 
     return day_change;
+}
+
+void Datetime::set_mock_datetime(Datetime mock_dt)
+{
+    mock_date = mock_dt.date();
+    mock_time = mock_dt.time();
+    mock_datetime = true;
+
+    Time::mock_time_var = mock_dt.time();
+    Time::mock_time = true;
+
+    Date::mock_date_var = mock_dt.date();
+    Date::mock_date = true;
+}
+
+void Datetime::clear_mock_datetime()
+{
+    mock_datetime = false;
+    Time::mock_time = false;
+    Date::mock_date = false;
 }
 
 Date Datetime::date() const
@@ -40,7 +71,7 @@ bool Datetime::operator>(Datetime other) const
     other.set_timezone(timezone);
 
     return Date::operator>(other.date())
-        || Date::operator==(other.date()) && Time::operator>(other.time());
+           || Date::operator==(other.date()) && Time::operator>(other.time());
 }
 
 bool Datetime::operator>=(Datetime other) const
@@ -48,7 +79,7 @@ bool Datetime::operator>=(Datetime other) const
     other.set_timezone(timezone);
 
     return Date::operator>(other.date())
-        || Date::operator==(other.date()) && Time::operator>=(other.time());
+           || Date::operator==(other.date()) && Time::operator>=(other.time());
 }
 
 bool Datetime::operator<(Datetime other) const
@@ -56,7 +87,7 @@ bool Datetime::operator<(Datetime other) const
     other.set_timezone(timezone);
 
     return Date::operator<(other.date())
-        || Date::operator==(other.date()) && Time::operator<(other.time());
+           || Date::operator==(other.date()) && Time::operator<(other.time());
 }
 
 bool Datetime::operator<=(Datetime other) const
@@ -64,7 +95,7 @@ bool Datetime::operator<=(Datetime other) const
     other.set_timezone(timezone);
 
     return Date::operator<(other.date())
-        || Date::operator==(other.date()) && Time::operator<=(other.time());
+           || Date::operator==(other.date()) && Time::operator<=(other.time());
 }
 
 bool Datetime::operator==(Datetime other) const
@@ -185,9 +216,9 @@ std::string Datetime::to_string(TimeComponent include_to,
                                 char delim_tz) const
 {
     return
-      Date::to_string(delim_date)
-    + delim_date_and_time
-    + Time::to_string(include_to, delim_h_m_s, delim_ms_us_ns, delim_tz);
+            Date::to_string(delim_date)
+            + delim_date_and_time
+            + Time::to_string(include_to, delim_h_m_s, delim_ms_us_ns, delim_tz);
 }
 
 std::ostream& operator<<(std::ostream& os, const Datetime& datetime)
@@ -202,8 +233,8 @@ Datetime Datetime::from_ms(size_t timestamp, Timezone to_timezone, Timezone from
     while (timestamp >= MILLISECONDS_PER_NON_LEAP_YEAR)
     {
         size_t ms_in_year = is_leap_year(year)
-                                    ? MILLISECONDS_PER_LEAP_YEAR
-                                    : MILLISECONDS_PER_NON_LEAP_YEAR;
+                            ? MILLISECONDS_PER_LEAP_YEAR
+                            : MILLISECONDS_PER_NON_LEAP_YEAR;
         timestamp -= ms_in_year;
         year++;
     }
@@ -238,7 +269,7 @@ Datetime Datetime::from_ms(size_t timestamp, Timezone to_timezone, Timezone from
 
 
     Datetime ret =
-        Datetime(year, month, day+1, hour, minute, second, millisecond, 0, 0, from_timezone);
+            Datetime(year, month, day+1, hour, minute, second, millisecond, 0, 0, from_timezone);
 
     ret.set_timezone(to_timezone);
 
@@ -552,4 +583,3 @@ std::vector<Datetime> Datetime::range(Datetime& start, Datetime& end, Func incre
     }
     return ret;
 }
-
