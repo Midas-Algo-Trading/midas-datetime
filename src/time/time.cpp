@@ -518,11 +518,6 @@ Time::Time(TimeDelta& time_delta, Timezone timezone) :
     BasicTime(time_delta.hour, time_delta.minute, time_delta.second, time_delta.millisecond,
               time_delta.microsecond, time_delta.nanosecond), timezone(timezone) {}
 
-size_t Time::hash() const
-{
-    return std::hash<std::string>{}(to_string());
-}
-
 std::vector<Time> Time::range(Time start, Time end, Hours increment)
 {
     return range(start, end,

@@ -489,11 +489,6 @@ int64_t Datetime::total_nanoseconds() const
     return BasicTime::total_nanoseconds();
 }
 
-size_t Datetime::hash() const
-{
-    return std::hash<std::string>{}(to_string());
-}
-
 std::vector<Datetime> Datetime::range(Datetime start, Datetime end, Days increment)
 {
     return range(start, end,
