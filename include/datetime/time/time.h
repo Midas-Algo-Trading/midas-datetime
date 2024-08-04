@@ -1,7 +1,7 @@
 #ifndef TIME_TIME_H
 #define TIME_TIME_H
 
-#include <iostream>
+#include <boost/functional/hash.hpp>
 #include <fmt/ranges.h>
 #include "datetime/time/components/Hours.h"
 #include "datetime/time/components/Minutes.h"
@@ -532,13 +532,6 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const Time& time);
 
-    /**
-     * Creates a hash of 'this'.
-     *
-     * @return hash of 'this'.
-     */
-    size_t hash() const;
-
 protected:
 
     /**
@@ -722,6 +715,19 @@ Time::Time(std::string_view string, Component... time_components)
            std::invalid_argument(fmt::format("Time '{}' is invalid", Time::to_string())));
 }
 
+inline size_t hash_value(const Time& time)
+{
+    size_t seed = 0;
+    boost::hash_combine(seed, time.hour);
+    boost::hash_combine(seed, time.minute);
+    boost::hash_combine(seed, time.second);
+    boost::hash_combine(seed, time.millisecond);
+    boost::hash_combine(seed, time.microsecond);
+    boost::hash_combine(seed, time.nanosecond);
+    boost::hash_combine(seed, time.timezone.utc_offset);
+    return seed;
+}
+
 namespace std
 {
 template<>
@@ -729,7 +735,7 @@ struct hash<Time>
 {
     size_t operator()(const Time& time) const
     {
-        return time.hash();
+        return hash_value(time);
     }
 };
 }

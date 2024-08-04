@@ -297,13 +297,6 @@ public:
      */
     static const Date EPOCH;
 
-    /**
-     * Creates a hash of 'this'.
-     *
-     * @return hash of 'this'.
-     */
-    virtual size_t hash() const;
-
 protected:
 
     /**
@@ -424,6 +417,15 @@ Date::Date(std::string_view string, DateComponents... date_components)
            std::invalid_argument(fmt::format("'{}' is an invalid date", Date::to_string())));
 }
 
+inline size_t hash_value(const Date& date)
+{
+    size_t seed = 0;
+    boost::hash_combine(seed, date.year);
+    boost::hash_combine(seed, date.month);
+    boost::hash_combine(seed, date.day);
+    return seed;
+}
+
 namespace std
 {
 template<>
@@ -431,7 +433,7 @@ struct hash<Date>
 {
     size_t operator()(const Date& date) const
     {
-        return date.hash();
+        return hash_value(date);
     }
 };
 }

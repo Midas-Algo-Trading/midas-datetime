@@ -676,13 +676,6 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const Datetime& datetime);
 
-    /**
-     * Creates a hash of 'this'.
-     *
-     * @return hash of 'this'.
-     */
-    size_t hash() const;
-
 private:
 
     template<typename Func>
@@ -726,6 +719,14 @@ private:
     int64_t total_nanoseconds() const override;
 };
 
+inline size_t hash_value(const Datetime& datetime)
+{
+    size_t seed = 0;
+    boost::hash_combine(seed, datetime.date());
+    boost::hash_combine(seed, datetime.time());
+    return seed;
+}
+
 namespace std
 {
 template<>
@@ -733,7 +734,7 @@ struct hash<Datetime>
 {
     size_t operator()(const Datetime& datetime) const
     {
-        return datetime.hash();
+        return hash_value(datetime);
     }
 };
 }
