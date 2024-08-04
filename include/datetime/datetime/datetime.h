@@ -757,8 +757,11 @@ inline size_t hash_value(const Datetime& datetime)
 
 namespace std
 {
-    template<>
-    struct hash<Datetime>
+template<>
+struct hash<Datetime>
+{
+    size_t operator()(const Datetime& datetime) const
+    {
         return hash_value(datetime);
     }
 };
