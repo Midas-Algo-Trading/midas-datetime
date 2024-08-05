@@ -81,7 +81,7 @@ public:
      *
      * @return a 'Date' that matches today's date.
      */
-    static Date today(uint8_t day_offset = 0, Timezone timezone =  Time::default_timezone);
+    static Date today(int day_offset = 0, Timezone timezone =  Time::default_timezone);
 
     /**
      * Creates a 'Date' that matches tomorrow's date.

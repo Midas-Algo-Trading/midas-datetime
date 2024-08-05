@@ -3,7 +3,7 @@
 #include <utility>
 #include "datetime/timedelta/timedelta.h"
 
-Date Date::today(uint8_t day_offset, Timezone timezone)
+Date Date::today(int day_offset, Timezone timezone)
 {
     // Get the current time
     auto now = std::chrono::system_clock::now();
