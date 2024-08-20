@@ -21,7 +21,7 @@ Date Date::today(int day_offset, Timezone timezone)
     // Adjust date for non-local timezone
     if (timezone != TZ::LOCAL)
     {
-        int hour = Time::now().hour + TZ::LOCAL.get_utc_offset_diff(timezone);
+        int hour = Time::now(0, 0, 0, 0, 0, 0, TZ::LOCAL).hour + TZ::LOCAL.get_utc_offset_diff(timezone);
         if (hour >= Time::HOURS_PER_DAY)
             ret.add_days(1);
         else if (hour < 0)
