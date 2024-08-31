@@ -34,14 +34,12 @@ public:
     /**
      * The mock date we will used in date::today() when mock_date is true
      */
-    static Date mock_date_var;
-
+    static Date mock_date;
 
     /**
      * Whether or not there is a mock date provided
      */
-    static bool mock_date;
-
+    static bool mock;
 
     /**
      * Different days in a week.

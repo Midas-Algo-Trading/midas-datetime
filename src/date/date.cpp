@@ -364,6 +364,9 @@ const uint16_t Date::DAYS_PER_LEAP_YEAR = 366;
 
 const Date Date::EPOCH = Date(1970, 1, 1);
 
+Date Date::mock_date;
+bool Date::mock = false;
+
 std::vector<Date> Date::range(Date start, Date end, Days increment)
 {
     std::vector<Date> ret;

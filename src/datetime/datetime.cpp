@@ -11,16 +11,12 @@ Datetime Datetime::now(uint8_t  day_offset, uint8_t hour_offset, uint8_t minute_
                        uint8_t second_offset, uint16_t millisecond_offset,
                        uint16_t microsecond_offset, uint16_t nanosecond_offset, Timezone timezone)
 {
-    if (!mock_datetime)
-    {
+    if (!mock)
         return Datetime(Date::today(day_offset, timezone),
                         Time::now(hour_offset, minute_offset, second_offset, millisecond_offset,
                                   microsecond_offset, nanosecond_offset, timezone));
-    }
     else
-    {
         return Datetime(mock_date, mock_time);
-    }
 }
 
 int64_t Datetime::add_hours(int64_t hours_to_add)
@@ -584,3 +580,5 @@ std::vector<Datetime> Datetime::range(Datetime& start, Datetime& end, Func incre
     return ret;
 }
 
+Datetime Datetime::mock_dt;
+bool Datetime::mock = false;

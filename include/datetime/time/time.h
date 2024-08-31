@@ -47,6 +47,16 @@ public:
     static Timezone default_timezone;
 
     /**
+    * The mock time we will used in time::now() when mock_time is true
+    */
+    static Time mock_time;
+
+    /**
+     * Whether or not there is a mock time provided
+     */
+    static bool mock;
+
+    /**
      * Creates a 'Time' whose components match the values of 'hour', 'minute',
      * 'second', 'millisecond', 'microsecond', 'nanosecond', and 'timezone'.
      *
