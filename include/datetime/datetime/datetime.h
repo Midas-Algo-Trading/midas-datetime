@@ -23,6 +23,22 @@ public:
     static bool mock;
 
     /**
+     * The mock date we will use to construct the mock datetime
+     */
+    static Date mock_date;
+
+    /**
+     * The mock time we will use to construct the mock datetime
+     */
+    static Time mock_time;
+
+
+    /**
+     * Whether or not there is a mock datetime provided
+     */
+    static bool mock_datetime;
+
+    /**
      * Creates a 'Datetime' whose date values match 'date'.
      * 'time' will be set to the default 'Time'.
      *
@@ -135,6 +151,18 @@ public:
     * @return range of datetimes within 'start' to 'end'.
     */
     static std::vector<Datetime> range(Datetime start, Datetime end, Days increment);
+
+    /**
+    * Set a mock datetime to be used when getting the current datetime
+    *
+    * @param mock_datetime the datetime we want to set and reference
+    */
+    static void set_mock_datetime(Datetime mock_datetime);
+
+    /**
+    * Clear the mock datetime that is currently set
+    */
+    static void clear_mock_datetime();
 
     /**
     * Gets the datetimes within a range.

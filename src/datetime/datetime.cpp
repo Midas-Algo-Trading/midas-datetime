@@ -3,6 +3,10 @@
 #include "datetime/datetime/Datetime.h"
 #include "datetime/timedelta/timedelta.h"
 
+bool Datetime::mock_datetime = false;
+Date Datetime::mock_date = Date(1970, 1, 1);
+Time Datetime::mock_time = Time();
+
 Datetime Datetime::now(uint8_t  day_offset, uint8_t hour_offset, uint8_t minute_offset,
                        uint8_t second_offset, uint16_t millisecond_offset,
                        uint16_t microsecond_offset, uint16_t nanosecond_offset, Timezone timezone)
@@ -15,18 +19,6 @@ Datetime Datetime::now(uint8_t  day_offset, uint8_t hour_offset, uint8_t minute_
         return Datetime(mock_date, mock_time);
 }
 
-void Datetime::set_mock_datetime(const Datetime& mock_dt)
-{
-    mock_date = mock_dt.date();
-    Date::mock = true;
-
-    mock_time = mock_dt.time();
-    Time::mock = true;
-
-    Datetime::mock_dt = mock_dt;
-    mock = true;
-}
-
 int64_t Datetime::add_hours(int64_t hours_to_add)
 {
     int64_t day_change = Time::add_hours(hours_to_add);
@@ -37,6 +29,26 @@ int64_t Datetime::add_hours(int64_t hours_to_add)
         subtract_days(-day_change);
 
     return day_change;
+}
+
+void Datetime::set_mock_datetime(Datetime mock_dt)
+{
+    mock_date = mock_dt.date();
+    mock_time = mock_dt.time();
+    mock_datetime = true;
+
+    Time::mock_time_var = mock_dt.time();
+    Time::mock_time = true;
+
+    Date::mock_date_var = mock_dt.date();
+    Date::mock_date = true;
+}
+
+void Datetime::clear_mock_datetime()
+{
+    mock_datetime = false;
+    Time::mock_time = false;
+    Date::mock_date = false;
 }
 
 Date Datetime::date() const
