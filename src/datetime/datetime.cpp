@@ -3,10 +3,6 @@
 #include "datetime/datetime/Datetime.h"
 #include "datetime/timedelta/timedelta.h"
 
-bool Datetime::mock_datetime = false;
-Date Datetime::mock_date = Date(1970, 1, 1);
-Time Datetime::mock_time = Time();
-
 Datetime Datetime::now(uint8_t  day_offset, uint8_t hour_offset, uint8_t minute_offset,
                        uint8_t second_offset, uint16_t millisecond_offset,
                        uint16_t microsecond_offset, uint16_t nanosecond_offset, Timezone timezone)
@@ -29,6 +25,24 @@ int64_t Datetime::add_hours(int64_t hours_to_add)
         subtract_days(-day_change);
 
     return day_change;
+}
+
+void Datetime::set_mock_datetime(const Datetime& mock_dt)
+{
+    Date::mock_date = mock_dt.date();
+    Date::mock = true;
+
+    Time::mock_time = mock_dt.time();
+    Time::mock = true;
+
+    mock = true;
+}
+
+void Datetime::clear_mock_datetime()
+{
+    mock = false;
+    Time::mock = false;
+    Date::mock = false;
 }
 
 Date Datetime::date() const
@@ -560,5 +574,4 @@ std::vector<Datetime> Datetime::range(Datetime& start, Datetime& end, Func incre
     return ret;
 }
 
-Datetime Datetime::mock_dt;
 bool Datetime::mock = false;

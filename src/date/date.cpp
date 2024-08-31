@@ -5,18 +5,20 @@
 
 Date Date::today(int day_offset, Timezone timezone)
 {
-    // Get the current time
-    auto now = std::chrono::system_clock::now();
-    std::time_t t = std::chrono::system_clock::to_time_t(now);
+    Date ret;
 
-    // Convert the system time to a std::tm struct
-    std::tm *now_tm = std::localtime(&t);
+    if (!mock)
+    {
+        // Get the current time
+        auto now = std::chrono::system_clock::now();
+        std::time_t t = std::chrono::system_clock::to_time_t(now);
 
-    int year = now_tm->tm_year + 1900;
-    int month = now_tm->tm_mon + 1;
-    int day = now_tm->tm_mday;
+        // Convert the system time to a std::tm struct
+        std::tm *now_tm = std::localtime(&t);
 
-    Date ret = Date(year, month, day);
+        ret = Date(now_tm->tm_year + 1900, now_tm->tm_mon + 1, now_tm->tm_mday);
+    }
+    else ret = mock_date;
 
     // Adjust date for non-local timezone
     if (timezone != TZ::LOCAL)
