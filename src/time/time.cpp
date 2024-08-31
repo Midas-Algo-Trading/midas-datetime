@@ -5,9 +5,6 @@
 
 Timezone Time::default_timezone = TZ::EST;
 
-bool Time::mock_time = false;
-Time Time::mock_time_var;
-
 Time Time::now(uint8_t hour_offset, uint8_t minute_offset, uint8_t second_offset,
                uint16_t millisecond_offset, uint16_t microsecond_offset,
                uint16_t nanosecond_offset, Timezone timezone)

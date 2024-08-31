@@ -237,12 +237,6 @@ public:
     */
      static void set_mock_datetime(const Datetime& mock_datetime);
 
-     /**
-     * Clear the mock datetime that is currently set
-     */
-     static void clear_mock_datetime();
-
-
     /**
      * Creates a new 'Date' whose components' values match the date values of this
      * 'Datetime'.

@@ -3,9 +3,6 @@
 #include <utility>
 #include "datetime/timedelta/timedelta.h"
 
-bool Date::mock_date = false;
-Date Date::mock_date_var = Date(1970, 1, 1);
-
 Date Date::today(int day_offset, Timezone timezone)
 {
     // Get the current time

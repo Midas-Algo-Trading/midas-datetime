@@ -31,26 +31,6 @@ int64_t Datetime::add_hours(int64_t hours_to_add)
     return day_change;
 }
 
-void Datetime::set_mock_datetime(Datetime mock_dt)
-{
-    mock_date = mock_dt.date();
-    mock_time = mock_dt.time();
-    mock_datetime = true;
-
-    Time::mock_time_var = mock_dt.time();
-    Time::mock_time = true;
-
-    Date::mock_date_var = mock_dt.date();
-    Date::mock_date = true;
-}
-
-void Datetime::clear_mock_datetime()
-{
-    mock_datetime = false;
-    Time::mock_time = false;
-    Date::mock_date = false;
-}
-
 Date Datetime::date() const
 {
     return Date(year, month, day);
