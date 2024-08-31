@@ -23,7 +23,6 @@
 class Time : public BasicTime
 {
 public:
-
     /**
      * The mock time we will used in time::now() when mock_time is true
      */
