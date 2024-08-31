@@ -11,6 +11,17 @@
 class Datetime : public Date, public Time
 {
 public:
+
+     /**
+      * Whether or not there is a mock datetime provided
+      */
+     static Datetime mock_dt;
+
+    /**
+     * Whether or not there is a mock datetime provided
+     */
+    static bool mock;
+
     /**
      * Creates a 'Datetime' whose date values match 'date'.
      * 'time' will be set to the default 'Time'.
@@ -190,6 +201,18 @@ public:
     * @return range of datetimes within 'start' to 'end'.
     */
     static std::vector<Datetime> range(Datetime start, Datetime end, Nanoseconds increment);
+
+   /**
+    * Set a mock datetime to be used when getting the current datetime
+    *
+    * @param mock_datetime the datetime we want to set and reference
+    */
+     static void set_mock_datetime(const Datetime& mock_datetime);
+
+     /**
+     * Clear the mock datetime that is currently set
+     */
+     static void clear_mock_datetime();
 
 
     /**

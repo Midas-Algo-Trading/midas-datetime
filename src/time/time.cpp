@@ -598,3 +598,6 @@ std::vector<Time> Time::range(Time& start, Time& end, Func increment)
     }
     return ret;
 }
+
+Time Time::mock_time;
+bool Time::mock = false;
