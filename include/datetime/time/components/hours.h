@@ -1,7 +1,7 @@
 #ifndef DATETIME_HOURS_H
 #define DATETIME_HOURS_H
 
-#include "../../../src/Component.h"
+#include "../../../src/component.h"
 
 /**
  * Number of hours.
