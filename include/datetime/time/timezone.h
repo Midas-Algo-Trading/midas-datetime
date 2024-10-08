@@ -156,7 +156,8 @@ namespace TZ
          */
         static Timezone get_from_str(std::string_view timezone_string)
         {
-            if (timezone_string == "Coordinated Universal Time")
+            // Added support for Linux which is default UTC and will return UTC like this
+            if (timezone_string == "Coordinated Universal Time" || timezone_string == "UTC")
                 return UTC;
             else if (timezone_string == "Pacific Standard Time")
                 return TZ::PST;
@@ -190,11 +191,7 @@ namespace TZ
             char timezone_name[128];
             std::strftime(timezone_name, sizeof(timezone_name), "%Z", now_tm);
 
-            #ifdef _WIN32
             return helpers::get_from_str(timezone_name);
-            #else
-            return timezone_name;
-            #endif
         }
     }
 
