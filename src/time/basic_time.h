@@ -4,6 +4,7 @@
 #include <utility>
 #include <string>
 #include <datetime/time/time_component.h>
+#include <cstdint>
 
 /**
  * Basic time representation.
