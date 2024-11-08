@@ -161,7 +161,7 @@ namespace TZ
                 return UTC;
             else if (timezone_string == "Pacific Standard Time")
                 return TZ::PST;
-            else if (timezone_string == "Central Standard Time" == "Central America Standard Time")
+            else if (timezone_string == "Central Standard Time" || timezone_string == "Central America Standard Time")
                 return TZ::CST;
             else if (timezone_string == "Central Daylight Time" || timezone_string == "CDT")
                 return TZ::CDT;
