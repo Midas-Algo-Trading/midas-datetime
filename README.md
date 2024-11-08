@@ -21,13 +21,12 @@
 	add_executable(foo ...)
 	target_link_libraries(foo datetime)
 
+### Include
+	#include <datetime/datetime.h>
+ 
  ### Basic Examples
-*There is much more this library offers, these are just some examples*
 
  ## Date
-
-### Include
-	#include <datetime/date/Date.h>
 
  ### Construction
 	Date date = date(2022, 1, 1);  
@@ -57,11 +56,6 @@
 	std::string str = date.to_string();
 
  ## Time
-
-### Include
-	#include <datetime/time/Time.h>
-	#include <datetime/time/Timezone.h>
- 
 
  ### Construction
 
@@ -109,9 +103,6 @@
 	int mins = time.total_minutes();
 
 ## Datetime
-
-### Include
-	#include <datetime/datetime/Datetime.h>
 
 ### Construction
 	Datetime datetime = Datetime(date);
@@ -166,9 +157,6 @@
 
 ## TimeDelta
 
-### Include
-	#include <datetime/timedelta/time_delta.h>
-
 ### Construction
 	// Days, hours, minutes, seconds, milliseconds, microseconds, nanoseconds
 	TimeDelta timedelta = TimeDelta(1, 2, 3, 4, 5, 6, 7);
@@ -186,11 +174,6 @@
 	std::string str = time_delta.to_string();
 
 ## Ranges
-
-### Include
-	#include <datetime/date/DateRange.h>
-	#include <datetime/time/TimeRange.h>
-	#include <datetime/datetime/DatetimeRange.h>
 
 ### Use
 	TimeRange time_range = TimeRange(time1, time2);
