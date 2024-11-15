@@ -1,3 +1,6 @@
 [submodule "libs/StringHelpers"]
 	path = libs/stringhelpers
 	url = https://github.com/Midas-Algo-Trading/StringHelpers.git
+[submodule "libs/stringhelpers"]
+	path = libs/stringhelpers
+	url = https://github.com/Midas-Algo-Trading/stringhelpers.git
