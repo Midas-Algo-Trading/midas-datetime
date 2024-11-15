@@ -3,13 +3,13 @@
 
 #include <boost/functional/hash.hpp>
 #include <fmt/ranges.h>
-#include "datetime/time/components/Hours.h"
-#include "datetime/time/components/Minutes.h"
-#include "datetime/time/components/Seconds.h"
-#include "datetime/time/components/Microseconds.h"
-#include "datetime/time/components/Nanoseconds.h"
-#include "datetime/time/Timezone.h"
-#include "datetime/time/components/Milliseconds.h"
+#include "datetime/time/components/hours.h"
+#include "datetime/time/components/minutes.h"
+#include "datetime/time/components/seconds.h"
+#include "datetime/time/components/microseconds.h"
+#include "datetime/time/components/nanoseconds.h"
+#include "datetime/time/timezone.h"
+#include "datetime/time/components/milliseconds.h"
 #include "stringhelpers/stringhelpers.h"
 #include "../src/util/macros.h"
 #include "../../../src/time/basic_time.h"

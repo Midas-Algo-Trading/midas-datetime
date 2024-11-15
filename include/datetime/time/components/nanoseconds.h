@@ -1,7 +1,7 @@
 #ifndef DATETIME_NANOSECONDS_H
 #define DATETIME_NANOSECONDS_H
 
-#include "../../../src/Component.h"
+#include "../../../src/component.h"
 
 /**
  * Number of nanoseconds.

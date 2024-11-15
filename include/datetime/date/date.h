@@ -2,8 +2,8 @@
 #define DATETIME_DATE_H
 
 
-#include "datetime/date/components/Days.h"
-#include "datetime/time/Time.h"
+#include "datetime/date/components/days.h"
+#include "datetime/time/time.h"
 #include <fmt/format.h>
 #include <../../../src/util/macros.h>
 #include <stringhelpers/stringhelpers.h>

@@ -2,8 +2,8 @@
 #define DATETIME_DATETIMERANGE_H
 
 #include <utility>
-#include "Datetime.h"
-#include "../../../src/Range.h"
+#include "datetime.h"
+#include "../../../src/range.h"
 
 /**
  * 'Range' of 'Datetimes'.

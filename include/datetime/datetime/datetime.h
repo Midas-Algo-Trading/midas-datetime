@@ -1,8 +1,8 @@
 #ifndef DATETIME_DATETIME_H
 #define DATETIME_DATETIME_H
 
-#include "datetime/date/Date.h"
-#include "datetime/time/Time.h"
+#include "datetime/date/date.h"
+#include "datetime/time/time.h"
 
 /**
  * 'Date' and a 'Time' with components: 'year', 'month', 'day', 'hour', 'minute',

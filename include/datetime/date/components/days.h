@@ -1,7 +1,7 @@
 #ifndef DATETIME_DAYS_H
 #define DATETIME_DAYS_H
 
-#include "../../../../src/Component.h"
+#include "../../../../src/component.h"
 
 /**
  * Amount of days.

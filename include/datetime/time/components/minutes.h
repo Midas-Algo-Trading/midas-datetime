@@ -1,7 +1,7 @@
 #ifndef DATETIME_MINUTES_H
 #define DATETIME_MINUTES_H
 
-#include "../../../src/Component.h"
+#include "../../../src/component.h"
 
 /**
  * Number of minutes.

@@ -1,7 +1,7 @@
 #ifndef DATETIME_MICROSECONDS_H
 #define DATETIME_MICROSECONDS_H
 
-#include "../../../src/Component.h"
+#include "../../../src/component.h"
 
 /**
  * Number of microseconds.
