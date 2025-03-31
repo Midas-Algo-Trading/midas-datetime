@@ -161,7 +161,7 @@ namespace TZ
                 return UTC;
             else if (timezone_string == "Pacific Standard Time")
                 return TZ::PST;
-            else if (timezone_string == "Central Standard Time" || timezone_string == "Central America Standard Time")
+            else if (timezone_string == "Central Standard Time" || timezone_string == "Central America Standard Time" || timezone_string == "CST")
                 return TZ::CST;
             else if (timezone_string == "Central Daylight Time" || timezone_string == "CDT")
                 return TZ::CDT;
@@ -171,6 +171,8 @@ namespace TZ
                 return TZ::EDT;
             else if (timezone_string == "Pacific Daylight Time")
                 return TZ::PDT;
+            else if (timezone_string == "UTC")
+                return TZ::UTC;
             throw std::invalid_argument(fmt::format("'{}' is not a valid timezone string", timezone_string));
         }
 

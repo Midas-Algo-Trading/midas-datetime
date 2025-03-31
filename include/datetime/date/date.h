@@ -203,7 +203,7 @@ public:
      *
      * @return a new 'Date' with 'days' added.
      */
-    Date operator+(const Days& days);
+    Date operator+(const Days& days) const;
 
     /**
      * Subtracts 'days' to 'this'.
@@ -212,7 +212,7 @@ public:
      *
      * @return a new 'Date' with 'days' subtracted.
      */
-    Date operator-(const Days& days);
+    Date operator-(const Days& days) const;
 
     /**
      * Adds a day to this 'Date'.
